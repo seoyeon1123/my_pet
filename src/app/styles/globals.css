@@ -6,21 +6,22 @@
   --background: #ffffff;
   --foreground: #171717;
   --maincolor: #43766c;
-  --maintext: #f8fae5;
+  --maintext: #eee7da;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
-    --foreground: #ededed;
-    --maincolor: #43766c;
+    --foreground: #ffeddb;
+    --darkPink: #d37676;
+    --lightPink: #faeaea;
+    --lightPinkbg: #fefaf8;
   }
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
