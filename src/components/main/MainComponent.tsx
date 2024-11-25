@@ -38,7 +38,7 @@ const cardData = [
   },
 ];
 
-function MainComponent() {
+const MainComponent = () => {
   return (
     <div
       className="
@@ -75,6 +75,6 @@ function MainComponent() {
       </div>
     </div>
   );
-}
+};
 
 export default MainComponent;

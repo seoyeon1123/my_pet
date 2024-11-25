@@ -4,12 +4,13 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --maincolor: #43766c;
-  --maintext: #eee7da;
+  --foreground: black;
+  --darkPink: #d37676;
+  --lightPink: #faeaea;
+  --lightPinkbg: #fefaf8;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
     --foreground: #ffeddb;
@@ -17,11 +18,11 @@
     --lightPink: #faeaea;
     --lightPinkbg: #fefaf8;
   }
-}
+} */
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: var(--lightPinkbg);
 }
 
 @layer utilities {

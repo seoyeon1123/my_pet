@@ -1,3 +1,7 @@
+import Link from 'next/link';
+import Input from '../shared/Input';
+import Button from '../shared/Button';
+
 const MainLogin = () => {
   return (
     <div className="flex justify-center items-center">
@@ -11,36 +15,23 @@ const MainLogin = () => {
         </h1>
 
         <div className="flex flex-col space-y-4">
-          <div className="flex flex-row items-center gap-2">
-            <input
-              id="username"
-              type="text"
-              placeholder="아이디"
-              className="px-4 py-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lightGreen focus:border-maincolor transition duration-300 ease-in-out w-full"
-            />
-          </div>
+          <Input name="username" type="text" placeholder="아이디" error={[]} />
 
-          <div className="flex flex-row items-center gap-2">
-            <input
-              id="password"
-              type="password"
-              placeholder="비밀번호"
-              className="px-4 py-3 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lightGreen focus:border-maincolor transition duration-300 ease-in-out w-full"
-            />
-          </div>
+          <Input
+            name="password"
+            type="password"
+            placeholder="비밀번호"
+            error={[]}
+          />
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-darkPink text-white py-3 rounded-md hover:bg-lightGreen/90 transition duration-300 ease-in-out"
-        >
-          로그인
-        </button>
+        <Button type="submit" description="로그인" />
 
         <div className="flex flex-row items-center justify-between text-sm text-gray-600">
-          <a href="#" className="hover:text-darkPink">
+          <Link href="/signup" className="hover:text-darkPink">
             회원가입
-          </a>
+          </Link>
+
           <div className="flex gap-2">
             <a href="#" className="hover:text-darkPink">
               아이디 찾기
