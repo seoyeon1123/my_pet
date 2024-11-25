@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCoins,
   faHandHoldingHeart,
-  faHandshake,
   faHourglassStart,
   faPaw,
 } from '@fortawesome/free-solid-svg-icons';
