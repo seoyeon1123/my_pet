@@ -55,12 +55,8 @@ const CommunityIntroduction = () => {
       </div>
 
       <div
-        className="grid grid-cols-1 
-    lg:grid-cols-2
-    xl:grid-cols-2
-      sm:grid-cols-1
-      md:grid-cols-2 gap-10  
-      justify-center items-center max-w-5xl 
+        className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 sm:grid-cols-1
+      md:grid-cols-2 gap-10 justify-center items-center max-w-5xl 
       
       "
       >
@@ -68,7 +64,7 @@ const CommunityIntroduction = () => {
           <div
             style={{ backgroundColor: item.bg, opacity: 50 }}
             key={index}
-            className="rounded-xl p-6 flex flex-col justify-between items-start w-[380px] h-[350px] shadow-lg"
+            className="rounded-xl p-6 flex flex-col justify-between items-start w-[380px] h-[350px] shadow-lg   sm:w-[320px] xs:w-[320px] "
           >
             <div>
               <h2 className="text-2xl font-semibold text-black pb-5">

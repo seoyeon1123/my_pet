@@ -62,7 +62,7 @@ const MainComponent = () => {
           <p>댕냥살롱은 다 알아서, 준비했어요</p>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 px-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6  items-center justify-center">
         {cardData.map((card, index) => (
           <MainCard
             key={index}

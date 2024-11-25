@@ -7,7 +7,7 @@ const MainLogin = () => {
     <div className="flex justify-center items-center">
       <form
         className="flex flex-col w-[500px] 
-      sm:w-96 xs:w-96
+      sm:w-[350px] xs:w-[350px]
       border-2 border-darkPink p-8 rounded-lg shadow-xl space-y-6 bg-white"
       >
         <h1 className="text-4xl font-bold text-center text-darkPink py-6">

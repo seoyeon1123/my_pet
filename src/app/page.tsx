@@ -18,7 +18,7 @@ export default function Home() {
   };
   return (
     <>
-      <div className="relative bg-lightPink min-h-screen text-white text-center py-20 pb-32 flex flex-col justify-center  items-center ">
+      <div className="relative bg-lightPink min-h-screen text-white text-center py-20 pb-32 flex flex-col justify-center  items-center w-full">
         <div className="flex flex-row justify-center lg:gap-20 xl:gap-40 items-center w-full sm:flex-col xs:flex-col md:flex-col lg:flex-row">
           <div className="flex flex-col items-center ">
             <Image src={catNdog} alt="cat&dog" width={300} height={100} />
