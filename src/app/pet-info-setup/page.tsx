@@ -12,7 +12,6 @@ import { userState } from '@/state/userState';
 
 const PetInfoSetup = () => {
   const petState = useRecoilValue(petAtom);
-  const [petType, setPetType] = useState<'댕이' | '냥이'>('댕이');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -57,7 +56,7 @@ const PetInfoSetup = () => {
         </div>
         <PetTypeRadio />
 
-        {petType === '댕이' ? <DogInfo /> : <CatInfo />}
+        {petState.petType === '댕이' ? <DogInfo /> : <CatInfo />}
 
         <div className="flex justify-between gap-4">
           <button

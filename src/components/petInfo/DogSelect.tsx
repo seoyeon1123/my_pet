@@ -2,7 +2,7 @@
 
 import { petAtom } from '@/state/petState';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 const dogBreeds = {
   소형견: [
@@ -48,7 +48,7 @@ const dogBreeds = {
 };
 
 const DogBreedSelect = () => {
-  const [petState, setPetState] = useRecoilState(petAtom);
+  const setPetState = useSetRecoilState(petAtom);
   const [selectedCategory, setSelectedCategory] =
     useState<keyof typeof dogBreeds>('소형견');
   const [selectedBreed, setSelectedBreed] = useState<string>('');
@@ -62,7 +62,7 @@ const DogBreedSelect = () => {
       ...prevState,
       category: e.target.value,
       petBreed: '',
-      otherBreed: '',
+      petOtherBreed: '',
     }));
   };
 
@@ -81,7 +81,7 @@ const DogBreedSelect = () => {
     setOtherBreed(e.target.value);
     setPetState((prevState) => ({
       ...prevState,
-      otherBreed: e.target.value,
+      petOtherBreed: e.target.value,
     }));
   };
 
