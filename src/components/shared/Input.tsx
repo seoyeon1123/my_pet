@@ -3,9 +3,18 @@ interface IInputProps {
   type: string;
   placeholder: string;
   error?: string[];
+  value?: string;
+  onChange?: (e: any) => void;
 }
 
-const Input = ({ name, type, placeholder, error }: IInputProps) => {
+const Input = ({
+  name,
+  value,
+  onChange,
+  type,
+  placeholder,
+  error,
+}: IInputProps) => {
   return (
     <>
       <div className="flex flex-row items-center gap-2">
@@ -13,6 +22,8 @@ const Input = ({ name, type, placeholder, error }: IInputProps) => {
           name={name}
           type={type}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
           className="px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-1
           focus:ring-darkPink focus:border-darkPink transition duration-300 ease-in-out w-full"
         />
