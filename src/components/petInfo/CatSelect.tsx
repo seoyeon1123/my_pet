@@ -1,6 +1,6 @@
 import { petAtom } from '@/state/petState';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 const catBreeds = {
   단모: [
@@ -23,7 +23,7 @@ const catBreeds = {
 };
 
 const CatSelect = () => {
-  const [petState, setPetState] = useRecoilState(petAtom);
+  const setPetState = useSetRecoilState(petAtom);
   const [selectedCategory, setSelectedCategory] =
     useState<keyof typeof catBreeds>('단모');
   const [selectedBreed, setSelectedBreed] = useState<string>('');

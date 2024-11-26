@@ -5,15 +5,13 @@ import { useRouter } from 'next/navigation';
 import DogInfo from '@/components/petInfo/DogInfo';
 import CatInfo from '@/components/petInfo/CatInfo';
 import PetTypeRadio from '@/components/petInfo/PetTypeRadio';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { petAtom } from '@/state/petState';
 import PetInfoActions from './actions';
 import { userState } from '@/state/userState';
 
 const PetInfoSetup = () => {
-  const [petState, setPetState] = useRecoilState(petAtom);
-  const [petName, setPetName] = useState('');
-  const [petAge, setPetAge] = useState('');
+  const petState = useRecoilValue(petAtom);
   const [petType, setPetType] = useState<'댕이' | '냥이'>('댕이');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -23,15 +21,6 @@ const PetInfoSetup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    console.log('handleSubmit 함수가 호출되었습니다.');
-    console.log('petName:', petState);
-    console.log('petType:', petState.petType);
-    console.log('petAge:', petState.petAge);
-    console.log('petBreed:', petState.petBreed);
-    console.log('category:', petState.category);
-    console.log('petGender:', petState.petGender);
-    console.log('neutered:', petState.petNeutered);
 
     if (!petState.petName || !petState.petAge || !petState.petType) {
       setError('모든 항목을 입력해주세요.');

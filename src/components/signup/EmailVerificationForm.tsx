@@ -19,7 +19,6 @@ const EmailVerificationForm = ({
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
-  const [user, setUser] = useRecoilState(userState);
 
   const handleSendVerification = async () => {
     if (!email) {
