@@ -1,11 +1,13 @@
 'use server';
 
 import db from '@/lib/db';
+import getSession from '@/lib/session';
 
-const getPet = async (userId: number) => {
+const getPet = async () => {
+  const user = await getSession();
   const pet = await db.pet.findFirst({
     where: {
-      userId: userId,
+      userId: user?.id,
     },
     select: {
       name: true,
