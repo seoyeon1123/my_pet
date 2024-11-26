@@ -1,4 +1,6 @@
-// PetState 타입 정의
+'use server';
+import db from '@/lib/db';
+
 interface PetState {
   petName: string;
   petType: string;
@@ -9,10 +11,6 @@ interface PetState {
   petNeutered: string;
   petOtherBreed?: string;
 }
-
-('use server');
-
-import db from '@/lib/db';
 
 // PetInfoActions 함수의 매개변수 타입을 PetState로 변경
 const PetInfoActions = async (petState: PetState, username: string) => {
