@@ -1,7 +1,6 @@
 'use client';
 
 import { RecoilRoot } from 'recoil';
-import type { Metadata } from 'next';
 import './styles/globals.css';
 import './styles/Font.css';
 

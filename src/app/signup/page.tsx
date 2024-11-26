@@ -11,7 +11,7 @@ const SignUp = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState(''); // 이메일 상태 추가
+  const [email, setEmail] = useState('');
 
   const handleCodeSubmit = (code: string) => {
     setVerificationCode(code);

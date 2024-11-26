@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Input from '../shared/Input';
-import { z } from 'zod';
+import { useRecoilState } from 'recoil';
+import { userState, IUserProps } from '@/state/userState'; // Recoil atom 가져오기
 import { createUser } from '@/app/signup/actions';
 
 interface SignupComponentProps {
@@ -18,6 +19,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
     confirmPassword: '',
   });
   const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useRecoilState(userState); // Recoil 상태 사용
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,13 +35,19 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
     }
 
     try {
-      await createUser({
+      const newUser: IUserProps = {
         name,
         phone,
         email,
         username: formState.username,
         password: formState.password,
-      });
+      };
+
+      // 서버에 저장
+      await createUser(newUser);
+
+      // Recoil atom 업데이트
+      setUsers((prev) => [...prev, newUser]);
 
       alert('회원가입에 성공하셨습니다.');
       router.push('/pet-info-setup');

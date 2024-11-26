@@ -61,7 +61,7 @@ const DogBreedSelect = () => {
     setPetState((prevState) => ({
       ...prevState,
       category: e.target.value,
-      breed: '',
+      petBreed: '',
       otherBreed: '',
     }));
   };
@@ -73,7 +73,7 @@ const DogBreedSelect = () => {
     }
     setPetState((prevState) => ({
       ...prevState,
-      breed: e.target.value,
+      petBreed: e.target.value,
     }));
   };
 

@@ -1,33 +1,41 @@
 // components/PetTypeRadio.tsx
+import { petAtom } from '@/state/petState';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 
-interface IPetTypeRadioProps {
-  petType: '댕이' | '냥이';
-  onPetTypeChange: (type: '댕이' | '냥이') => void;
-}
+interface IPetTypeRadioProps {}
 
-const PetTypeRadio = ({ petType, onPetTypeChange }: IPetTypeRadioProps) => {
+const PetTypeRadio = () => {
+  const [petState, setPetState] = useRecoilState(petAtom);
+
+  const handlePetTypeChange = (type: '댕이' | '냥이') => {
+    setPetState((prevState) => ({
+      ...prevState,
+      petType: type,
+    }));
+  };
+
   return (
     <div className="flex justify-center items-center gap-6 mb-6">
       <label className="flex items-center">
         <input
           type="radio"
-          checked={petType === '댕이'}
+          checked={petState.petType === '댕이'} // petState에서 petType을 확인
           name="pet"
           value="댕이"
           className="mr-2"
-          onChange={() => onPetTypeChange('댕이')}
+          onChange={() => handlePetTypeChange('댕이')}
         />
         댕이
       </label>
       <label className="flex items-center">
         <input
           type="radio"
-          checked={petType === '냥이'}
+          checked={petState.petType === '냥이'} // petState에서 petType을 확인
           name="pet"
           value="냥이"
           className="mr-2"
-          onChange={() => onPetTypeChange('냥이')}
+          onChange={() => handlePetTypeChange('냥이')}
         />
         냥이
       </label>
