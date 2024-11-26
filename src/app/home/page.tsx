@@ -15,11 +15,17 @@ const getPet = async (userId: number) => {
 
 const HomePage = async () => {
   const user = await getSession();
-  const pet = await getPet(user?.id!);
+
+  // user가 정의되어 있고 id가 존재하는지 확인
+  if (!user?.id) {
+    return <h1>사용자를 찾을 수 없거나 로그인하지 않았습니다</h1>;
+  }
+
+  const pet = await getPet(user.id);
 
   return (
     <>
-      <h1>Hello {pet?.name}</h1>
+      <h1>안녕하세요 {pet?.name}</h1>
     </>
   );
 };

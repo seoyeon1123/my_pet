@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { sendVerificationCode, verifyCode } from '@/services/emailService';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
-import { useRecoilState } from 'recoil';
-import { userState } from '@/state/userState';
 
 interface EmailVerificationFormProps {
   onCodeSubmit?: (code: string) => void;
@@ -31,7 +29,7 @@ const EmailVerificationForm = ({
       setIsEmailSent(true);
       setError('');
       if (onEmailSubmit) {
-        onEmailSubmit(email); // 이메일을 부모로 넘기기
+        onEmailSubmit(email);
       }
     } catch (err) {
       console.error(err);
