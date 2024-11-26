@@ -43,9 +43,9 @@ export async function createUser(data: SignupData) {
 
   const userSession = await getSession();
   if (userSession) {
-    // 세션에 사용자 ID 저장
     userSession.id = user.id;
     await userSession.save(); // 세션 저장
+    console.log(userSession.id);
   }
 
   return user;
