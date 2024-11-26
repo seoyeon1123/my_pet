@@ -1,17 +1,6 @@
 import db from '@/lib/db';
 import getSession from '@/lib/session';
-
-const getPet = async (userId: number) => {
-  const pet = await db.pet.findFirst({
-    where: {
-      userId: userId,
-    },
-    select: {
-      name: true,
-    },
-  });
-  return pet;
-};
+import getPet from './actions';
 
 const HomePage = async () => {
   const user = await getSession();
