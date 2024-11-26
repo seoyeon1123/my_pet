@@ -1,14 +1,14 @@
-// app/home/page.tsx (서버 컴포넌트로 설정된 홈 페이지)
-'use server'; // 서버 컴포넌트임을 명시
+'use client';
 
-import getPet from './actions';
+import { petAtom } from '@/state/petState';
+import { useRecoilValue } from 'recoil';
 
-const HomePage = async () => {
-  const pet = await getPet();
+const HomePage = () => {
+  const pet = useRecoilValue(petAtom);
 
   return (
     <>
-      <h1>안녕하세요 {pet?.name}</h1>
+      <h1>안녕하세요 {pet.petName}</h1>
     </>
   );
 };
