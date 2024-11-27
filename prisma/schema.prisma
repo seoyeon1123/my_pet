@@ -9,15 +9,15 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  phone    String @unique
-  email    String @unique
-  username String @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  pet      Pet[]   // User와 여러 Pet 간의 1:N 관계
+  id        Int       @id @default(autoincrement())
+  name      String
+  phone     String?    @unique
+  email     String    @unique
+  username  String?    @unique
+  password  String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  pet       Pet[]     // User와 여러 Pet 간의 1:N 관계
 }
 
 model Pet {
@@ -34,4 +34,12 @@ model Pet {
   updatedAt   DateTime @updatedAt // 수정일
   userId      Int      // 외래키, User와 연결될 id
   user        User     @relation(fields: [userId], references: [id]) // 관계 설정
+}
+
+model Verification {
+  id              Int      @id @default(autoincrement())
+  email           String
+  code            String
+  createdAt       DateTime @default(now())
+  expiresAt       DateTime
 }

@@ -6,32 +6,34 @@ export const sendVerificationCode = async (email: string) => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || '인증번호 전송에 실패했습니다.');
+    const errorBody = await response.text(); // 텍스트 형식으로 응답 받기
+    console.error('이메일 전송 실패:', errorBody); // 서버에서 반환된 오류 메시지 확인
+    throw new Error('이메일 전송에 실패했습니다. 서버 오류를 확인하세요.');
   }
 
   return response.json();
 };
-
 export const verifyCode = async (email: string, code: string) => {
   try {
-    const response = await fetch('/api/sendVerificationCode', {
+    const response = await fetch('/api/verifyCode', {
       method: 'POST',
       body: JSON.stringify({ email, code }),
       headers: { 'Content-Type': 'application/json' },
     });
 
+    const responseBody = await response.text(); // 응답을 텍스트로 받음
+    console.log(responseBody); // 응답을 콘솔에 출력하여 확인
+
     if (!response.ok) {
-      throw new Error('인증번호 확인 실패');
+      const errorData = JSON.parse(responseBody); // 응답이 JSON일 경우 파싱
+      throw new Error(errorData.error || '인증번호 확인 실패');
     }
 
-    return response.json(); // 인증번호 검증 결과를 반환
+    return JSON.parse(responseBody); // 응답을 JSON으로 파싱하여 반환
   } catch (error: unknown) {
-    // error가 Error 타입인지 확인 후 처리
     if (error instanceof Error) {
       throw new Error(error.message || '인증번호 확인 실패');
     }
-    // error가 Error 타입이 아닌 경우 기본 메시지로 처리
     throw new Error('인증번호 확인 실패');
   }
 };

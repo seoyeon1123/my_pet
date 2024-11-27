@@ -1,22 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import DogInfo from '@/components/petInfo/DogInfo';
 import CatInfo from '@/components/petInfo/CatInfo';
 import PetTypeRadio from '@/components/petInfo/PetTypeRadio';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { petAtom } from '@/state/petState';
 import PetInfoActions from './actions';
 import { userState } from '@/state/userState';
+import { useSession } from 'next-auth/react';
 
 const PetInfoSetup = () => {
   const petState = useRecoilValue(petAtom);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { data: session } = useSession();
+  const [user, setUser] = useRecoilState(userState);
 
-  const user = useRecoilValue(userState);
-  const username = user.length > 0 ? user[0].username : '';
+  useEffect(() => {
+    if (session?.user) {
+      setUser({
+        name: session.user.name!,
+        email: session.user.email!,
+        phone: '',
+        username: '',
+        password: '',
+      });
+    }
+  }, [session, setUser]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,9 +40,12 @@ const PetInfoSetup = () => {
 
     try {
       console.log('PetInfoActions 호출 준비:', petState);
-      await PetInfoActions({ ...petState }, username);
-      alert('반려동물 정보가 설정되었습니다.');
-      router.push('/home');
+      // user.name을 PetInfoActions로 전달
+      if (user) {
+        await PetInfoActions({ ...petState }, user.name);
+        alert('반려동물 정보가 설정되었습니다.');
+        router.push('/home');
+      }
     } catch (error) {
       console.error('PetInfoActions 호출 중 에러:', error);
       setError('정보 저장에 실패했습니다. 다시 시도해주세요.');
@@ -48,7 +63,7 @@ const PetInfoSetup = () => {
         </h1>
         <div className="flex flex-col gap-2 mb-4">
           <h2 className="text-xl font-bold">
-            {username}님 우리 댕냥이에 대해서 알려주세요!
+            {user?.name}님 우리 댕냥이에 대해서 알려주세요!
           </h2>
           <p className="text-gray-600">
             만약, 예비견주라면 여기를 클릭해주세요 :)

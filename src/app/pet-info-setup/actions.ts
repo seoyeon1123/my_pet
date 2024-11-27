@@ -12,10 +12,9 @@ interface PetState {
   petOtherBreed?: string;
 }
 
-// PetInfoActions 함수의 매개변수 타입을 PetState로 변경
-const PetInfoActions = async (petState: PetState, username: string) => {
+const PetInfoActions = async (petState: PetState, personname: string) => {
   console.log('PetInfoActions 함수가 호출되었습니다.');
-  console.log('username:', username);
+  console.log('username:', personname);
   console.log('petState:', petState);
 
   const data = {
@@ -27,7 +26,7 @@ const PetInfoActions = async (petState: PetState, username: string) => {
     category: petState.category,
     neutered: petState.petNeutered,
     otherBreed: petState.petOtherBreed || '',
-    username: username,
+    personname: personname,
   };
 
   // 필수 항목 체크
@@ -36,16 +35,15 @@ const PetInfoActions = async (petState: PetState, username: string) => {
   }
 
   // 사용자 정보 조회
-  const user = await db.user.findUnique({
+  const user = await db.user.findFirst({
     where: {
-      username: data.username,
+      name: data.personname,
     },
     select: {
       id: true,
     },
   });
 
-  // user가 존재하는지 확인하고, 안전하게 user.id 사용
   if (!user?.id) {
     throw new Error('사용자를 찾을 수 없습니다.');
   }

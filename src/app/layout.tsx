@@ -3,16 +3,15 @@
 import { RecoilRoot } from 'recoil';
 import './styles/globals.css';
 import './styles/Font.css';
+import { SessionProvider } from 'next-auth/react';
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body>
-        <RecoilRoot>{children}</RecoilRoot>
+        <SessionProvider>
+          <RecoilRoot>{children}</RecoilRoot>
+        </SessionProvider>
       </body>
     </html>
   );

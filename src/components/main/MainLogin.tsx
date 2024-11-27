@@ -1,8 +1,31 @@
+'use client';
 import Link from 'next/link';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
+import { getProviders, signIn } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
 
 const MainLogin = () => {
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res: any = await getProviders();
+      console.log(res);
+      setProviders(res);
+    })();
+  }, []);
+  // 추가된 부분
+
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const handleKakao = async () => {
+    const result = await signIn('kakao', {
+      redirect: true,
+      callbackUrl: '/',
+    });
+  };
   return (
     <div className="flex justify-center items-center">
       <form
@@ -43,6 +66,14 @@ const MainLogin = () => {
           </div>
         </div>
       </form>
+      <div>
+        <button
+          className="w-full transform rounded-md bg-gray-700 px-4 py-2 tracking-wide text-white transition-colors duration-200 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none"
+          onClick={() => signIn('kakao', { redirect: true, callbackUrl: '/' })}
+        >
+          kakao login
+        </button>
+      </div>
     </div>
   );
 };

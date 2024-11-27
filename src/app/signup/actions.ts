@@ -3,7 +3,6 @@
 import db from '@/lib/db'; // Prisma 클라이언트
 import { z } from 'zod'; // Zod 라이브러리
 import bcrypt from 'bcryptjs';
-import getSession from '@/lib/session';
 
 const signupSchema = z.object({
   name: z.string().min(1, '이름을 입력해주세요.'),
@@ -40,13 +39,6 @@ export async function createUser(data: SignupData) {
       password: hashedPassword,
     },
   });
-
-  const userSession = await getSession();
-  if (userSession) {
-    userSession.id = user.id;
-    await userSession.save(); // 세션 저장
-    console.log(userSession.id);
-  }
 
   return user;
 }
