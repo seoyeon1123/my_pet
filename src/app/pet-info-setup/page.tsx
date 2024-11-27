@@ -17,16 +17,20 @@ const PetInfoSetup = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [user, setUser] = useRecoilState(userState);
+  const username = user[0]?.name || '';
 
   useEffect(() => {
     if (session?.user) {
-      setUser({
-        name: session.user.name!,
-        email: session.user.email!,
-        phone: '',
-        username: '',
-        password: '',
-      });
+      setUser((prev) => [
+        ...prev,
+        {
+          name: session.user.name || '',
+          email: session.user.email || '',
+          phone: '',
+          username: '',
+          password: '',
+        },
+      ]);
     }
   }, [session, setUser]);
 
@@ -42,7 +46,7 @@ const PetInfoSetup = () => {
       console.log('PetInfoActions 호출 준비:', petState);
       // user.name을 PetInfoActions로 전달
       if (user) {
-        await PetInfoActions({ ...petState }, user.name);
+        await PetInfoActions({ ...petState }, username);
         alert('반려동물 정보가 설정되었습니다.');
         router.push('/home');
       }
@@ -63,7 +67,7 @@ const PetInfoSetup = () => {
         </h1>
         <div className="flex flex-col gap-2 mb-4">
           <h2 className="text-xl font-bold">
-            {user?.name}님 우리 댕냥이에 대해서 알려주세요!
+            {username}님 우리 댕냥이에 대해서 알려주세요!
           </h2>
           <p className="text-gray-600">
             만약, 예비견주라면 여기를 클릭해주세요 :)

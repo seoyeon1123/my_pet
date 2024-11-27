@@ -8,7 +8,7 @@ export interface IUserProps {
   password: string;
 }
 
-export const userState = atom<IUserProps | null>({
+export const userState = atom<IUserProps[]>({
   key: 'userState',
-  default: null,
+  default: [],
 });
