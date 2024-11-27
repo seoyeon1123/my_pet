@@ -93,7 +93,7 @@ const handler = NextAuth({
       return session;
     },
 
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return `${baseUrl}/home`;
     },
   },

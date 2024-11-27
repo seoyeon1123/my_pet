@@ -2,30 +2,9 @@
 import Link from 'next/link';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
-import { getProviders, signIn } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 const MainLogin = () => {
-  const [providers, setProviders] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const res: any = await getProviders();
-      console.log(res);
-      setProviders(res);
-    })();
-  }, []);
-  // 추가된 부분
-
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-
-  const handleKakao = async () => {
-    const result = await signIn('kakao', {
-      redirect: true,
-      callbackUrl: '/',
-    });
-  };
   return (
     <div className="flex justify-center items-center">
       <form
