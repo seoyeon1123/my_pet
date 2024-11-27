@@ -12,7 +12,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 데이터베이스에서 인증번호 검색
     const verification = await db.verification.findFirst({
       where: { email, code },
     });
