@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { sendVerificationCode, verifyCode } from '@/services/emailService';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
+import { firstCheckUser } from '@/app/signup/actions';
 
 interface EmailVerificationFormProps {
   onCodeSubmit?: (code: string) => void;
-  onEmailSubmit?: (email: string) => void; // 이메일을 부모로 넘겨줄 콜백 함수 추가
+  onEmailSubmit?: (email: string) => void;
 }
 
 const EmailVerificationForm = ({
   onCodeSubmit,
-  onEmailSubmit, // 이메일 제출 콜백 함수 받기
+  onEmailSubmit,
 }: EmailVerificationFormProps) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
@@ -25,6 +26,10 @@ const EmailVerificationForm = ({
     }
 
     try {
+      // 첫 번째 사용자 확인
+      await firstCheckUser({ email });
+
+      // 이메일 전송
       await sendVerificationCode(email);
       setIsEmailSent(true);
       setError('');
@@ -33,7 +38,20 @@ const EmailVerificationForm = ({
       }
     } catch (err) {
       console.error(err);
-      setError('이메일 전송에 실패했습니다.');
+
+      if (
+        err instanceof Error &&
+        err.message === '이미 사용 중인 이메일입니다.'
+      ) {
+        setError('이미 사용 중인 이메일입니다.');
+      } else if (
+        err instanceof Error &&
+        err.message === '이미 사용 중인 휴대전화 번호 입니다.'
+      ) {
+        setError('이미 사용 중인 휴대전화 번호입니다.');
+      } else {
+        setError('이메일 전송에 실패했습니다.');
+      }
     }
   };
 

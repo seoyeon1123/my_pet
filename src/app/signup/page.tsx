@@ -3,15 +3,45 @@
 import { useState } from 'react';
 import Input from '@/components/shared/Input';
 import EmailVerificationForm from '@/components/signup/EmailVerificationForm';
-import SignupComponent from '@/components/signup/SignupComponent';
 import Link from 'next/link';
+import SignupComponent from '@/components/signup/SignupComponent';
 
 const SignUp = () => {
   const [verificationCode, setVerificationCode] = useState('');
-  const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [currentStep, setCurrentStep] = useState(1);
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+
+  const validatePhone = (phone: string) => {
+    // 전화번호가 10자리 또는 11자리 숫자와 하이픈을 포함하는 형식인지 확인하는 정규식
+    const phoneRegex = /^[0-9]{3}[0-9]{3,4}[0-9]{4}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPhone = e.target.value;
+    setPhone(inputPhone);
+
+    if (inputPhone && !validatePhone(inputPhone)) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: '유효한 전화번호를 입력해주세요.',
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        phone: undefined, // 오류 메시지 제거
+      }));
+    }
+  };
+
+  const goToNextStep = () => {
+    if (verificationCode) {
+      setCurrentStep(2);
+    }
+  };
 
   const handleCodeSubmit = (code: string) => {
     setVerificationCode(code);
@@ -20,12 +50,6 @@ const SignUp = () => {
 
   const handleEmailSubmit = (submittedEmail: string) => {
     setEmail(submittedEmail);
-  };
-
-  const goToNextStep = () => {
-    if (verificationCode) {
-      setCurrentStep(2);
-    }
   };
 
   return (
@@ -49,15 +73,21 @@ const SignUp = () => {
               type="text"
               placeholder="이름"
               onChange={(e) => setName(e.target.value)}
-              error={[]}
+              error={errors.name ? [errors.name] : []}
             />
-            <Input
-              name="phone"
-              type="text"
-              placeholder="휴대전화번호"
-              error={[]}
-              onChange={(e) => setPhone(e.target.value)}
-            />
+            <div>
+              <Input
+                name="phone"
+                type="text"
+                placeholder="휴대전화번호"
+                onChange={handlePhoneChange} // 전화번호 입력 시 실시간 검증
+                value={phone}
+                error={[]} // 에러 메시지 표시
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-base mt-2">{errors.phone}</p>
+              )}
+            </div>
           </div>
 
           <EmailVerificationForm

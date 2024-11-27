@@ -43,10 +43,8 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
         password: formState.password,
       };
 
-      // 서버에 저장
       await createUser(newUser);
 
-      // Recoil atom 업데이트
       setUsers((prev) => [...prev, newUser]);
 
       alert('회원가입에 성공하셨습니다.');
@@ -71,9 +69,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
         </h1>
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-bold">회원가입</h2>
-          <p>
-            키즈노트에서 로그인 시 사용할 아이디와 비밀번호를 입력해 주세요.
-          </p>
+          <p>댕냥살롱 로그인 시 사용할 아이디와 비밀번호를 입력해 주세요.</p>
         </div>
 
         {error && <p className="text-red-500">{error}</p>}
