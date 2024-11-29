@@ -8,6 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        'jumping-text': 'jumping 0.7s ease-out ',
+      },
+      keyframes: {
+        jumping: {
+          '0%': {
+            transform: 'translateY(0)', // 처음 상태
+          },
+          '50%': {
+            transform: 'translateY(-15px)', // 점프 효과 (위로)
+          },
+          '100%': {
+            transform: 'translateY(0)', // 원위치
+          },
+        },
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',

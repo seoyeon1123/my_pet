@@ -16,7 +16,7 @@ const handler = NextAuth({
         password: { label: '비밀번호', type: 'password' },
       },
       async authorize(credentials) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -29,7 +29,7 @@ const handler = NextAuth({
         if (user) {
           return user;
         } else {
-          return null; // 로그인 실패 시 null 반환
+          return null;
         }
       },
     }),
@@ -37,6 +37,7 @@ const handler = NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
+        console.log('Kakao Profile:', profile);
         const user = await db.user.findUnique({
           where: {
             email: profile.kakao_account.email,
@@ -56,11 +57,11 @@ const handler = NextAuth({
             name: newUser.name,
             email: newUser.email,
             username: newUser.username || null,
-            password: null, // 비밀번호는 저장하지 않음
+            password: null,
             phone: newUser.phone || null,
             createdAt: newUser.createdAt,
             updatedAt: newUser.updatedAt,
-            isExistingUser: false, // 신규 사용자
+            isExistingUser: false,
           };
         }
 
@@ -73,7 +74,7 @@ const handler = NextAuth({
           phone: user.phone || null,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
-          isExistingUser: true, // 기존 사용자
+          isExistingUser: true,
         };
       },
     }),
@@ -93,8 +94,12 @@ const handler = NextAuth({
       return session;
     },
 
-    async redirect({ baseUrl }) {
-      return `${baseUrl}/home`;
+    async redirect({ url, baseUrl }) {
+      // 로그인 후 /home으로 리디렉션
+      if (url === baseUrl) {
+        return `${baseUrl}/home`; // /home으로 리디렉션
+      }
+      return url;
     },
   },
 
