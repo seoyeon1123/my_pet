@@ -33,7 +33,6 @@ const FindPassword = () => {
       router.push('/login');
     } catch (err) {
       setError('비밀번호 변경에 실패했습니다.');
-      console.error(err); // 디버깅용 콘솔 로그
     }
   };
 

@@ -20,7 +20,6 @@ export const verifyCode = async (email: string, code: string) => {
     });
 
     const responseBody = await response.text(); // 응답을 텍스트로 받음
-    console.log(responseBody); // 응답을 콘솔에 출력하여 확인
 
     if (!response.ok) {
       const errorData = JSON.parse(responseBody); // 응답이 JSON일 경우 파싱

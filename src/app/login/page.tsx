@@ -22,7 +22,6 @@ const Login = () => {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '로그인에 실패했습니다.';
       setError(errorMessage);
-      console.error(errorMessage);
     }
   };
 

@@ -29,16 +29,8 @@ const EmailVerification = ({ username, handleEmailVerificationSuccess }: EmailVe
       await sendVerificationCode(email);
       setIsEmailSent(true);
       setError('');
-    } catch (err) {
-      if (err instanceof Error) {
-        if (err.message === '이미 사용 중인 이메일입니다.') {
-          setError('이미 사용 중인 이메일입니다.');
-        } else if (err.message === '이미 사용 중인 휴대전화 번호 입니다.') {
-          setError('이미 사용 중인 휴대전화 번호입니다.');
-        } else {
-          setError('이메일 전송에 실패했습니다.');
-        }
-      }
+    } catch {
+      setError('이메일 전송에 실패했습니다.');
     }
   };
 

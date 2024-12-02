@@ -44,7 +44,6 @@ const SignUp = () => {
 
   const handleCodeSubmit = (code: string) => {
     setVerificationCode(code);
-    console.log('제출된 인증 코드:', code); // Remove this console log in production
   };
 
   const handleEmailSubmit = (submittedEmail: string) => {
