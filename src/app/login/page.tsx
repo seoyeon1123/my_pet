@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation'; // useRouter 훅 추가
 import loginAction from './actions';
+import Link from 'next/link';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -61,11 +62,9 @@ const Login = () => {
             />
           </div>
 
-          {/* 로그인 버튼 */}
           <Button type="submit" description="로그인" />
         </form>
 
-        {/* 에러 메시지 표시 */}
         {error && (
           <div className="mt-4 text-red-500 text-center">
             <p>{error}</p>
@@ -86,13 +85,14 @@ const Login = () => {
         </div>
 
         <div className="flex justify-center gap-4 text-sm mt-4">
-          <a href="#" className="hover:text-darkPink">
+          <Link href="/login/find-id" className="hover:text-darkPink">
             아이디 찾기
-          </a>
+          </Link>
           <span>|</span>
-          <a href="#" className="hover:text-darkPink">
+
+          <Link href="/login/find-password" className="hover:text-darkPink">
             비밀번호 찾기
-          </a>
+          </Link>
         </div>
       </div>
     </>

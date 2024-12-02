@@ -1,3 +1,17 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-var": "error", // var 금지
+    "no-multiple-empty-lines": "error", // 여러 줄 공백 금지
+    "no-unused-vars": "off", // 사용하지 않는 변수 금지
+    "no-console": "error", // 콘솔로그 사용 시 에러
+    "@typescript-eslint/no-unused-vars": "error",
+    "react-hooks/exhaustive-deps": "off"
+  }
 }

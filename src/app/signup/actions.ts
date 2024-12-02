@@ -36,7 +36,7 @@ export async function firstCheckUser(data: emailSignup) {
 
   const existingUser = await db.user.findUnique({
     where: {
-      email: validatedData.email, // 이메일로 유저 검색
+      email: validatedData.email,
     },
   });
 

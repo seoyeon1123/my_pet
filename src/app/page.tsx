@@ -5,7 +5,12 @@ import CommunityIntroduction from '@/components/main/MainCommunityIntroduction';
 import MainComponent from '@/components/main/MainComponent';
 import Image from 'next/image';
 import catNdog from '../asserts/main/cat&dog.png';
-import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
+import {
+  ChevronDoubleDownIcon,
+  UserGroupIcon,
+  UserIcon,
+  UserPlusIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default function Home() {
@@ -20,10 +25,28 @@ export default function Home() {
   return (
     <>
       <div className="relative bg-lightPink min-h-screen text-white text-center py-20 pb-32 flex flex-col justify-center items-center w-full">
-        <div className="absolute top-4 right-4 flex items-center">
-          {/* 로그인 버튼 클릭 시 로그인 페이지로 이동 */}
-          <Link href="/login">
-            <button>로그인하기</button>
+        <div className="absolute top-4 right-4 flex items-center ">
+          <Link
+            href="/login"
+            className="border border-darkPink rounded-l-xl px-2 py-1 bg-darkPink *:text-lightPink w-[110px]"
+          >
+            <button className="text-darkPink font-bold flex flex-row justify-center items-center gap-2">
+              <UserIcon className="size-7" />
+              로그인
+            </button>
+          </Link>
+
+          <Link
+            href="/signup"
+            className="border border-darkPink rounded-r-xl px-2 py-1 w-[110px]"
+          >
+            <button
+              className="
+            text-darkPink font-bold flex flex-row justify-center items-center gap-2"
+            >
+              <UserPlusIcon className="size-7" />
+              회원가입
+            </button>
           </Link>
         </div>
         <div className="flex flex-row justify-center lg:gap-20 xl:gap-40 items-center w-full sm:flex-col xs:flex-col md:flex-col lg:flex-row">
@@ -34,7 +57,7 @@ export default function Home() {
                 <span
                   key={index}
                   className="inline-block animate-jumping-text"
-                  style={{ animationDelay: `${index * 1.5}s` }} // 각 글자마다 다르게 딜레이를 주어 순차적으로 점프
+                  style={{ animationDelay: `${index * 1.5}s` }}
                 >
                   {char}
                 </span>
