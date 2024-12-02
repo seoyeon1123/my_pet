@@ -18,9 +18,7 @@ const FindPasswordActions = async (username: string, email: string) => {
 };
 
 export const EditPassword = async (username: string, password: string) => {
-  console.log('hashed 전 password', password);
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log('Hashed password:', hashedPassword);
   const updatedUser = await db.user.update({
     where: {
       username,

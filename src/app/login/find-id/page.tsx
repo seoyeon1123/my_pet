@@ -29,9 +29,7 @@ const FindId = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
       <div className="lg:w-1/3 xl:w-1/3 w-full">
-        <h1 className="text-3xl font-bold text-center text-darkPink py-6 font-hakgyo">
-          댕냥살롱
-        </h1>
+        <h1 className="text-3xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
 
         <form
           className="flex flex-col gap-8"
@@ -42,19 +40,11 @@ const FindId = () => {
         >
           <div className="flex flex-col gap-2 mb-6">
             <h2 className="text-xl font-bold">아이디 찾기</h2>
-            <p className="text-sm text-neutral-500">
-              회원가입 할 때 입력했던 이름과 이메일을 입력해주세요.
-            </p>
+            <p className="text-sm text-neutral-500">회원가입 할 때 입력했던 이름과 이메일을 입력해주세요.</p>
           </div>
 
           <div className="flex flex-col gap-6">
-            <Input
-              name="name"
-              type="text"
-              placeholder="이름"
-              error={[]}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <Input name="name" type="text" placeholder="이름" error={[]} onChange={(e) => setName(e.target.value)} />
 
             <Input
               name="email"
@@ -83,10 +73,7 @@ const FindId = () => {
                 </Link>
                 <span>|</span>
 
-                <Link
-                  href="/login/find-password"
-                  className="hover:text-darkPink"
-                >
+                <Link href="/login/find-password" className="hover:text-darkPink">
                   비밀번호 찾기
                 </Link>
               </div>

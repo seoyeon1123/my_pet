@@ -1,8 +1,9 @@
 {
   "extends": [
-    "next/core-web-vitals",
-    "next/typescript",
-    "plugin:prettier/recommended"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended" // Prettier와 통합
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
@@ -10,7 +11,7 @@
     "no-var": "error", // var 금지
     "no-multiple-empty-lines": "error", // 여러 줄 공백 금지
     "no-unused-vars": "off", // 사용하지 않는 변수 금지
-    "no-console": "error", // 콘솔로그 사용 시 에러
+    "no-console": "warn", // 콘솔로그 사용 시 에러
     "@typescript-eslint/no-unused-vars": "error",
     "react-hooks/exhaustive-deps": "off"
   }

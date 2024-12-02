@@ -9,10 +9,7 @@ interface EmailVerificationFormProps {
   onEmailSubmit?: (email: string) => void;
 }
 
-const EmailVerificationForm = ({
-  onCodeSubmit,
-  onEmailSubmit,
-}: EmailVerificationFormProps) => {
+const EmailVerificationForm = ({ onCodeSubmit, onEmailSubmit }: EmailVerificationFormProps) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -26,28 +23,15 @@ const EmailVerificationForm = ({
     }
 
     try {
-      // 첫 번째 사용자 확인
       await firstCheckUser({ email });
-
-      // 이메일 전송
       await sendVerificationCode(email);
       setIsEmailSent(true);
       setError('');
-      if (onEmailSubmit) {
-        onEmailSubmit(email);
-      }
+      onEmailSubmit?.(email);
     } catch (err) {
-      console.error(err);
-
-      if (
-        err instanceof Error &&
-        err.message === '이미 사용 중인 이메일입니다.'
-      ) {
+      if (err instanceof Error && err.message === '이미 사용 중인 이메일입니다.') {
         setError('이미 사용 중인 이메일입니다.');
-      } else if (
-        err instanceof Error &&
-        err.message === '이미 사용 중인 휴대전화 번호 입니다.'
-      ) {
+      } else if (err instanceof Error && err.message === '이미 사용 중인 휴대전화 번호입니다.') {
         setError('이미 사용 중인 휴대전화 번호입니다.');
       } else {
         setError('이메일 전송에 실패했습니다.');
@@ -65,19 +49,14 @@ const EmailVerificationForm = ({
 
     try {
       const response = await verifyCode(email, verificationCode);
-
       if (response.success) {
         setError('');
-        if (onCodeSubmit) {
-          onCodeSubmit(verificationCode);
-        }
-
+        onCodeSubmit?.(verificationCode);
         alert('인증이 완료되었습니다!');
       } else {
         setError('잘못된 인증번호입니다.');
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError('인증번호 확인에 실패했습니다.');
     } finally {
       setIsVerifying(false);
@@ -96,9 +75,7 @@ const EmailVerificationForm = ({
       <Button type="button" onClick={handleSendVerification}>
         인증번호 전송
       </Button>
-      {isEmailSent && (
-        <p className="text-green-500">인증번호가 이메일로 전송되었습니다.</p>
-      )}
+      {isEmailSent && <p className="text-green-500">인증번호가 이메일로 전송되었습니다.</p>}
       {error && <p className="text-red-500">{error}</p>}
       <Input
         name="verificationCode"

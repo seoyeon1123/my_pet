@@ -19,12 +19,7 @@ const loginAction = async (username: string, password: string) => {
 
   const trimmedPassword = password.trim(); // 비밀번호 트리밍
 
-  console.log('Stored hashed password:', user.password);
-  console.log('Entered password:', trimmedPassword);
-
   const isPasswordValid = await bcrypt.compare(trimmedPassword, user.password!);
-  console.log('Password valid:', isPasswordValid);
-  console.log('bcrypt.compare result:', isPasswordValid);
 
   if (!isPasswordValid) {
     throw new Error('비밀번호가 일치하지 않습니다.');

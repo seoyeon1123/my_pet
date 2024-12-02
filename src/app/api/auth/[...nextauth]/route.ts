@@ -37,7 +37,6 @@ const handler = NextAuth({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
-        console.log('Kakao Profile:', profile);
         const user = await db.user.findUnique({
           where: {
             email: profile.kakao_account.email,
