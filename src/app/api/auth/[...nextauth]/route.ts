@@ -81,7 +81,7 @@ const handler = NextAuth({
 
         const trimmedPassword = password.trim();
 
-        const isPasswordValid = await bcrypt.compare(trimmedPassword, user?.password!);
+        const isPasswordValid = await bcrypt.compare(trimmedPassword, user!.password!);
 
         if (isPasswordValid && user) {
           return {
