@@ -1,10 +1,10 @@
 'use client';
+
 import Button from '@/components/shared/Button';
 import Input from '@/components/shared/Input';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import loginAction from './actions';
 import Link from 'next/link';
 
 const Login = () => {
@@ -17,10 +17,20 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      await loginAction(username, password);
-      router.push('/home');
+      const result = await signIn('credentials', {
+        redirect: false,
+        username,
+        password,
+      });
+
+      if (result?.error) {
+        setError('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+        console.log(result?.error);
+      } else {
+        router.push('/home');
+      }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '로그인에 실패했습니다.';
+      const errorMessage = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
       setError(errorMessage);
     }
   };

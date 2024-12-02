@@ -1,67 +1,38 @@
-import db from '@/lib/db';
+// pages/api/auth/[...nextauth].ts
 import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
 import KakaoProvider from 'next-auth/providers/kakao';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import bcrypt from 'bcryptjs';
+import db from '@/lib/db'; // Prisma DB 연결
 
 const handler = NextAuth({
   providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        username: {
-          label: '이메일',
-          type: 'text',
-          placeholder: '이메일 주소 입력 요망',
-        },
-        password: { label: '비밀번호', type: 'password' },
-      },
-      async authorize(credentials) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: credentials?.username,
-            password: credentials?.password,
-          }),
-        });
-        const user = await res.json();
-
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
-      },
-    }),
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
       async profile(profile) {
-        const user = await db.user.findUnique({
-          where: {
-            email: profile.kakao_account.email,
-          },
+        const email = profile.kakao_account?.email;
+
+        if (!email) {
+          throw new Error('카카오에서 이메일 정보를 가져오지 못했습니다.');
+        }
+
+        let user = await db.user.findFirst({
+          where: { email },
         });
 
         if (!user) {
-          const newUser = await db.user.create({
+          // 임시 비밀번호 생성
+          const tempPassword = Date.now().toString(); // 임시 비밀번호
+          const hashedPassword = await bcrypt.hash(tempPassword, 10); // bcrypt로 암호화
+
+          user = await db.user.create({
             data: {
-              email: profile.kakao_account.email,
-              name: profile.properties?.nickname,
+              email,
+              name: profile.properties?.nickname || 'Unknown',
+              password: hashedPassword,
             },
           });
-
-          return {
-            id: newUser.id.toString(),
-            name: newUser.name,
-            email: newUser.email,
-            username: newUser.username || null,
-            password: null,
-            phone: newUser.phone || null,
-            createdAt: newUser.createdAt,
-            updatedAt: newUser.updatedAt,
-            isExistingUser: false,
-          };
         }
 
         return {
@@ -73,8 +44,58 @@ const handler = NextAuth({
           phone: user.phone || null,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
-          isExistingUser: true,
+          isExistingUser: Boolean(user.createdAt),
         };
+      },
+    }),
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: { label: 'username', type: 'text' },
+        password: { label: 'password', type: 'password' },
+      },
+      async authorize(credentials) {
+        if (!credentials || !credentials.username || !credentials.password) {
+          throw new Error('Username과 Password를 모두 입력해주세요.');
+        }
+
+        const { username, password } = credentials;
+
+        if (!username || !password) {
+          throw new Error('Username과 Password를 모두 입력해주세요.');
+        }
+
+        const user = await db.user.findUnique({
+          where: { username },
+          select: {
+            password: true,
+            id: true,
+            name: true,
+            email: true,
+            username: true,
+            phone: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        });
+
+        const trimmedPassword = password.trim();
+
+        const isPasswordValid = await bcrypt.compare(trimmedPassword, user?.password!);
+
+        if (isPasswordValid && user) {
+          return {
+            id: user.id.toString(),
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            phone: user.phone,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          };
+        }
+
+        throw new Error('아이디 또는 비밀번호가 올바르지 않습니다.');
       },
     }),
   ],
@@ -82,28 +103,33 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.isExistingUser = user.isExistingUser;
+        token.id = user.id as string;
+        token.email = user.email as string;
+        token.isExistingUser = user.isExistingUser as boolean;
       }
       return token;
     },
 
     async session({ session, token }) {
-      // session에 token 값을 병합
-      session.user = { ...session.user, ...token }; // token 정보 병합
+      session.user = {
+        id: token.id as string,
+        email: token.email as string,
+        isExistingUser: token.isExistingUser as boolean,
+        name: session.user?.name || null,
+      };
       return session;
     },
 
     async redirect({ url, baseUrl }) {
-      // 로그인 후 /home으로 리디렉션
       if (url === baseUrl) {
-        return `${baseUrl}/home`; // /home으로 리디렉션
+        return `${baseUrl}/home`;
       }
       return url;
     },
   },
 
   pages: {
-    signIn: '/signin',
+    signIn: '/login',
     error: '/auth/error',
   },
 });
