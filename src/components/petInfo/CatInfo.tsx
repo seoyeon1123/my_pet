@@ -39,14 +39,12 @@ const CatInfo = () => {
         value={petState.petAge}
         onChange={handleInputChange}
       />
-
       <div className="p-2 flex flex-row gap-2">
         <select
           name="petGender"
           className="p-2 w-full rounded-xl focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
           value={petState.petGender}
-          onChange={handleSelectChange}
-        >
+          onChange={handleSelectChange}>
           <option value="">냥이 성별 선택</option>
           <option value="여자">여자</option>
           <option value="남자">남자</option>
@@ -55,16 +53,13 @@ const CatInfo = () => {
           name="petNeutered"
           className="p-2 w-full rounded-xl focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
           value={petState.petNeutered}
-          onChange={handleSelectChange}
-        >
+          onChange={handleSelectChange}>
           <option value="">냥이 중성화</option>
           <option value="o">🅾️</option>
           <option value="x">❎</option>
         </select>
       </div>
-
       <hr className="border border-dashed border-neutral-200" />
-
       <CatSelect />
     </div>
   );

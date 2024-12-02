@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { sendVerificationCode, verifyCode } from '@/services/emailService';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
-import { firstCheckUser } from '@/app/signup/actions';
 import FindPasswordActions from '@/app/login/find-password/actions';
 
 interface EmailVerificationFormProps {
@@ -12,10 +11,7 @@ interface EmailVerificationFormProps {
   username: string;
 }
 
-const EmailVerification = ({
-  username,
-  handleEmailVerificationSuccess,
-}: EmailVerificationFormProps) => {
+const EmailVerification = ({ username, handleEmailVerificationSuccess }: EmailVerificationFormProps) => {
   const [email, setEmail] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -34,20 +30,14 @@ const EmailVerification = ({
       setIsEmailSent(true);
       setError('');
     } catch (err) {
-      console.error(err);
-
-      if (
-        err instanceof Error &&
-        err.message === '이미 사용 중인 이메일입니다.'
-      ) {
-        setError('이미 사용 중인 이메일입니다.');
-      } else if (
-        err instanceof Error &&
-        err.message === '이미 사용 중인 휴대전화 번호 입니다.'
-      ) {
-        setError('이미 사용 중인 휴대전화 번호입니다.');
-      } else {
-        setError('이메일 전송에 실패했습니다.');
+      if (err instanceof Error) {
+        if (err.message === '이미 사용 중인 이메일입니다.') {
+          setError('이미 사용 중인 이메일입니다.');
+        } else if (err.message === '이미 사용 중인 휴대전화 번호 입니다.') {
+          setError('이미 사용 중인 휴대전화 번호입니다.');
+        } else {
+          setError('이메일 전송에 실패했습니다.');
+        }
       }
     }
   };
@@ -67,7 +57,6 @@ const EmailVerification = ({
         setError('');
         alert('인증이 완료되었습니다!');
 
-        // handleEmailVerificationSuccess가 정의되어 있으면 호출합니다.
         if (handleEmailVerificationSuccess) {
           handleEmailVerificationSuccess();
         }
@@ -75,7 +64,6 @@ const EmailVerification = ({
         setError('잘못된 인증번호입니다.');
       }
     } catch (err) {
-      console.error(err);
       setError('인증번호 확인에 실패했습니다.');
     } finally {
       setIsVerifying(false);
@@ -94,9 +82,7 @@ const EmailVerification = ({
       <Button type="button" onClick={handleSendVerification}>
         인증번호 전송
       </Button>
-      {isEmailSent && (
-        <p className="text-green-500">인증번호가 이메일로 전송되었습니다.</p>
-      )}
+      {isEmailSent && <p className="text-green-500">인증번호가 이메일로 전송되었습니다.</p>}
       {error && <p className="text-red-500">{error}</p>}
       <Input
         name="verificationCode"

@@ -9,14 +9,7 @@ interface IInputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 타입 변경
 }
 
-const Input = ({
-  name,
-  value,
-  onChange,
-  type,
-  placeholder,
-  error,
-}: IInputProps) => {
+const Input = ({ name, value, onChange, type, placeholder, error }: IInputProps) => {
   return (
     <div className="flex flex-row items-center gap-2">
       <input

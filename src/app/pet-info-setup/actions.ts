@@ -13,10 +13,6 @@ interface PetState {
 }
 
 const PetInfoActions = async (petState: PetState, personname: string) => {
-  console.log('PetInfoActions 함수가 호출되었습니다.');
-  console.log('username:', personname);
-  console.log('petState:', petState);
-
   const data = {
     name: petState.petName,
     type: petState.petType,

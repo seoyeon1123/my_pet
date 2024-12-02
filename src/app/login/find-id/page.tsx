@@ -36,8 +36,7 @@ const FindId = () => {
           onSubmit={(e) => {
             e.preventDefault();
             handleSubmit();
-          }}
-        >
+          }}>
           <div className="flex flex-col gap-2 mb-6">
             <h2 className="text-xl font-bold">아이디 찾기</h2>
             <p className="text-sm text-neutral-500">회원가입 할 때 입력했던 이름과 이메일을 입력해주세요.</p>
@@ -59,12 +58,7 @@ const FindId = () => {
             <div className="text-center">
               <p className="w-full   py-3 border-2 border-darkPink rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out ">
                 회원님의 아이디는
-                <span
-                  className="
-                font-bold text-darkPink px-3"
-                >
-                  {username}
-                </span>
+                <span className="font-bold text-darkPink px-3">{username}</span>
                 입니다.
               </p>
               <div className="flex justify-center gap-4 text-sm mt-4">

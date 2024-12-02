@@ -15,7 +15,6 @@ const SignUp = () => {
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
   const validatePhone = (phone: string) => {
-    // 전화번호가 10자리 또는 11자리 숫자와 하이픈을 포함하는 형식인지 확인하는 정규식
     const phoneRegex = /^[0-9]{3}[0-9]{3,4}[0-9]{4}$/;
     return phoneRegex.test(phone);
   };
@@ -32,7 +31,7 @@ const SignUp = () => {
     } else {
       setErrors((prev) => ({
         ...prev,
-        phone: undefined, // 오류 메시지 제거
+        phone: undefined,
       }));
     }
   };
@@ -45,7 +44,7 @@ const SignUp = () => {
 
   const handleCodeSubmit = (code: string) => {
     setVerificationCode(code);
-    console.log('제출된 인증 코드:', code);
+    console.log('제출된 인증 코드:', code); // Remove this console log in production
   };
 
   const handleEmailSubmit = (submittedEmail: string) => {
@@ -56,15 +55,10 @@ const SignUp = () => {
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
       {currentStep === 1 && (
         <form className="flex flex-col gap-10 lg:w-1/3 xl:w-1/3">
-          <h1 className="text-2xl font-bold text-center text-darkPink py-6 font-hakgyo">
-            댕냥살롱
-          </h1>
+          <h1 className="text-2xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-bold">회원가입</h2>
-            <p>
-              본인의 이름과 휴대전화번호 및 이메일을 모두 정확하게 입력해
-              주세요.
-            </p>
+            <p>본인의 이름과 휴대전화번호 및 이메일을 모두 정확하게 입력해 주세요.</p>
           </div>
 
           <div className="flex flex-col gap-6">
@@ -80,42 +74,31 @@ const SignUp = () => {
                 name="phone"
                 type="text"
                 placeholder="휴대전화번호"
-                onChange={handlePhoneChange} // 전화번호 입력 시 실시간 검증
+                onChange={handlePhoneChange}
                 value={phone}
-                error={[]} // 에러 메시지 표시
+                error={[]}
               />
-              {errors.phone && (
-                <p className="text-red-500 text-base mt-2">{errors.phone}</p>
-              )}
+              {errors.phone && <p className="text-red-500 text-base mt-2">{errors.phone}</p>}
             </div>
           </div>
 
-          <EmailVerificationForm
-            onCodeSubmit={handleCodeSubmit}
-            onEmailSubmit={handleEmailSubmit}
-          />
+          <EmailVerificationForm onCodeSubmit={handleCodeSubmit} onEmailSubmit={handleEmailSubmit} />
 
           <div className="flex flex-row justify-between items-center gap-2 *:h-10">
-            <Link
-              href="/"
-              className="w-1/3 flex items-center justify-center text-center bg-lightPink rounded-l-2xl"
-            >
+            <Link href="/" className="w-1/3 flex items-center justify-center text-center bg-lightPink rounded-l-2xl">
               이전
             </Link>
             <button
               className="w-2/3 flex items-center justify-center text-center bg-darkPink rounded-r-2xl"
               type="button"
               onClick={goToNextStep}
-              disabled={!verificationCode}
-            >
+              disabled={!verificationCode}>
               다음
             </button>
           </div>
         </form>
       )}
-      {currentStep === 2 && (
-        <SignupComponent name={name} phone={phone} email={email} />
-      )}
+      {currentStep === 2 && <SignupComponent name={name} phone={phone} email={email} />}
     </div>
   );
 };

@@ -28,7 +28,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, response }, { status: 200 });
   } catch (error) {
-    console.error('이메일 전송 중 에러 발생:', error); // 에러 로그 출력
     return NextResponse.json(
       { error: '이메일 전송 중 문제가 발생했습니다.', details: error instanceof Error ? error.message : String(error) },
       { status: 500 },

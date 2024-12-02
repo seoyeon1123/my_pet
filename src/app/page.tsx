@@ -5,12 +5,7 @@ import CommunityIntroduction from '@/components/main/MainCommunityIntroduction';
 import MainComponent from '@/components/main/MainComponent';
 import Image from 'next/image';
 import catNdog from '../asserts/main/cat&dog.png';
-import {
-  ChevronDoubleDownIcon,
-  UserGroupIcon,
-  UserIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline';
+import { ChevronDoubleDownIcon, UserIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default function Home() {
@@ -28,22 +23,15 @@ export default function Home() {
         <div className="absolute top-4 right-4 flex items-center ">
           <Link
             href="/login"
-            className="border border-darkPink rounded-l-xl px-2 py-1 bg-darkPink *:text-lightPink w-[110px]"
-          >
+            className="border border-darkPink rounded-l-xl px-2 py-1 bg-darkPink *:text-lightPink w-[110px]">
             <button className="text-darkPink font-bold flex flex-row justify-center items-center gap-2">
               <UserIcon className="size-7" />
               로그인
             </button>
           </Link>
 
-          <Link
-            href="/signup"
-            className="border border-darkPink rounded-r-xl px-2 py-1 w-[110px]"
-          >
-            <button
-              className="
-            text-darkPink font-bold flex flex-row justify-center items-center gap-2"
-            >
+          <Link href="/signup" className="border border-darkPink rounded-r-xl px-2 py-1 w-[110px]">
+            <button className="text-darkPink font-bold flex flex-row justify-center items-center gap-2">
               <UserPlusIcon className="size-7" />
               회원가입
             </button>
@@ -57,8 +45,7 @@ export default function Home() {
                 <span
                   key={index}
                   className="inline-block animate-jumping-text"
-                  style={{ animationDelay: `${index * 1.5}s` }}
-                >
+                  style={{ animationDelay: `${index * 1.5}s` }}>
                   {char}
                 </span>
               ))}
@@ -67,13 +54,8 @@ export default function Home() {
         </div>
 
         <div className="bottom-10 xs:bottom-5 absolute flex flex-col justify-center items-center gap-2">
-          <p className="text-darkPink whitespace-nowrap">
-            댕냥살롱은 무엇인가요?{' '}
-          </p>
-          <ChevronDoubleDownIcon
-            className="size-8 text-darkPink"
-            onClick={handleClick}
-          />
+          <p className="text-darkPink whitespace-nowrap">댕냥살롱은 무엇인가요?</p>
+          <ChevronDoubleDownIcon className="size-8 text-darkPink" onClick={handleClick} />
         </div>
       </div>
       <div ref={mainRef} className="w-full bg-lightPinkbg">

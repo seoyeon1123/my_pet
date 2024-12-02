@@ -60,13 +60,8 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
 
   return (
     <div className="max-h-screen w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
-      <form
-        className="flex flex-col gap-10 lg:w-1/3 xl:w-1/3"
-        onSubmit={handleSubmit}
-      >
-        <h1 className="text-2xl font-bold text-center text-darkPink py-6 font-hakgyo">
-          댕냥살롱
-        </h1>
+      <form className="flex flex-col gap-10 lg:w-1/3 xl:w-1/3" onSubmit={handleSubmit}>
+        <h1 className="text-2xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
         <div className="flex flex-col gap-2">
           <h2 className="text-xl font-bold">회원가입</h2>
           <p>댕냥살롱 로그인 시 사용할 아이디와 비밀번호를 입력해 주세요.</p>
@@ -102,14 +97,12 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
           <button
             type="button"
             onClick={() => router.back()} // 이전 페이지로 돌아가기
-            className="w-1/3 flex items-center justify-center text-center bg-lightPink rounded-l-2xl"
-          >
+            className="w-1/3 flex items-center justify-center text-center bg-lightPink rounded-l-2xl">
             이전
           </button>
           <button
             className="w-2/3 flex items-center justify-center text-center bg-darkPink rounded-r-2xl"
-            type="submit"
-          >
+            type="submit">
             다음
           </button>
         </div>

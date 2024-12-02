@@ -6,20 +6,13 @@ interface IButton {
   disabled?: boolean;
 }
 
-const Button = ({
-  type = 'button',
-  description,
-  onClick,
-  children,
-  disabled,
-}: IButton) => {
+const Button = ({ type = 'button', description, onClick, children, disabled }: IButton) => {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className="w-full bg-darkPink text-white py-3 rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out"
-    >
+      className="w-full bg-darkPink text-white py-3 rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out">
       {children || description} {/* children 우선 사용 */}
     </button>
   );

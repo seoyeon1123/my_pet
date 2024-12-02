@@ -6,8 +6,6 @@ export const sendVerificationCode = async (email: string) => {
   });
 
   if (!response.ok) {
-    const errorBody = await response.text();
-    console.error('이메일 전송 실패:', errorBody);
     throw new Error('이메일 전송에 실패했습니다. 서버 오류를 확인하세요.');
   }
 

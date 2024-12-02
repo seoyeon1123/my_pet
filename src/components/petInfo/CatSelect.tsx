@@ -24,8 +24,7 @@ const catBreeds = {
 
 const CatSelect = () => {
   const setPetState = useSetRecoilState(petAtom);
-  const [selectedCategory, setSelectedCategory] =
-    useState<keyof typeof catBreeds>('단모');
+  const [selectedCategory, setSelectedCategory] = useState<keyof typeof catBreeds>('단모');
   const [selectedBreed, setSelectedBreed] = useState<string>('');
   const [otherBreed, setOtherBreed] = useState<string>('');
 
@@ -63,39 +62,32 @@ const CatSelect = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-4">냥이의 견종은?</h1>
-
       <select
         name="petCategory"
         value={selectedCategory}
         onChange={handleCategoryChange}
-        className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
-      >
+        className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">
         <option value="">카테고리 선택</option>
         <option value="단모">단모</option>
         <option value="장모">장모</option>
         <option value="아시아계">아시아계</option>
         <option value="스핑크스">스핑크스</option>
       </select>
-
       {selectedCategory && (
         <>
           <select
             name="petBreed"
             value={selectedBreed}
             onChange={handleBreedChange}
-            className="p-2 border rounded-lg w-full focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
-          >
+            className="p-2 border rounded-lg w-full focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">
             <option value="">견종 선택</option>
             {catBreeds[selectedCategory].map((breed) => (
               <option key={breed.value} value={breed.value}>
                 {breed.label}
               </option>
             ))}
-            {selectedCategory !== '기타' && (
-              <option value="기타">기타 (직접 입력)</option>
-            )}
+            {selectedCategory !== '기타' && <option value="기타">기타 (직접 입력)</option>}
           </select>
-
           {selectedBreed === '기타' && (
             <div className="mt-4">
               <input

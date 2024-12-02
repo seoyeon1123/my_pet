@@ -1,5 +1,3 @@
-// DogSelect.tsx
-
 import { petAtom } from '@/state/petState';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
@@ -49,8 +47,7 @@ const dogBreeds = {
 
 const DogBreedSelect = () => {
   const setPetState = useSetRecoilState(petAtom);
-  const [selectedCategory, setSelectedCategory] =
-    useState<keyof typeof dogBreeds>('소형견');
+  const [selectedCategory, setSelectedCategory] = useState<keyof typeof dogBreeds>('소형견');
   const [selectedBreed, setSelectedBreed] = useState<string>('');
   const [otherBreed, setOtherBreed] = useState<string>('');
 
@@ -92,8 +89,7 @@ const DogBreedSelect = () => {
         name="petCategory"
         value={selectedCategory}
         onChange={handleCategoryChange}
-        className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
-      >
+        className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">
         <option value="">카테고리 선택</option>
         <option value="소형견">소형견</option>
         <option value="중형견">중형견</option>
@@ -111,8 +107,7 @@ const DogBreedSelect = () => {
             name="petBreed"
             value={selectedBreed}
             onChange={handleBreedChange}
-            className="p-2 border rounded-lg w-full focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink"
-          >
+            className="p-2 border rounded-lg w-full focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">
             <option value="">견종 선택</option>
             {dogBreeds[selectedCategory] &&
               dogBreeds[selectedCategory].map((breed) => (
@@ -120,9 +115,7 @@ const DogBreedSelect = () => {
                   {breed.label}
                 </option>
               ))}
-            {selectedCategory !== '기타' && (
-              <option value="기타">기타 (직접 입력)</option>
-            )}
+            {selectedCategory !== '기타' && <option value="기타">기타 (직접 입력)</option>}
           </select>
 
           {selectedBreed === '기타' && (
