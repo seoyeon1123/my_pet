@@ -8,6 +8,7 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "rules": {
+    "react/react-in-jsx-scope": "off",
     "no-var": "error", // var 금지
     "no-multiple-empty-lines": "error", // 여러 줄 공백 금지
     "no-unused-vars": "off", // 사용하지 않는 변수 금지
