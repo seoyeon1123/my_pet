@@ -31,11 +31,10 @@ const FindPassword = () => {
       await EditPassword(username, newPassword);
       alert('비밀번호가 성공적으로 변경되었습니다.');
       router.push('/login');
-    } catch (err) {
+    } catch {
       setError('비밀번호 변경에 실패했습니다.');
     }
   };
-
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
       <div className="lg:w-1/3 xl:w-1/3 w-full">

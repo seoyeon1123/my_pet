@@ -49,7 +49,7 @@ const PetInfoSetup = () => {
         alert('반려동물 정보가 설정되었습니다.');
         router.push('/home');
       }
-    } catch (error) {
+    } catch {
       setError('정보 저장에 실패했습니다. 다시 시도해주세요.');
     }
   };

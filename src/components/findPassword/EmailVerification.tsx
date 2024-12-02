@@ -55,7 +55,7 @@ const EmailVerification = ({ username, handleEmailVerificationSuccess }: EmailVe
       } else {
         setError('잘못된 인증번호입니다.');
       }
-    } catch (err) {
+    } catch {
       setError('인증번호 확인에 실패했습니다.');
     } finally {
       setIsVerifying(false);
