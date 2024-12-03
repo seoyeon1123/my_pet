@@ -2,11 +2,11 @@ import { supabase } from '@/lib/supabaseClient';
 import { petAtom } from '@/state/petState';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { PhotoIcon } from '@heroicons/react/24/outline';
 
 const ImageUpload = () => {
-  const [pet, setPet] = useRecoilState(petAtom);
+  const setPet = useSetRecoilState(petAtom);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const uploadImageAndSavePet = async (file: File) => {
