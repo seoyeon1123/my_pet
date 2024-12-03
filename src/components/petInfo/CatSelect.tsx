@@ -24,46 +24,51 @@ const catBreeds = {
 
 const CatSelect = () => {
   const setPetState = useSetRecoilState(petAtom);
-  const [selectedCategory, setSelectedCategory] = useState<keyof typeof catBreeds>('단모');
+  const [selectedCategory, setSelectedCategory] = useState<keyof typeof catBreeds | ''>('');
   const [selectedBreed, setSelectedBreed] = useState<string>('');
   const [otherBreed, setOtherBreed] = useState<string>('');
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value as keyof typeof catBreeds);
+    const newCategory = e.target.value as keyof typeof catBreeds;
+    setSelectedCategory(newCategory);
     setSelectedBreed('');
     setOtherBreed('');
+    // Set the category in petAtom directly
     setPetState((prevState) => ({
       ...prevState,
-      category: e.target.value,
-      breed: '',
-      otherBreed: '',
+      category: newCategory,
+      petBreed: '',
+      petOtherBreed: '',
     }));
   };
 
   const handleBreedChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBreed(e.target.value);
-    if (e.target.value !== '기타') {
+    const breed = e.target.value;
+    setSelectedBreed(breed);
+    if (breed !== '기타') {
       setOtherBreed('');
     }
     setPetState((prevState) => ({
       ...prevState,
-      breed: e.target.value,
+      petBreed: breed,
+      petOtherBreed: breed === '기타' ? otherBreed : '',
     }));
   };
 
   const handleOtherBreedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtherBreed(e.target.value);
+    const otherBreedValue = e.target.value;
+    setOtherBreed(otherBreedValue);
     setPetState((prevState) => ({
       ...prevState,
-      otherBreed: e.target.value,
+      petOtherBreed: otherBreedValue,
     }));
   };
 
   return (
-    <div className="p-6">
+    <div className="py-5">
       <h1 className="text-2xl font-semibold mb-4">냥이의 견종은?</h1>
       <select
-        name="petCategory"
+        name="category"
         value={selectedCategory}
         onChange={handleCategoryChange}
         className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">

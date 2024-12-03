@@ -3,6 +3,10 @@ import Input from '@/components/shared/Input';
 import CatSelect from '@/components/petInfo/CatSelect';
 import { useRecoilState } from 'recoil';
 import { petAtom } from '@/state/petState';
+import CatTraits from './CatTraits';
+import CatFriends from './PetFriends';
+import PetFriends from './PetFriends';
+import ImageUpload from './ImageUpload';
 
 const CatInfo = () => {
   const [petState, setPetState] = useRecoilState(petAtom);
@@ -24,7 +28,8 @@ const CatInfo = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 mb-6">
+    <div className="flex flex-col gap-4 mb-6">
+      <ImageUpload />
       <Input
         name="petName"
         type="text"
@@ -61,6 +66,10 @@ const CatInfo = () => {
       </div>
       <hr className="border border-dashed border-neutral-200" />
       <CatSelect />
+      <hr className="border border-dashed border-neutral-200" />
+      <CatTraits />
+      <hr className="border border-dashed border-neutral-200" />
+      <PetFriends />
     </div>
   );
 };

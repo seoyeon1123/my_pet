@@ -30,6 +30,9 @@ model Pet {
   gender      String?  // 성별 (선택 사항)
   neutered    String?  // 중성화 여부 (선택 사항)
   otherBreed  String?  // 기타 품종 (선택 사항)
+  traits      String[]
+  reason      String? 
+  imageUrl    String
   createdAt   DateTime @default(now()) // 생성일
   updatedAt   DateTime @updatedAt // 수정일
   userId      Int      // 외래키, User와 연결될 id

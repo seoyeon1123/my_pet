@@ -13,7 +13,7 @@ const PetTypeRadio = () => {
   };
 
   return (
-    <div className="flex justify-center items-center gap-6 mb-6">
+    <div className="flex justify-center items-center gap-6 ">
       <label className="flex items-center">
         <input
           type="radio"

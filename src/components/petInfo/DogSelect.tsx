@@ -47,50 +47,54 @@ const dogBreeds = {
 
 const DogBreedSelect = () => {
   const setPetState = useSetRecoilState(petAtom);
-  const [selectedCategory, setSelectedCategory] = useState<keyof typeof dogBreeds>('소형견');
+  const [selectedCategory, setSelectedCategory] = useState<keyof typeof dogBreeds | ''>('');
   const [selectedBreed, setSelectedBreed] = useState<string>('');
   const [otherBreed, setOtherBreed] = useState<string>('');
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value as keyof typeof dogBreeds);
-    setSelectedBreed('');
-    setOtherBreed('');
+    const newCategory = e.target.value as keyof typeof dogBreeds;
+    setSelectedCategory(newCategory);
+    setSelectedBreed(''); // breed도 초기화
+    setOtherBreed(''); // otherBreed도 초기화
+
     setPetState((prevState) => ({
       ...prevState,
-      category: e.target.value,
-      petBreed: '',
-      petOtherBreed: '',
+      category: newCategory, // category 저장
+      petBreed: '', // breed 초기화
+      petOtherBreed: '', // otherBreed 초기화
     }));
   };
 
   const handleBreedChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBreed(e.target.value);
-    if (e.target.value !== '기타') {
+    const breed = e.target.value;
+    setSelectedBreed(breed);
+    if (breed !== '기타') {
       setOtherBreed('');
     }
     setPetState((prevState) => ({
       ...prevState,
-      petBreed: e.target.value,
+      petBreed: breed,
     }));
   };
 
   const handleOtherBreedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOtherBreed(e.target.value);
+    const breed = e.target.value;
+    setOtherBreed(breed);
     setPetState((prevState) => ({
       ...prevState,
-      petOtherBreed: e.target.value,
+      petOtherBreed: breed,
     }));
   };
 
   return (
-    <div className="p-6">
+    <div className="py-5">
       <h1 className="text-2xl font-semibold mb-4">댕이의 견종은?</h1>
       <select
-        name="petCategory"
+        name="category"
         value={selectedCategory}
         onChange={handleCategoryChange}
         className="p-2 border rounded-lg w-full mb-4 focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink">
-        <option value="">카테고리 선택</option>
+        <option value="카테고리 선택">카테고리 선택</option>
         <option value="소형견">소형견</option>
         <option value="중형견">중형견</option>
         <option value="대형견">대형견</option>
@@ -115,7 +119,7 @@ const DogBreedSelect = () => {
                   {breed.label}
                 </option>
               ))}
-            {selectedCategory !== '기타' && <option value="기타">기타 (직접 입력)</option>}
+            <option value="기타">기타 (직접 입력)</option>
           </select>
 
           {selectedBreed === '기타' && (

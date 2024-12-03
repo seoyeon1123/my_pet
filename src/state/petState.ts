@@ -9,6 +9,9 @@ export interface IPetProps {
   category: string;
   petBreed: string;
   petOtherBreed: string;
+  petTraits: string[];
+  petReson: string;
+  petImage: string;
 }
 
 export const petAtom = atom<IPetProps>({
@@ -22,5 +25,8 @@ export const petAtom = atom<IPetProps>({
     category: '',
     petBreed: '',
     petOtherBreed: '',
+    petTraits: [],
+    petReson: '',
+    petImage: '',
   },
 });

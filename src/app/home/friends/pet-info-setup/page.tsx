@@ -43,11 +43,10 @@ const PetInfoSetup = () => {
     }
 
     try {
-      // Remove console logs and errors in production
       if (user) {
         await PetInfoActions({ ...petState }, username);
         alert('반려동물 정보가 설정되었습니다.');
-        router.push('/home');
+        router.push('/home/friends');
       }
     } catch {
       setError('정보 저장에 실패했습니다. 다시 시도해주세요.');
@@ -55,15 +54,13 @@ const PetInfoSetup = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
+    <div className="pt-10 w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
       <form className="flex flex-col gap-6 lg:w-1/3 xl:w-1/3 p-6" onSubmit={handleSubmit}>
-        <h1 className="text-3xl font-bold text-center text-darkPink py-4 font-hakgyo">댕냥살롱</h1>
         <div className="flex flex-col gap-2 mb-4">
           <h2 className="text-xl font-bold">{username}님 우리 댕냥이에 대해서 알려주세요!</h2>
           <p className="text-gray-600">만약, 예비견주라면 여기를 클릭해주세요 :)</p>
         </div>
         <PetTypeRadio />
-
         {petState.petType === '댕이' ? <DogInfo /> : <CatInfo />}
 
         <div className="flex justify-between gap-4">

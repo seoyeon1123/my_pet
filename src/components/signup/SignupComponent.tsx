@@ -48,7 +48,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
       setUsers((prev) => [...prev, newUser]);
 
       alert('회원가입에 성공하셨습니다.');
-      router.push('/pet-info-setup');
+      router.push('/home');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || '회원가입에 실패했습니다.');
@@ -96,7 +96,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
         <div className="flex flex-row justify-between items-center gap-2 *:h-10">
           <button
             type="button"
-            onClick={() => router.back()} // 이전 페이지로 돌아가기
+            onClick={() => router.back()}
             className="w-1/3 flex items-center justify-center text-center bg-lightPink rounded-l-2xl">
             이전
           </button>
