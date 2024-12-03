@@ -4,7 +4,6 @@ import CatSelect from '@/components/petInfo/CatSelect';
 import { useRecoilState } from 'recoil';
 import { petAtom } from '@/state/petState';
 import CatTraits from './CatTraits';
-import CatFriends from './PetFriends';
 import PetFriends from './PetFriends';
 import ImageUpload from './ImageUpload';
 

@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import cat from '../../../asserts/friends/cat.png';
 import dog from '../../../asserts/friends/dog.png';
-import Link from 'next/link';
 import Banner from '@/components/friends/Banner';
 
 const Friends = () => {

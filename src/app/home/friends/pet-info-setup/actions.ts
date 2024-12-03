@@ -31,31 +31,6 @@ const PetInfoActions = async (petState: PetState, personname: string) => {
     imageUrl: petState.petImage,
   };
 
-  console.log(
-    'name',
-    data.name,
-    'type',
-    data.type,
-    'age',
-    data.age,
-    'breed',
-    data.breed,
-    'gender',
-    data.gender,
-    'neutered',
-    data.neutered,
-    'otherBreed',
-    data.otherBreed,
-    'category',
-    data.category,
-    'traits',
-    data.traits,
-    'reason',
-    data.reason,
-    'imageUrl',
-    data.imageUrl,
-  );
-
   if (!data.name || !data.type || !data.age || !data.gender || !data.category || !data.imageUrl) {
     throw new Error('모든 필드를 입력해주세요.');
   }
