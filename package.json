@@ -25,6 +25,7 @@
     "react-dom": "^18",
     "react-fontawesome": "^1.7.1",
     "recoil": "^0.7.7",
+    "recoil-persist": "^5.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

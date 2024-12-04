@@ -1,4 +1,5 @@
 import { petAtom } from '@/state/petState';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 const catTraits = [
@@ -14,6 +15,10 @@ const catTraits = [
 
 const CatTraits = () => {
   const [pet, setPet] = useRecoilState(petAtom);
+
+  useEffect(() => {
+    setPet((prev) => ({ ...prev, petTraits: [] }));
+  }, [setPet]);
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;

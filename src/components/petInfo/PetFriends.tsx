@@ -1,10 +1,15 @@
 import { petAtom } from '@/state/petState';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 
 const reasons = ['산책', '여행', '애견카페'];
 
 const PetFriends = () => {
   const [pet, setPet] = useRecoilState(petAtom);
+
+  useEffect(() => {
+    setPet((prev) => ({ ...prev, petReson: '' }));
+  }, []);
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
