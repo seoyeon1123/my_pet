@@ -8,7 +8,7 @@ const Header = () => {
   const [click, setClick] = useState(false);
 
   return (
-    <div className="flex flex-row items-center justify-between p-5 bg-white fixed w-full z-50 shadow-md xl:px-20 lg:px-20 sm:px-10 xs:px-10 md:px-10">
+    <div className="flex flex-row items-center justify-between p-5 bg-white fixed w-full z-50 shadow-md xl:px-20 lg:px-20 sm:px-5 xs:px-5 md:px-5">
       <Link href={'/home'} className="font-hakgyo text-darkPink text-4xl">
         댕냥살롱
       </Link>
