@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐾 댕냥살롱 (Dangnyang Salon)  
+**혼자지만 함께, 반려동물과 더 행복한 일상**  
+**댕냥살롱**은 1인 가구 반려동물 가족을 위한 커뮤니티 플랫폼입니다.  
+같은 상황의 견주들이 소통하고, 도움을 주고받으며 반려동물과의 행복한 삶을 함께 만들어갑니다.  
 
-## Getting Started
 
-First, run the development server:
+<img width="679" alt="스크린샷 2024-12-02 오후 2 09 16" src="https://github.com/user-attachments/assets/74b619bd-946a-41b5-8974-fd8276cc1d7b">
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 프로젝트 목표  
+1인 가구 증가와 반려동물에 대한 관심이 커짐에 따라, 혼자서 반려동물을 키우는 견주들이 소통하고 도움을 받을 수 있는 커뮤니티를 제공합니다.  
+댕냥살롱은 견주들이 **믿을 수 있는 돌봄 서비스**를 찾거나, **공동 활동**을 통해 교류할 기회를 마련합니다.  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🐕‍🦺 배경 및 필요성  
+- **1인 가구 증가**로 혼자 반려동물을 키우는 사람들이 늘어남  
+- 당근마켓과 같은 플랫폼에서 돌봄 서비스를 찾지만, 신뢰 문제 발생  
+- **같은 상황의 견주들 간 소통과 교류의 공간**이 필요함  
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🐾 기획 의도  
+혼자 반려동물을 키우는 견주들을 위해 **소통의 장**을 마련합니다.  
+- 믿을 수 있는 **돌봄 서비스 제공**  
+- 함께하는 활동으로 **반려동물과의 더 풍요로운 삶 지원**  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 👥 타겟 사용자  
+- **주 사용자:** 1인 가구로 반려동물을 키우는 견주  
+- **부가 사용자:** 예비 견주, 반려동물 돌봄에 관심 있는 사람  
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🛠️ 주요 기능  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 1. **댕냥친구소**  
+: 다양한 반려동물 친구를 찾을 수 있는 공간  
+
+### 2. **댕냥광장**  
+: 견주 간 소통 및 반려동물 관련 정보 공유 커뮤니티  
+
+### 3. **댕냥터**  
+: 반려동물 친화적인 장소(카페, 병원, 호텔 등) 정보 제공  
+
+### 4. **댕냥창고**  
+: 반려동물 용품 쇼핑 공간  
+
+### 5. **댕냥맘**  
+: 급하게 반려동물을 맡길 수 있는 **믿을 수 있는 돌봄 서비스 제공**
+
+---
+
+## 📂 정보 아키텍처  
+- **메인 페이지:**  
+  - 댕냥친구소 | 댕냥광장 | 댕냥터 | 댕냥창고 | 댕냥맘  
+- **사용자 친화적 메뉴 구성:**  
+  메뉴별 간편한 탐색 제공  
+
+---
+
+## 🎨 디자인 및 브랜딩  
+- **따뜻하고 친근한 느낌**의 UX/UI 디자인  
+- 반려동물을 연상시키는 색상과 이미지를 활용하여 **브랜드 아이덴티티 구축**  
+
+---
+
+## 🌟 컨텐츠 전략  
+- **사용자 기여 중심:** 커뮤니티를 통한 경험과 정보 공유  
+- 반려동물에 관한 **유익한 정보와 팁 제공**  
+
+---
+
+## 🚀 프로젝트 미리보기  
+👉 [댕냥살롱 바로가기](https://mypat.vercel.app/)  
+
+---
+
+## 📌 기여하기  
+댕냥살롱에 관심이 있다면 함께 만들어 가요!  
+GitHub를 통해 여러분의 의견과 기여를 기다립니다. 😊  
+
+---
+
+**댕냥살롱 – 혼자 키우는 반려동물, 더 이상 혼자가 아닙니다.**  
+**🐾 함께, 더 행복한 삶을 위한 공간!**  
