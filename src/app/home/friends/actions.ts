@@ -1,7 +1,6 @@
 'use server';
 
 import db from '@/lib/db';
-import { supabase } from '@/lib/supabaseClient';
 
 const GetPetProfile = async (type: string) => {
   const pets = await db.pet.findMany({
