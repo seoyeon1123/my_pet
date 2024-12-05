@@ -42,7 +42,6 @@ const Header = () => {
         <EllipsisVerticalIcon
           className="text-darkPink w-8 h-8 cursor-pointer"
           onClick={() => {
-            console.log('Icon clicked, updating state.');
             setClick((prev) => !prev);
           }}
         />

@@ -2,15 +2,21 @@ import { petId, userPet } from '@/app/home/community/post/create/actions';
 import { postState } from '@/state/postState';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+
+interface IChoosePet {
+  id: number;
+  name: string;
+  type: string;
+}
 
 const ChoosePet = () => {
   const { data: session } = useSession();
   const user = session?.user;
   const userId = Number(user?.id);
-  const [pet, setPet] = useState<any[]>([]);
+  const [pet, setPet] = useState<IChoosePet[]>([]);
   const [selectedPet, setSelectedPet] = useState('');
-  const [post, setPost] = useRecoilState(postState);
+  const setPost = useSetRecoilState(postState);
 
   useEffect(() => {
     const getPet = async () => {

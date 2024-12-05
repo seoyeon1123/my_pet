@@ -47,7 +47,7 @@ const PetInfoSetup = () => {
 
     try {
       if (user) {
-        await PetInfoActions({ ...petState }, session?.user.id!);
+        await PetInfoActions({ ...petState }, session!.user.id!);
         alert('반려동물 정보가 설정되었습니다.');
         router.push('/home/friends');
       }

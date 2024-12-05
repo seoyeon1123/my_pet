@@ -13,7 +13,6 @@ import CreatePostActions from './actions';
 const PostCreate = () => {
   const router = useRouter();
   const [isFor, setIsFor] = useState<string>('');
-  const [petname, setPetname] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
@@ -26,7 +25,6 @@ const PostCreate = () => {
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setIsFor(value);
-    if (value === '견주') setPetname(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -39,8 +37,6 @@ const PostCreate = () => {
       content: content,
       isFor: isFor,
     }));
-
-    console.log('psost', post);
 
     try {
       await CreatePostActions(post, userId);
