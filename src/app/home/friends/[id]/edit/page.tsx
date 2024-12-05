@@ -15,7 +15,6 @@ interface IPetEditProps {
   name: string;
   age: string;
   type: string;
-  [key: string]: any;
 }
 
 const PetEdit = () => {

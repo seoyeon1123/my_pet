@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 interface Address {
   address_name: string;
-  [key: string]: any;
 }
 
 const AddressSearch = () => {
