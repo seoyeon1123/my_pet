@@ -4,6 +4,7 @@ import { recoilPersist } from 'recoil-persist';
 const { persistAtom } = recoilPersist<PetType[]>(); // 타입을 PetType[]으로 명시
 
 export interface PetType {
+  id: number;
   imageUrl: string | null;
   name: string;
   type: string;
@@ -17,11 +18,12 @@ export interface PetType {
   reason: string | null;
   user: {
     username: string | null;
+    name: string;
   };
 }
 
 export const petFriendAtom = atom<PetType[]>({
   key: 'petFriendState', // 고유한 key
-  default: [], // 빈 배열로 초기화
-  effects_UNSTABLE: [persistAtom], // persistAtom을 효과로 추가
+  default: [],
+  effects_UNSTABLE: [persistAtom],
 });

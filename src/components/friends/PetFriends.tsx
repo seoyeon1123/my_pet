@@ -13,7 +13,7 @@ const PetFriends = ({ pets }: { pets: PetType[] }) => {
     grid-cols-4 gap-4 p-5">
       {pets.map((pet, index) => (
         <Link
-          href={`/home/friends/${pet.name}`}
+          href={`/home/friends/${pet.id}`}
           key={index}
           className="flex flex-col justify-center items-center mb-4 gap-2">
           <div className="flex justify-center items-center relative overflow-hidden">

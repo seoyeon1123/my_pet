@@ -7,14 +7,19 @@ import { useRecoilValue } from 'recoil';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faO, faX } from '@fortawesome/free-solid-svg-icons';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react'; // next-auth의 useSession 훅을 가져옵니다.
+import { userState } from '@/state/userState';
 
 const PetDetail = () => {
-  const { name } = useParams();
-  const petName = Array.isArray(name) ? name[0] : name;
-  const decodedName = decodeURIComponent(petName);
-
+  const { id } = useParams();
+  const paramsId = Number(id);
   const petDetail = useRecoilValue(petFriendAtom);
-  const pet = petDetail.find((p) => p.name === decodedName);
+  const pet = petDetail.find((p) => p.id === paramsId);
+
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const [isHydrated, setIsHydrated] = useState(false);
 
@@ -34,9 +39,16 @@ const PetDetail = () => {
     );
   }
 
+  const canEdit = user?.name === pet.user.name;
+
   return (
     <div className="flex justify-center items-center p-5">
       <div className="mx-auto mt-10 p-6 flex flex-row gap-6 border-2 border-darkPink bg-lightPink rounded-xl xs:flex-col sm:flex-col">
+        {canEdit && (
+          <Link href={`/home/friends/${pet.id}/edit`}>
+            <PencilSquareIcon className="size-7" />
+          </Link>
+        )}
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-4xl font-bold mt-4">
             저는 <strong className="text-darkPink">{pet.name}</strong> 입니다
@@ -89,10 +101,7 @@ const PetDetail = () => {
                   </li>
                 </>
               )}
-              <li
-                className="flex
-              sm:flex-col xs:flex-col md:flex-col
-              items-start gap-2">
+              <li className="flex sm:flex-col xs:flex-col md:flex-col items-start gap-2">
                 <strong>🐾 특징:</strong>
                 <div className="flex flex-wrap gap-2">
                   {pet.traits.length > 0

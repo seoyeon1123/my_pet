@@ -1,39 +1,37 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import DogInfo from '@/components/petInfo/DogInfo';
 import CatInfo from '@/components/petInfo/CatInfo';
-import PetTypeRadio from '@/components/petInfo/PetTypeRadio';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { petAtom } from '@/state/petState';
-import PetInfoActions from './actions';
 import { userState } from '@/state/userState';
+import { petFriendAtom } from '@/state/petFriend';
+import PetInfoUpdate from './actions';
 import { useSession } from 'next-auth/react';
-import AddressSearch from '@/components/petInfo/AddressMap';
 
-const PetInfoSetup = () => {
+const PetEdit = () => {
+  const { id } = useParams();
+  const paramsId = Number(id);
+
+  const [petDetail, setPetDetail] = useState<any[]>([]);
+  const petFriendData = useRecoilValue(petFriendAtom);
+
+  useEffect(() => {
+    setPetDetail(petFriendData);
+  }, [petFriendData]);
+
+  const pet = petDetail.find((p) => p.id === paramsId);
+
   const petState = useRecoilValue(petAtom);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { data: session } = useSession();
-  const [user, setUser] = useRecoilState(userState);
-  const username = user[0]?.name || '';
 
-  useEffect(() => {
-    if (session?.user) {
-      setUser((prev) => [
-        ...prev,
-        {
-          name: session.user.name || '',
-          email: session.user.email || '',
-          phone: '',
-          username: '',
-          password: '',
-        },
-      ]);
-    }
-  }, [session, setUser]);
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  const [petFriend, setPetFriend] = useRecoilState(petFriendAtom);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,24 +43,30 @@ const PetInfoSetup = () => {
 
     try {
       if (user) {
-        await PetInfoActions({ ...petState }, username);
-        alert('반려동물 정보가 설정되었습니다.');
-        router.push('/home/friends');
+        await PetInfoUpdate({ ...petState }, user.name!);
+
+        setPetFriend((prev) => prev.map((p) => (p.id === paramsId ? { ...p, ...petState } : p)));
+
+        alert('반려동물 정보가 수정되었습니다.');
+        router.push(`/home/friends`);
+        router.refresh();
       }
-    } catch {
-      setError('정보 저장에 실패했습니다. 다시 시도해주세요.');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '정보 저장에 실패했습니다. 다시 시도해주세요.');
     }
   };
+
+  if (!pet) {
+    return <div>Loading...</div>; // pet 데이터가 없는 경우 로딩 메시지 처리
+  }
 
   return (
     <div className="pt-10 w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
       <form className="flex flex-col gap-6 lg:w-1/3 xl:w-1/3 p-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-2 mb-4">
-          <h2 className="text-xl font-bold">{username}님 우리 댕냥이에 대해서 알려주세요!</h2>
-          <p className="text-gray-600">만약, 예비견주라면 여기를 클릭해주세요 :)</p>
+          <h2 className="text-xl font-bold">{pet?.name}에 대해서 수정해주세요!</h2>
         </div>
-        <PetTypeRadio />
-        {petState.petType === '댕이' ? <DogInfo /> : <CatInfo />}
+        {pet?.type === '댕이' ? <DogInfo /> : <CatInfo />}
 
         <div className="flex justify-between gap-4">
           <button
@@ -84,4 +88,4 @@ const PetInfoSetup = () => {
   );
 };
 
-export default PetInfoSetup;
+export default PetEdit;

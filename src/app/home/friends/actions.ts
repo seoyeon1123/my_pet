@@ -6,6 +6,7 @@ const GetPetProfile = async (type: string) => {
   const pets = await db.pet.findMany({
     where: { type },
     select: {
+      id: true,
       name: true,
       type: true,
       age: true,
@@ -19,6 +20,7 @@ const GetPetProfile = async (type: string) => {
       user: {
         select: {
           username: true,
+          name: true,
         },
       },
       imageUrl: true,

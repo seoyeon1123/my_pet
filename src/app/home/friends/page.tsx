@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil';
 import { petFriendAtom } from '@/state/petFriend';
 
 export type PetType = {
+  id: number;
   imageUrl: string | null;
   name: string;
   type: string;

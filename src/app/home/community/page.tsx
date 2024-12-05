@@ -1,7 +1,11 @@
+import CommunityBanner from '@/components/community/Banner';
+
 const Community = () => {
   return (
     <>
-      <h1>Community</h1>
+      <div>
+        <CommunityBanner />
+      </div>
     </>
   );
 };
