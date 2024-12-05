@@ -40,7 +40,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
 
     try {
       const newUser: IUserProps = {
-        id: user?.id!,
+        id: user!.id!,
         name,
         phone,
         email,
