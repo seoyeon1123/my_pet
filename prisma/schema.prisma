@@ -18,14 +18,16 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   pet       Pet[]     // User와 여러 Pet 간의 1:N 관계
+  poset     Post[]
+  comment   Comment[]
 }
 
 model Pet {
   id          Int      @id @default(autoincrement())
   name        String   // 반려동물 이름
-  type        String  // 반려동물 종류 (예: 개, 고양이)
+  type        String   // 반려동물 종류 (예: 개, 고양이)
   age         String   // 반려동물 나이
-  category String
+  category    String
   breed       String?  // 품종 (선택 사항)
   gender      String?  // 성별 (선택 사항)
   neutered    String?  // 중성화 여부 (선택 사항)
@@ -37,6 +39,7 @@ model Pet {
   updatedAt   DateTime @updatedAt // 수정일
   userId      Int      // 외래키, User와 연결될 id
   user        User     @relation(fields: [userId], references: [id]) // 관계 설정
+  post        Post[]   // Pet과 여러 Post 간의 1:N 관계
 }
 
 model Verification {
@@ -45,4 +48,32 @@ model Verification {
   code            String
   createdAt       DateTime @default(now())
   expiresAt       DateTime
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String   // 게시글 제목
+  content   String   // 게시글 내용
+  createdAt DateTime @default(now()) // 생성일
+  updatedAt DateTime @updatedAt // 수정일
+  userId    Int      // 작성자 ID (User 모델과 관계)
+  user      User     @relation(fields: [userId], references: [id]) 
+  petId     Int?    
+  pet       Pet?     @relation(fields: [petId], references: [id])
+  petName String?
+  comments  Comment[] // 댓글과의 1:N 관계
+  imageUrl  String? 
+  isFor     String  
+}
+
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String   // 댓글 내용
+  createdAt DateTime @default(now()) // 생성일
+  updatedAt DateTime @updatedAt // 수정일
+  postId    Int      // 게시글 ID (Post 모델과 관계)
+  post      Post     @relation(fields: [postId], references: [id]) // 게시글과 관계 설정
+  userId    Int      // 작성자 ID (User 모델과 관계)
+  user      User     @relation(fields: [userId], references: [id]) 
 }

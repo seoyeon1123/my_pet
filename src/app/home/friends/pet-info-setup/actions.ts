@@ -15,7 +15,7 @@ interface PetState {
   petImage: string;
 }
 
-const PetInfoActions = async (petState: PetState, personname: string) => {
+const PetInfoActions = async (petState: PetState, id: string) => {
   const data = {
     name: petState.petName,
     type: petState.petType,
@@ -27,7 +27,7 @@ const PetInfoActions = async (petState: PetState, personname: string) => {
     traits: petState.petTraits,
     reason: petState.petReson,
     otherBreed: petState.petOtherBreed || '',
-    personname: personname,
+    personId: id,
     imageUrl: petState.petImage,
   };
 
@@ -35,18 +35,7 @@ const PetInfoActions = async (petState: PetState, personname: string) => {
     throw new Error('모든 필드를 입력해주세요.');
   }
 
-  const user = await db.user.findFirst({
-    where: {
-      name: data.personname,
-    },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!user?.id) {
-    throw new Error('사용자를 찾을 수 없습니다.');
-  }
+  const personId = Number(data.personId);
 
   const result = await db.pet.create({
     data: {
@@ -60,7 +49,7 @@ const PetInfoActions = async (petState: PetState, personname: string) => {
       otherBreed: data.otherBreed,
       traits: data.traits,
       reason: data.reason,
-      userId: user.id,
+      userId: personId,
       imageUrl: data.imageUrl,
     },
   });

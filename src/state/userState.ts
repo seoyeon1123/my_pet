@@ -6,6 +6,7 @@ export interface IUserProps {
   email: string;
   username: string;
   password: string;
+  id: string;
 }
 
 export const userState = atom<IUserProps[]>({

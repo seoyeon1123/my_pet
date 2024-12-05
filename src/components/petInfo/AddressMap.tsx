@@ -12,7 +12,6 @@ const AddressSearch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
-  // 주소 검색 함수
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchQuery = e.target.value;
     setQuery(searchQuery);

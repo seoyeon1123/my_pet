@@ -33,7 +33,7 @@ const CatSelect = () => {
     setSelectedCategory(newCategory);
     setSelectedBreed('');
     setOtherBreed('');
-    // Set the category in petAtom directly
+
     setPetState((prevState) => ({
       ...prevState,
       category: newCategory,

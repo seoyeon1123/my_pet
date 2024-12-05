@@ -16,6 +16,8 @@ const PetInfoSetup = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
+  console.log(session?.user.id);
+
   const [user, setUser] = useRecoilState(userState);
   const username = user[0]?.name || '';
 
@@ -24,6 +26,7 @@ const PetInfoSetup = () => {
       setUser((prev) => [
         ...prev,
         {
+          id: session.user.id || '',
           name: session.user.name || '',
           email: session.user.email || '',
           phone: '',
@@ -44,7 +47,7 @@ const PetInfoSetup = () => {
 
     try {
       if (user) {
-        await PetInfoActions({ ...petState }, username);
+        await PetInfoActions({ ...petState }, session?.user.id!);
         alert('반려동물 정보가 설정되었습니다.');
         router.push('/home/friends');
       }
