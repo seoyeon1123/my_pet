@@ -4,18 +4,25 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import DogInfo from '@/components/petInfo/DogInfo';
 import CatInfo from '@/components/petInfo/CatInfo';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { petAtom } from '@/state/petState';
-import { userState } from '@/state/userState';
 import { petFriendAtom } from '@/state/petFriend';
 import PetInfoUpdate from './actions';
 import { useSession } from 'next-auth/react';
+
+interface IPetEditProps {
+  id: number;
+  name: string;
+  age: string;
+  type: string;
+  [key: string]: any;
+}
 
 const PetEdit = () => {
   const { id } = useParams();
   const paramsId = Number(id);
 
-  const [petDetail, setPetDetail] = useState<any[]>([]);
+  const [petDetail, setPetDetail] = useState<IPetEditProps[]>([]);
   const petFriendData = useRecoilValue(petFriendAtom);
 
   useEffect(() => {
@@ -25,13 +32,12 @@ const PetEdit = () => {
   const pet = petDetail.find((p) => p.id === paramsId);
 
   const petState = useRecoilValue(petAtom);
+  const setPetFriend = useSetRecoilState(petFriendAtom);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const { data: session } = useSession();
   const user = session?.user;
-
-  const [petFriend, setPetFriend] = useRecoilState(petFriendAtom);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,7 +63,7 @@ const PetEdit = () => {
   };
 
   if (!pet) {
-    return <div>Loading...</div>; // pet 데이터가 없는 경우 로딩 메시지 처리
+    return <div>Loading...</div>;
   }
 
   return (

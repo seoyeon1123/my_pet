@@ -10,7 +10,6 @@ import { petAtom } from '@/state/petState';
 import PetInfoActions from './actions';
 import { userState } from '@/state/userState';
 import { useSession } from 'next-auth/react';
-import AddressSearch from '@/components/petInfo/AddressMap';
 
 const PetInfoSetup = () => {
   const petState = useRecoilValue(petAtom);

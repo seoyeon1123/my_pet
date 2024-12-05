@@ -9,8 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faO, faX } from '@fortawesome/free-solid-svg-icons';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react'; // next-auth의 useSession 훅을 가져옵니다.
-import { userState } from '@/state/userState';
+import { useSession } from 'next-auth/react';
 
 const PetDetail = () => {
   const { id } = useParams();

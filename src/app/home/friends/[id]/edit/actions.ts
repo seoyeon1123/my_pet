@@ -35,10 +35,6 @@ const PetInfoUpdate = async (petState: PetState, username: string) => {
     throw new Error('모든 필드를 입력해주세요.');
   }
 
-  // Ensure the username is provided
-  console.log('Username:', data.username);
-
-  // Using findFirst to get a single user by username
   const user = await db.user.findFirst({
     where: {
       name: data.username, // Searching by username
@@ -54,7 +50,7 @@ const PetInfoUpdate = async (petState: PetState, username: string) => {
 
   const result = await db.pet.updateMany({
     where: {
-      name: data.name!, // Update pet by its name (ensure the name exists in the database)
+      name: data.name!,
     },
     data: {
       name: data.name,

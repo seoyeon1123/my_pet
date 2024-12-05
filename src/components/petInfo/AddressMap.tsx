@@ -2,9 +2,14 @@
 
 import { useState } from 'react';
 
+interface Address {
+  address_name: string;
+  [key: string]: any;
+}
+
 const AddressSearch = () => {
   const [query, setQuery] = useState('');
-  const [addresses, setAddresses] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
 
@@ -29,9 +34,9 @@ const AddressSearch = () => {
         setError('주소 검색에 실패했습니다.');
         setAddresses([]);
       } else {
-        setAddresses(data.documents); // 검색된 주소 목록 설정
+        setAddresses(data.documents);
       }
-    } catch (error) {
+    } catch {
       setError('주소 검색에 실패했습니다.');
       setAddresses([]);
     } finally {
