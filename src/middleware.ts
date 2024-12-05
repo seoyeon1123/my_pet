@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
     }
   } else {
     if (url.pathname !== '/' && url.pathname !== '/login' && url.pathname !== '/signup') {
-      url.pathname = '/login'; // 로그인하지 않은 경우 /login으로 리다이렉트
+      url.pathname = '/'; // 로그인하지 않은 경우 /login으로 리다이렉트
       return NextResponse.redirect(url);
     }
   }
@@ -21,5 +21,17 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/signup', '/home', '/dashboard'],
+  matcher: [
+    '/',
+    '/login',
+    '/signup',
+    '/home',
+    '/dashboard',
+    '/home/friends',
+    '/home/friends/pet-info-setup',
+    '/home/community',
+    '/home/caregivers',
+    '/home/store',
+    '/home/places',
+  ],
 };
