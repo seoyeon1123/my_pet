@@ -7,7 +7,7 @@ interface PostListProps {
 }
 
 const PostList = ({ isFor, type }: PostListProps) => {
-  const [community, setCommunity] = useState<any[]>([]);
+  const [community, setCommunity] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 13;
 

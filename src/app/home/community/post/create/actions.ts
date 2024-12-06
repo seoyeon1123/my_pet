@@ -41,8 +41,6 @@ const CreatePostActions = async (post: IPostProps, userId: number) => {
     petId: post.petId,
   };
 
-  console.log(data.content, data.imageUrl, data.isFor, data.petId, data.petname, data.title);
-
   if (!data.title || !data.content || !data.isFor) {
     throw new Error('필수 데이터가 누락되었습니다.');
   }

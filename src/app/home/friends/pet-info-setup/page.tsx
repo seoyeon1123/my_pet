@@ -16,7 +16,6 @@ const PetInfoSetup = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session?.user.id);
 
   const [user, setUser] = useRecoilState(userState);
   const username = user[0]?.name || '';

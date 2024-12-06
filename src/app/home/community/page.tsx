@@ -1,59 +1,98 @@
-'use client';
+import React, { useEffect, useState } from 'react';
+import CommunityActions from '@/app/home/community/actions';
 
-import React, { useState } from 'react';
-import CommunityBanner from '@/components/community/Banner';
-import PostList from '@/components/community/PostList';
+interface PostListProps {
+  isFor: string; // '견주' 또는 '애완견'
+  type?: string; // '강아지' 또는 '고양이'
+}
 
-const Community = () => {
-  const [selectedCategory, setSelectedCategory] = useState('견주');
-  const [selectedPetType, setSelectedPetType] = useState<string | undefined>(undefined);
+interface Post {
+  title: string;
+  content: string;
+  petId: number | null;
+  petName: string | null;
+  imageUrl: string | null;
+  user: {
+    username: string | null;
+  };
+  pet: {
+    type: string;
+  } | null;
+}
+
+const PostList = ({ isFor, type }: PostListProps) => {
+  const [community, setCommunity] = useState<Post[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 13;
+
+  useEffect(() => {
+    const getCommunity = async () => {
+      const communityData = await CommunityActions(isFor, type);
+      setCommunity(communityData);
+    };
+
+    getCommunity();
+  }, [isFor, type]);
+
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = community.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(community.length / postsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
-    <>
-      <div className="flex flex-col justify-center items-center">
-        <CommunityBanner />
-        <div className="flex flex-col m-5">
-          <div className="flex flex-row gap-4">
-            <div className="flex flex-row justify-center px-4 items-center gap-3 py-3 border border-orange-400 rounded-t-2xl bg-orange-400 *:text-white  relative w-60">
+    <div className="w-[1000px]">
+      {community.length === 0 ? (
+        <p className="text-center text-lg text-orange-500">게시글이 없습니다.</p>
+      ) : (
+        <>
+          <table className="w-full table-auto">
+            <thead>
+              <tr className="border-b bg-orange-100">
+                <th className="px-4 py-2 text-left text-base font-semibold text-gray-700 w-1/6">제목</th>
+                <th className="px-4 py-2 text-left text-base font-semibold text-gray-700 w-1/2">내용</th>
+                <th className="px-4 py-2 text-left text-base font-semibold text-gray-700 w-1/6">작성자</th>
+                {isFor === '애완견' && (
+                  <th className="px-4 py-2 text-left text-base font-semibold text-gray-700 w-1/6">종류</th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {currentPosts.map((post, index) => (
+                <tr key={index} className="border-b hover:bg-orange-50">
+                  <td className="px-4 py-2 text-sm truncate w-1/6">{post.title}</td>
+                  <td className="px-4 py-2 text-sm truncate w-1/2">{post.content}</td>
+                  <td className="px-4 py-2 text-sm w-1/6">{post.user.username}</td>
+                  {post.pet?.type && <td className="px-4 py-2 text-sm w-1/6">{post.pet?.type}</td>}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination */}
+          <div className="flex justify-center mt-4 space-x-2">
+            {[...Array(totalPages)].map((_, pageIndex) => (
               <button
-                className={`text-base font-semibold ${selectedCategory === '견주' ? 'text-white' : 'hover:text-orange-600'}`}
-                onClick={() => {
-                  setSelectedCategory('견주');
-                  setSelectedPetType(undefined);
-                }}>
-                견주들의 고민
+                key={pageIndex}
+                onClick={() => handlePageChange(pageIndex + 1)}
+                className={`px-3 py-1 border rounded ${
+                  currentPage === pageIndex + 1
+                    ? 'bg-orange-500 text-white'
+                    : 'bg-white text-orange-500 border-orange-500'
+                }`}>
+                {pageIndex + 1}
               </button>
-              <span> | </span>
-              <button
-                className={`text-base font-semibold ${selectedCategory === '애완견' ? 'text-white' : 'hover:text-orange-600'}`}
-                onClick={() => {
-                  setSelectedCategory('애완견');
-                  setSelectedPetType(undefined);
-                }}>
-                애완견의 고민
-              </button>
-            </div>
-            {selectedCategory === '애완견' && (
-              <div className="flex flex-row gap-3 justify-center items-end mb-2">
-                <button
-                  className={`hover:text-orange-600 ${selectedPetType === '댕이' ? 'text-orange-500 font-semibold' : ''}`}
-                  onClick={() => setSelectedPetType('댕이')}>
-                  강아지
-                </button>
-                <span> | </span>
-                <button
-                  className={`hover:text-orange-600 ${selectedPetType === '냥이' ? 'text-orange-500 font-semibold' : ''}`}
-                  onClick={() => setSelectedPetType('냥이')}>
-                  고양이
-                </button>
-              </div>
-            )}
+            ))}
           </div>
-          <PostList isFor={selectedCategory} type={selectedPetType} />
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    </div>
   );
 };
 
-export default Community;
+export default PostList;
