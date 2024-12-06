@@ -30,12 +30,13 @@ const PostCreate = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 상태를 덮어쓰는 방식으로 수정
     setPost((prev) => ({
       ...prev,
       title: title,
       content: content,
       isFor: isFor,
+      petname: isFor === '견주' ? '' : prev.petname,
+      petId: isFor === '견주' ? '' : prev.petId,
     }));
 
     try {
@@ -45,7 +46,6 @@ const PostCreate = () => {
       console.error('게시글 생성 중 오류:', error);
     }
   };
-
   return (
     <div className="pt-10 w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
       <form className="flex flex-col gap-4 lg:w-1/3 xl:w-1/3 p-6" onSubmit={handleSubmit}>
@@ -75,7 +75,6 @@ const PostCreate = () => {
           className="p-5 border border-gray-300 rounded-2xl focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink transition duration-300 ease-in-out w-full"
           rows={5}></textarea>
 
-        {/* 버튼 */}
         <div className="flex justify-between gap-4">
           <button
             className="w-1/3 flex items-center justify-center bg-lightPink rounded-l-xl py-2"

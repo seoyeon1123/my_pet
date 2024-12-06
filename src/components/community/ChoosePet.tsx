@@ -22,13 +22,9 @@ const ChoosePet = () => {
     const getPet = async () => {
       if (userId) {
         const pets = await userPet(userId);
-        console.log('Pets:', pets);
-
         if (pets) {
           setPet(pets);
         }
-      } else {
-        console.log('User ID is not available');
       }
     };
 
@@ -36,30 +32,23 @@ const ChoosePet = () => {
   }, [userId]);
 
   useEffect(() => {
-    const updatePetData = async () => {
-      if (selectedPet) {
+    if (selectedPet) {
+      const updatePetData = async () => {
         const petData = await petId(selectedPet);
 
         if (petData && petData.id) {
-          console.log('Selected Pet ID:', petData.id);
-
           const petIdNumber = Number(petData.id);
           if (!isNaN(petIdNumber)) {
             setPost((prev) => ({
-              ...prev, // 기존 값들을 유지하며 덮어쓰기
+              ...prev,
               petname: selectedPet,
               petId: petIdNumber.toString(),
             }));
-          } else {
-            console.log('Invalid petId');
           }
-        } else {
-          console.log('Pet not found');
         }
-      }
-    };
-
-    updatePetData();
+      };
+      updatePetData();
+    }
   }, [selectedPet, setPost]);
 
   const handlePetSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -69,23 +58,21 @@ const ChoosePet = () => {
 
   return (
     <div>
-      <div>
-        <label htmlFor="petSelect" className="block text-lg font-semibold mb-2">
-          누구의 고민인가요? 🐾
-        </label>
-        <select
-          id="petSelect"
-          className="w-full p-2 border rounded-lg"
-          value={selectedPet || ''}
-          onChange={handlePetSelect}>
-          <option value="">나의 애완견</option>
-          {pet.map((p) => (
-            <option key={p.id} value={p.name}>
-              {p.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <label htmlFor="petSelect" className="block text-lg font-semibold mb-2">
+        누구의 고민인가요? 🐾
+      </label>
+      <select
+        id="petSelect"
+        className="w-full p-2 border rounded-lg"
+        value={selectedPet || ''}
+        onChange={handlePetSelect}>
+        <option value="">나의 애완견</option>
+        {pet.map((p) => (
+          <option key={p.id} value={p.name}>
+            {p.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
