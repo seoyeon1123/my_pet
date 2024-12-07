@@ -18,10 +18,8 @@ const createComment = async (data: ICommentProps) => {
       },
     });
 
-    console.log(comment.content, comment.userId, comment.postId);
     return comment;
   } catch (error) {
-    console.error('Error creating comment:', error);
     throw new Error('댓글 생성 중 오류가 발생했습니다.');
   }
 };

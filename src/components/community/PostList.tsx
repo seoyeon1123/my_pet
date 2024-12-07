@@ -24,7 +24,6 @@ interface IcommunityDataProps {
     type: string;
   } | null;
 }
-[];
 
 const PostList = ({ isFor, type }: PostListProps) => {
   const [community, setCommunity] = useState<IcommunityDataProps[]>([]);

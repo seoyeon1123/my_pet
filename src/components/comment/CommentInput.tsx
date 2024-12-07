@@ -22,7 +22,7 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
         postId,
         content,
       });
-      console.log('댓글이 생성되었습니다:', newComment);
+
       setContent('');
       setShouldRefresh(true); // 댓글 등록 후 새로고침 상태 변경
 
@@ -31,7 +31,6 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
         setShouldRefresh(false);
       }, 500); // 500ms 후에 false로 설정 (UI가 새로 고침되도록)
     } catch (error) {
-      console.error('댓글 생성 오류:', error);
       alert('댓글을 생성하는 데 오류가 발생했습니다.');
     }
   };
