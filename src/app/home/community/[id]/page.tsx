@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import getPostDetail from './actions';
 import Image from 'next/image';
 import CommentInput from '@/components/comment/CommentInput';
-import CommentList from '@/components/comment/CommentList';
 
 interface IPostDetail {
   id: number;

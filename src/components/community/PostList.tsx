@@ -9,8 +9,25 @@ interface PostListProps {
   type?: string; // '강아지' 또는 '고양이'
 }
 
+interface IcommunityDataProps {
+  id: number;
+  title: string;
+  content: string;
+  updatedAt: Date;
+  petId: number | null;
+  petName: string | null;
+  imageUrl: string | null;
+  user: {
+    username: string | null;
+  };
+  pet: {
+    type: string;
+  } | null;
+}
+[];
+
 const PostList = ({ isFor, type }: PostListProps) => {
-  const [community, setCommunity] = useState<any[]>([]);
+  const [community, setCommunity] = useState<IcommunityDataProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const postsPerPage = 10; // 페이지당 게시글 수
 
@@ -53,7 +70,6 @@ const PostList = ({ isFor, type }: PostListProps) => {
               <Link href={`/home/community/${post.id}`} key={index} className="flex items-start gap-4 border-b pb-6">
                 <div className="flex-1">
                   <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                    {post.category}
                     <span className="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-md">
                       {post.pet?.type || '견주'}의 고민입니다!
                     </span>
@@ -62,7 +78,7 @@ const PostList = ({ isFor, type }: PostListProps) => {
                   <p className="mt-2 text-sm text-gray-600 line-clamp-2">{post.content}</p>
                   <div className="flex items-center text-xs text-gray-500 gap-2 mt-2">
                     <span>{post.user.username}</span>
-                    <span>답변: {post.replies || 0}</span>
+
                     <span>
                       <PostUpdatedAt updatedAt={post.updatedAt} />
                     </span>
