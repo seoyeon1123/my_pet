@@ -9,14 +9,14 @@ const CommunityBanner = () => {
       <div className="flex flex-col gap-3 justify-end items-center *:text-white bg-[rgba(231,178,125,0.7)] h-52 w-full">
         <div className="flex flex-row justify-center items-center pl-3 gap-6">
           <div className="flex flex-col  justify-start items-center text-center gap-3">
-            <h1 className="text-4xl xs:text-xl sm:text-xl ">
+            <h1 className="text-4xl xs:text-lg sm:text-lg ">
               혼자 <br />
               고민하지 말고 <br />
               같이 <br className="lg:hidden xl:hidden md:hidden" /> 이야기해요!
             </h1>
             <Link
               href={'/home/community/post/create'}
-              className="font-semibold bg-orange-500 mb-6 px-2 py-1 rounded-xl">
+              className="font-semibold bg-orange-500 mb-6 px-2 py-1 rounded-xl xs:text-sm sm:text-sm">
               광장에 글쓰기
             </Link>
           </div>
