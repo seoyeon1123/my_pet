@@ -30,6 +30,11 @@ const PostImageUpload = () => {
 
     const { data, error } = await supabase.storage.from('post-images').upload(`${fileName}`, file);
 
+    if (error) {
+      console.error('이미지 업로드 실패:', error.message);
+      return;
+    }
+
     const { data: publicUrlData } = supabase.storage.from('post-images').getPublicUrl(data?.path || '');
 
     if (publicUrlData) {

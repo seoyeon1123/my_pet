@@ -20,6 +20,7 @@ const createComment = async (data: ICommentProps) => {
 
     return comment;
   } catch (error) {
+    console.error('Error creating comment:', error);
     throw new Error('댓글 생성 중 오류가 발생했습니다.');
   }
 };
