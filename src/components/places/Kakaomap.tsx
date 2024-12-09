@@ -79,7 +79,7 @@ const Kakao = () => {
     const ps = new kakao.maps.services.Places();
     const options = {
       location: new kakao.maps.LatLng(center.lat, center.lng), // 현재 지도 중심
-      radius: 5000, // 5km 반경
+      radius: 5000,
     };
 
     ps.keywordSearch(
