@@ -1,5 +1,4 @@
 import { ICommentProps } from './CommentList';
-import ReplyCommentList from './ReplyCommentList';
 
 const ReplyComment = ({
   content,

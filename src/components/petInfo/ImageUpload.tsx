@@ -28,7 +28,7 @@ const ImageUpload = () => {
       .toLowerCase();
     const fileName = `${Date.now()}_${sanitizedFileName}`;
 
-    const { data, error } = await supabase.storage.from('pet-images').upload(`${fileName}`, file);
+    const { data } = await supabase.storage.from('pet-images').upload(`${fileName}`, file);
 
     const { data: publicUrlData } = supabase.storage.from('pet-images').getPublicUrl(data?.path || '');
 

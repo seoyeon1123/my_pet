@@ -1,6 +1,6 @@
 // CommentList.tsx
 import { useEffect, useState } from 'react';
-import { getComments, DeleteComment, createReplyComment } from './actions';
+import { getComments, createReplyComment } from './actions';
 
 import ReplyComment from './ReplyComment';
 import ReplyCommentList from './ReplyCommentList';
