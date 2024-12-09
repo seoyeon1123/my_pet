@@ -2,10 +2,12 @@
 
 import { EllipsisVerticalIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const Header = () => {
   const [click, setClick] = useState(false);
+  const path = usePathname();
 
   return (
     <div className="flex flex-row items-center justify-between p-5 bg-white fixed w-full z-50 shadow-md xl:px-20 lg:px-20 sm:px-5 xs:px-5 md:px-5">
@@ -15,24 +17,33 @@ const Header = () => {
 
       {/* Desktop Links */}
       <div className="sm:hidden xs:hidden md:hidden flex flex-row gap-6 text-lg">
-        <Link href="/home/friends" className="hover:text-darkPink font-semibold">
+        <Link
+          href="/home/friends"
+          className={`hover:text-darkPink ${path === '/home/friends' ? 'text-darkPink' : 'text-black'}`}>
           댕냥친구소
         </Link>
-        <Link href="/home/community" className="hover:text-darkPink">
+        <Link
+          href="/home/community"
+          className={`hover:text-darkPink ${path === '/home/community' ? 'text-darkPink' : 'text-black'}`}>
           댕냥광장
         </Link>
-        <Link href="/home/places" className="hover:text-darkPink">
+        <Link
+          href="/home/places"
+          className={`hover:text-darkPink ${path === '/home/places' ? 'text-darkPink' : 'text-black'}`}>
           댕냥터
         </Link>
-        <Link href="/home/store" className="hover:text-darkPink">
+        <Link
+          href="/home/store"
+          className={`hover:text-darkPink ${path === '/home/store' ? 'text-darkPink' : 'text-black'}`}>
           댕냥창고
         </Link>
-        <Link href="/home/caregivers" className="hover:text-darkPink">
+        <Link
+          href="/home/caregivers"
+          className={`hover:text-darkPink ${path === '/home/caregivers' ? 'text-darkPink' : 'text-black'}`}>
           댕냥맘
         </Link>
       </div>
 
-      {/* User Icon */}
       <div className="xs:hidden sm:hidden md:hidden w-40 flex flex-row justify-end">
         <UserIcon className="text-darkPink w-6 h-6 hover:text-darkPink" />
       </div>
@@ -47,7 +58,6 @@ const Header = () => {
         />
       </div>
 
-      {/* Dropdown Menu */}
       {click && (
         <div className="absolute top-16 right-0 w-full bg-white shadow-md rounded-lg flex flex-col gap-2 p-4 z-50">
           <Link href="/home/friends" onClick={() => setClick(false)}>

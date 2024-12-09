@@ -1,8 +1,16 @@
+'use client';
+
+import PlacesBanner from '@/components/places/Banner';
+import Kakao from '@/components/places/Kakaomap';
+import React from 'react';
+
 const Places = () => {
   return (
-    <>
-      <h1>Places</h1>
-    </>
+    <div className="flex flex-col justify-center items-center gap-5">
+      <PlacesBanner />
+
+      <Kakao />
+    </div>
   );
 };
 
