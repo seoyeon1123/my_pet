@@ -30,12 +30,6 @@ const ImageUpload = () => {
 
     const { data, error } = await supabase.storage.from('pet-images').upload(`${fileName}`, file);
 
-    if (error) {
-      console.error('이미지 업로드 실패:', error.message);
-      return;
-    }
-
-    // 공개 URL 가져오기
     const { data: publicUrlData } = supabase.storage.from('pet-images').getPublicUrl(data?.path || '');
 
     if (publicUrlData) {
@@ -44,8 +38,6 @@ const ImageUpload = () => {
         ...prev,
         petImage: publicURL,
       }));
-    } else {
-      console.error('공개 URL을 가져오는 데 실패했습니다.');
     }
   };
 

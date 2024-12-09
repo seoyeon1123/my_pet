@@ -39,12 +39,8 @@ const PostCreate = () => {
       petId: isFor === '견주' ? '' : prev.petId,
     }));
 
-    try {
-      await CreatePostActions(post, userId);
-      router.push('/home/community');
-    } catch (error) {
-      console.error('게시글 생성 중 오류:', error);
-    }
+    await CreatePostActions(post, userId);
+    router.push('/home/community');
   };
   return (
     <div className="pt-10 w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">

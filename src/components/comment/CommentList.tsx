@@ -1,8 +1,7 @@
 // CommentList.tsx
 import { useEffect, useState } from 'react';
-import PostUpdatedAt from '../shared/GetRelativeTime';
-import { EditComment, getComments, DeleteComment, createReplyComment } from './actions';
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { getComments, DeleteComment, createReplyComment } from './actions';
+
 import ReplyComment from './ReplyComment';
 import ReplyCommentList from './ReplyCommentList';
 
@@ -32,12 +31,8 @@ const CommentList = ({ postId, userId, shouldRefresh }: { postId: number; userId
   const [replyToCommentId, setReplyToCommentId] = useState<number | null>(null);
 
   const fetchComments = async () => {
-    try {
-      const commentData = await getComments(postId);
-      setComments(commentData);
-    } catch (error) {
-      console.error('댓글 불러오기 실패:', error);
-    }
+    const commentData = await getComments(postId);
+    setComments(commentData);
   };
 
   const toggleEditMode = (id: number) => {

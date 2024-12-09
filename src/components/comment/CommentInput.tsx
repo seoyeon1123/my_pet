@@ -16,23 +16,18 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
       return;
     }
 
-    try {
-      const newComment = await createComment({
-        userId,
-        postId,
-        content,
-      });
-      console.log('댓글이 생성되었습니다:', newComment);
-      setContent('');
-      setShouldRefresh(true);
+    const newComment = await createComment({
+      userId,
+      postId,
+      content,
+    });
+    console.log('댓글이 생성되었습니다:', newComment);
+    setContent('');
+    setShouldRefresh(true);
 
-      setTimeout(() => {
-        setShouldRefresh(false);
-      }, 500);
-    } catch (error) {
-      console.error('댓글 생성 오류:', error);
-      alert('댓글을 생성하는 데 오류가 발생했습니다.');
-    }
+    setTimeout(() => {
+      setShouldRefresh(false);
+    }, 500);
   };
 
   return (
