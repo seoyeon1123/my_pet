@@ -1,23 +1,35 @@
+// CommentList.tsx
 import { useEffect, useState } from 'react';
 import PostUpdatedAt from '../shared/GetRelativeTime';
-import { getComments } from './actions';
+import { EditComment, getComments, DeleteComment, createReplyComment } from './actions';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import ReplyComment from './ReplyComment';
+import ReplyCommentList from './ReplyCommentList';
 
-interface ICommentProps {
+export interface ICommentProps {
+  id: number;
   content: string;
   createdAt: Date;
   userId: number;
+  parentId: number | null;
   user: {
     username: string | null;
+    id: number;
   };
   post: {
     user: {
       username: string | null;
     };
   };
+  replies?: ICommentProps[];
 }
 
-const CommentList = ({ postId, shouldRefresh }: { postId: number; shouldRefresh: boolean }) => {
+import CommentItem from './CommentItem';
+
+const CommentList = ({ postId, userId, shouldRefresh }: { postId: number; userId: number; shouldRefresh: boolean }) => {
   const [comments, setComments] = useState<ICommentProps[]>([]);
+  const [replyContent, setReplyContent] = useState<string>('');
+  const [replyToCommentId, setReplyToCommentId] = useState<number | null>(null);
 
   const fetchComments = async () => {
     try {
@@ -28,31 +40,53 @@ const CommentList = ({ postId, shouldRefresh }: { postId: number; shouldRefresh:
     }
   };
 
+  const toggleEditMode = (id: number) => {
+    setReplyToCommentId((prev) => (prev === id ? null : id));
+  };
+
+  const handleReplySubmit = async () => {
+    if (replyContent.trim() === '') return;
+
+    try {
+      await createReplyComment(replyContent, userId, postId, replyToCommentId!);
+      setReplyContent('');
+      setReplyToCommentId(null);
+      fetchComments();
+    } catch (error) {
+      console.error('대댓글 등록 실패:', error);
+    }
+  };
+
   useEffect(() => {
     fetchComments();
-  }, [postId, shouldRefresh]); // shouldRefresh가 변경될 때마다 새로고침
+  }, [postId, shouldRefresh]);
 
   return (
     <div className="space-y-2">
-      {comments.map((comment, index) => (
-        <>
-          <div key={index} className="flex flex-col p-4 ">
-            <div className="flex justify-between items-center mb-2">
-              <p
-                className={`${comment.user.username === comment.post.user.username ? 'text-orange-400' : 'text-black'} font-medium text-sm text-gray-800`}>
-                {comment.user.username === comment.post.user.username ? '글쓴이' : comment.user.username}
-              </p>
-              <p className="text-xs text-gray-400">
-                <PostUpdatedAt updatedAt={comment.createdAt} />
-              </p>
-            </div>
-            <p className="text-sm text-gray-700 mb-3">{comment.content}</p>
-            <div className="flex space-x-3 text-sm text-gray-600">
-              <button className="bg-neutral-200 text-xs rounded-2xl px-2 py-1">댓글</button>
-            </div>
+      {comments.map((comment) => (
+        <div key={comment.id}>
+          <CommentItem comment={comment} onRefresh={fetchComments} />
+          <div className="flex flex-col px-4 text-xs text-gray-400">
+            <button
+              className="bg-neutral-200 text-xs rounded-sm px-1 py-1 w-10"
+              onClick={() => toggleEditMode(comment.id)}>
+              댓글
+            </button>
           </div>
-          <hr className="border-spacing-0.5 border-neutral-200 mt-5 last:hidden" />
-        </>
+
+          {replyToCommentId === comment.id && (
+            <div className="mt-4">
+              <ReplyComment
+                comment={comment}
+                content={replyContent}
+                setContent={setReplyContent}
+                onSubmit={handleReplySubmit}
+              />
+            </div>
+          )}
+          <ReplyCommentList replies={comment.replies || []} onRefresh={fetchComments} postId={postId} userId={userId} />
+          <hr className="border border-b border-neutral-100 mt-4" />
+        </div>
       ))}
     </div>
   );

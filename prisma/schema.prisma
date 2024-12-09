@@ -70,10 +70,14 @@ model Post {
 model Comment {
   id        Int      @id @default(autoincrement())
   content   String   // 댓글 내용
-  createdAt DateTime @default(now()) // 생성일
-  updatedAt DateTime @updatedAt // 수정일
-  postId    Int      // 게시글 ID (Post 모델과 관계)
-  post      Post     @relation(fields: [postId], references: [id]) // 게시글과 관계 설정
-  userId    Int      // 작성자 ID (User 모델과 관계)
-  user      User     @relation(fields: [userId], references: [id]) 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    Int
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  parentId  Int?     // 부모 댓글 ID (대댓글의 경우에만 존재)
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id]) // 부모 댓글과 연결
+  replies   Comment[] @relation("CommentReplies") // 부모 댓글에 대한 대댓글 목록
 }

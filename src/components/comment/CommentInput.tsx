@@ -4,7 +4,7 @@ import CommentList from './CommentList';
 
 const CommentInput = ({ userId, postId }: { userId: number; postId: number }) => {
   const [content, setContent] = useState('');
-  const [shouldRefresh, setShouldRefresh] = useState(false); // 상태 추가
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
@@ -24,12 +24,11 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
       });
       console.log('댓글이 생성되었습니다:', newComment);
       setContent('');
-      setShouldRefresh(true); // 댓글 등록 후 새로고침 상태 변경
+      setShouldRefresh(true);
 
-      // 새로 고침 상태를 false로 다시 설정
       setTimeout(() => {
         setShouldRefresh(false);
-      }, 500); // 500ms 후에 false로 설정 (UI가 새로 고침되도록)
+      }, 500);
     } catch (error) {
       console.error('댓글 생성 오류:', error);
       alert('댓글을 생성하는 데 오류가 발생했습니다.');
@@ -37,9 +36,9 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
   };
 
   return (
-    <div className="mx-auto w-full">
+    <div className="mx-auto w-full ">
       <h2 className="text-lg font-semibold mb-4">답변</h2>
-      <div className="relative">
+      <div className="relative ">
         <textarea
           placeholder="답변을 입력해주세요"
           value={content}
@@ -51,7 +50,7 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
           등록
         </button>
       </div>
-      <CommentList postId={postId} shouldRefresh={shouldRefresh} />
+      <CommentList postId={postId} shouldRefresh={shouldRefresh} userId={userId} />
     </div>
   );
 };
