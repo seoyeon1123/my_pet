@@ -16,12 +16,11 @@ const CommentInput = ({ userId, postId }: { userId: number; postId: number }) =>
       return;
     }
 
-    const newComment = await createComment({
+    await createComment({
       userId,
       postId,
       content,
     });
-    console.log('댓글이 생성되었습니다:', newComment);
     setContent('');
     setShouldRefresh(true);
 

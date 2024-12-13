@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
@@ -7,9 +7,35 @@ const KEYWORD_LIST = [
   { id: 3, value: '애견호텔', emoji: '🏨' },
 ];
 
+interface Place {
+  id: string;
+  name: string;
+  address: string;
+  x: string;
+  y: string;
+  phone: string | undefined;
+}
+
+interface KakaoPlace {
+  id: string;
+  place_name: string;
+  address_name: string;
+  road_address_name?: string;
+  x: string;
+  y: string;
+  phone: string | undefined;
+}
+
+interface MarkerPosition {
+  lat: number;
+  lng: number;
+  name: string;
+  phone?: string;
+}
+
 const Kakao = () => {
-  const [search, setSearch] = useState<any[]>([]);
-  const [kakao, setKakao] = useState<any>(null);
+  const [search, setSearch] = useState<Place[]>([]);
+  const [kakao, setKakao] = useState<typeof window.kakao | null>(null);
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
   const [state, setState] = useState<{
     center: { lat: number; lng: number };
@@ -23,6 +49,10 @@ const Kakao = () => {
     errMsg: null,
     isLoading: true,
   });
+
+  const [selectedMarker, setSelectedMarker] = useState<MarkerPosition | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<MarkerPosition | null>(null);
+  const [isCurrentLocationVisible, setIsCurrentLocationVisible] = useState(false);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -59,6 +89,9 @@ const Kakao = () => {
             },
             isLoading: false,
           }));
+          if (!isCurrentLocationVisible) {
+            setIsCurrentLocationVisible(true);
+          }
         },
         (err) => {
           setState((prev) => ({
@@ -69,7 +102,7 @@ const Kakao = () => {
         },
       );
     }
-  }, []);
+  }, [isCurrentLocationVisible]);
 
   const handleKeywordSearch = (keyword: string, center: { lat: number; lng: number }) => {
     if (!isKakaoLoaded || !kakao || !kakao.maps || !kakao.maps.services) {
@@ -78,18 +111,21 @@ const Kakao = () => {
 
     const ps = new kakao.maps.services.Places();
     const options = {
-      location: new kakao.maps.LatLng(center.lat, center.lng), // 현재 지도 중심
-      radius: 5000,
+      location: new kakao.maps.LatLng(center.lat, center.lng),
+      radius: 4000,
     };
 
     ps.keywordSearch(
       keyword,
-      (data: any, status: any) => {
+      (data: KakaoPlace[], status: string) => {
         if (status === kakao.maps.services.Status.OK) {
-          const places = data.map((place: any) => ({
+          const places = data.map((place) => ({
             id: place.id,
+            name: place.place_name,
+            address: place.address_name,
             x: place.x,
             y: place.y,
+            phone: place.phone,
           }));
           setSearch(places);
         }
@@ -98,64 +134,108 @@ const Kakao = () => {
     );
   };
 
+  const handleMarkerClick = (marker: MarkerPosition) => {
+    setSelectedMarker(marker);
+  };
+
+  const handleSearchResultClick = (place: Place) => {
+    const markerPosition = {
+      lat: parseFloat(place.y),
+      lng: parseFloat(place.x),
+      name: place.name,
+      phone: place.phone,
+    };
+
+    setSelectedLocation(markerPosition);
+    setSelectedMarker(markerPosition);
+  };
+
   return (
-    <>
-      <Map
-        center={state.center}
-        className="w-[800px] h-[500px] rounded-lg"
-        level={3}
-        onCenterChanged={(map) => {
-          const center = map.getCenter();
-          setState((prev) => ({
-            ...prev,
-            center: {
-              lat: center.getLat(),
-              lng: center.getLng(),
-            },
-          }));
-        }}>
-        <MapMarker
-          position={state.center}
-          image={{
-            src: 'https://velog.velcdn.com/images/leeeee/post/4f0de3cf-1cfe-4db2-9afc-c900e030516d/image.png',
-            size: {
-              width: 50,
-              height: 50,
-            },
-          }}
-        />
+    <div className="flex flex-col items-center">
+      <div className="flex flex-row justify-center items-start gap-6">
+        <div className="flex flex-col gap-2 justify-center items-center">
+          <Map center={selectedLocation || state.center} className="w-[800px] h-[500px] rounded-lg shadow-md" level={3}>
+            {isCurrentLocationVisible && (
+              <MapMarker
+                position={state.center}
+                image={{
+                  src: 'https://velog.velcdn.com/images/leeeee/post/4f0de3cf-1cfe-4db2-9afc-c900e030516d/image.png',
+                  size: {
+                    width: 50,
+                    height: 50,
+                  },
+                }}
+              />
+            )}
 
-        {/* 검색된 위치를 표시 */}
-        {search.map((data) => (
-          <MapMarker
-            key={data.id}
-            position={{
-              lat: parseFloat(data.y),
-              lng: parseFloat(data.x),
-            }}
-            image={{
-              src: 'https://cdn-icons-png.flaticon.com/128/2098/2098567.png',
-              size: {
-                width: 35,
-                height: 35,
-              },
-            }}
-          />
-        ))}
+            {search.map((data) => {
+              const markerPosition = {
+                name: data.name,
+                lat: parseFloat(data.y),
+                lng: parseFloat(data.x),
+              };
 
-        <div className="flex flex-row">
-          {KEYWORD_LIST.map((keywordObj) => (
-            <button
-              key={keywordObj.id}
-              type="button"
-              className="px-3 py-2 bg-darkPink text-white rounded-md hover:bg-lightPink"
-              onClick={() => handleKeywordSearch(keywordObj.value, state.center)}>
-              {keywordObj.value + keywordObj.emoji}
-            </button>
-          ))}
+              return (
+                <MapMarker
+                  key={data.id}
+                  position={markerPosition}
+                  image={{
+                    src: 'https://cdn-icons-png.flaticon.com/128/2098/2098567.png',
+                    size: {
+                      width: 35,
+                      height: 35,
+                    },
+                  }}
+                  onClick={() => handleMarkerClick(markerPosition)}
+                />
+              );
+            })}
+
+            {selectedMarker && (
+              <CustomOverlayMap position={selectedMarker} yAnchor={1}>
+                <div className="bg-white p-2 rounded shadow-lg text-center z-10">
+                  <p className="font-bold">{selectedMarker.name}</p>
+                  <p className="text-sm text-gray-600">{selectedMarker.phone}</p>
+                </div>
+              </CustomOverlayMap>
+            )}
+          </Map>
+          <div className="flex flex-row gap-2 mt-4">
+            {KEYWORD_LIST.map((keywordObj) => (
+              <button
+                key={keywordObj.id}
+                type="button"
+                className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-400"
+                onClick={() => handleKeywordSearch(keywordObj.value, state.center)}>
+                {keywordObj.value + keywordObj.emoji}
+              </button>
+            ))}
+          </div>
         </div>
-      </Map>
-    </>
+
+        <div className="flex flex-col ml-4 w-[320px]">
+          {search.length > 0 && (
+            <div className="p-4 bg-white rounded-lg shadow-lg max-h-[500px] overflow-auto">
+              <h3 className="text-lg font-semibold mb-3">검색 결과</h3>
+              <ul className="divide-y divide-gray-200">
+                {search.map((data) => (
+                  <li
+                    key={data.id}
+                    className="p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md transition mb-2 shadow-sm"
+                    onClick={() => handleSearchResultClick(data)}>
+                    <div className="flex flex-col">
+                      <span className="text-pink-600 font-medium">{data.name}</span>
+                      <span className="text-gray-500 text-sm">{data.address}</span>
+                      <span className="text-gray-400 text-xs mt-1">{data.phone}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 

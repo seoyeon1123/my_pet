@@ -1,36 +1,41 @@
 'use client';
 
-import mainDog from '../../asserts/main/mainDog.png';
+import cat1 from '../../asserts/main/cat1.png';
+import cat2 from '../../asserts/main/cat2.png';
+import cat3 from '../../asserts/main/cat3.png';
+import dog1 from '../../asserts/main/dog1.png';
+import dog2 from '../../asserts/main/dog2.png';
+
 import React from 'react';
 import MainCard from './MainCard';
 
 const cardData = [
   {
-    imageSrc: mainDog,
+    imageSrc: cat1,
     title: '댕냥친구소',
     description: '강아지부터 고양이까지, 다양한 친구를 만나보세요!',
     altText: '친구 찾기',
   },
   {
-    imageSrc: mainDog,
+    imageSrc: cat2,
     title: '댕냥광장',
     description: '견주들과 교류하고 반려동물에 대한 유익한 정보를 나누세요.',
     altText: '커뮤니티',
   },
   {
-    imageSrc: mainDog,
+    imageSrc: cat3,
     title: '댕냥터',
     description: '내 근처에 있는 [ 댕냥이들을 위한 ] 카페, 병원, 호텔 등을 찾아보아요.',
     altText: '이벤트',
   },
   {
-    imageSrc: mainDog,
+    imageSrc: dog1,
     title: '댕냥창고',
     description: '다양한 댕냥이들의 용품을 찾아보아요.',
     altText: '이벤트',
   },
   {
-    imageSrc: mainDog,
+    imageSrc: dog2,
     title: '댕냥맘',
     description: '급하게 우리의 댕냥이를 맡겨야 한다면, 댕냥맘 & 댕냥대디에게 맡겨주세요.',
     altText: '이벤트',
