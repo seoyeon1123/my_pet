@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
+import Modal from './Modal';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline'; // XMark 아이콘 추가
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
@@ -7,7 +10,7 @@ const KEYWORD_LIST = [
   { id: 3, value: '애견호텔', emoji: '🏨' },
 ];
 
-interface Place {
+export interface Place {
   id: string;
   name: string;
   address: string;
@@ -30,6 +33,7 @@ interface MarkerPosition {
   lat: number;
   lng: number;
   name: string;
+  address: string; // address 추가
   phone?: string;
 }
 
@@ -37,20 +41,15 @@ const Kakao = () => {
   const [search, setSearch] = useState<Place[]>([]);
   const [kakao, setKakao] = useState<typeof window.kakao | null>(null);
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false);
-  const [state, setState] = useState<{
-    center: { lat: number; lng: number };
-    errMsg: string | null;
-    isLoading: boolean;
-  }>({
-    center: {
-      lat: 33.450701,
-      lng: 126.570667,
-    },
+  const [state, setState] = useState({
+    center: { lat: 33.450701, lng: 126.570667 },
     errMsg: null,
     isLoading: true,
   });
-
   const [selectedMarker, setSelectedMarker] = useState<MarkerPosition | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [openMarkerId, setOpenMarkerId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState<MarkerPosition | null>(null);
   const [isCurrentLocationVisible, setIsCurrentLocationVisible] = useState(false);
 
@@ -89,20 +88,17 @@ const Kakao = () => {
             },
             isLoading: false,
           }));
-          if (!isCurrentLocationVisible) {
-            setIsCurrentLocationVisible(true);
-          }
         },
         (err) => {
           setState((prev) => ({
             ...prev,
-            errMsg: err.message,
+            errMsg: null,
             isLoading: false,
           }));
         },
       );
     }
-  }, [isCurrentLocationVisible]);
+  }, []);
 
   const handleKeywordSearch = (keyword: string, center: { lat: number; lng: number }) => {
     if (!isKakaoLoaded || !kakao || !kakao.maps || !kakao.maps.services) {
@@ -143,18 +139,43 @@ const Kakao = () => {
       lat: parseFloat(place.y),
       lng: parseFloat(place.x),
       name: place.name,
+      address: place.address, // address 추가
       phone: place.phone,
     };
 
     setSelectedLocation(markerPosition);
     setSelectedMarker(markerPosition);
+    setIsModalOpen(false);
+  };
+
+  const moveLatLng = (place: Place) => {
+    const newCenter = {
+      lat: parseFloat(place.y),
+      lng: parseFloat(place.x),
+    };
+    setState((prev) => ({ ...prev, center: newCenter }));
+    setSelectedMarker({
+      lat: newCenter.lat,
+      lng: newCenter.lng,
+      name: place.name,
+      address: place.address, // address 추가
+      phone: place.phone,
+    });
+    setIsModalOpen(false);
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
   };
 
   return (
     <div className="flex flex-col items-center">
       <div className="flex flex-row justify-center items-start gap-6">
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <Map center={selectedLocation || state.center} className="w-[800px] h-[500px] rounded-lg shadow-md" level={3}>
+        <div className="flex flex-col gap-2 justify-center items-center relative">
+          <Map
+            center={selectedLocation || state.center}
+            className="w-[1000px] h-[600px] rounded-lg shadow-md"
+            level={3}>
             {isCurrentLocationVisible && (
               <MapMarker
                 position={state.center}
@@ -173,6 +194,7 @@ const Kakao = () => {
                 name: data.name,
                 lat: parseFloat(data.y),
                 lng: parseFloat(data.x),
+                address: data.address, // address 추가
               };
 
               return (
@@ -181,10 +203,7 @@ const Kakao = () => {
                   position={markerPosition}
                   image={{
                     src: 'https://cdn-icons-png.flaticon.com/128/2098/2098567.png',
-                    size: {
-                      width: 35,
-                      height: 35,
-                    },
+                    size: { width: 35, height: 35 },
                   }}
                   onClick={() => handleMarkerClick(markerPosition)}
                 />
@@ -195,11 +214,31 @@ const Kakao = () => {
               <CustomOverlayMap position={selectedMarker} yAnchor={1}>
                 <div className="bg-white p-2 rounded shadow-lg text-center z-10">
                   <p className="font-bold">{selectedMarker.name}</p>
-                  <p className="text-sm text-gray-600">{selectedMarker.phone}</p>
+                  <p className="text-sm text-gray-600">{selectedMarker.address}</p> {/* address 표시 */}
                 </div>
               </CustomOverlayMap>
             )}
           </Map>
+
+          <div
+            className="absolute top-1/2 left-0 z-50 transform -translate-y-1/2 p-2 rounded-full cursor-pointer"
+            onClick={toggleModal}>
+            <ChevronRightIcon className="w-6 h-6 text-red-600" />
+          </div>
+
+          {/* Modal 컴포넌트 */}
+          {isModalOpen && (
+            <div className="absolute top-0 left-0  shadow-md z-20 transition-transform transform translate-x-0">
+              <Modal
+                search={search}
+                openMarkerId={openMarkerId}
+                setOpenMarkerId={setOpenMarkerId}
+                moveLatLng={moveLatLng}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          )}
           <div className="flex flex-row gap-2 mt-4">
             {KEYWORD_LIST.map((keywordObj) => (
               <button
@@ -211,28 +250,6 @@ const Kakao = () => {
               </button>
             ))}
           </div>
-        </div>
-
-        <div className="flex flex-col ml-4 w-[320px]">
-          {search.length > 0 && (
-            <div className="p-4 bg-white rounded-lg shadow-lg max-h-[500px] overflow-auto">
-              <h3 className="text-lg font-semibold mb-3">검색 결과</h3>
-              <ul className="divide-y divide-gray-200">
-                {search.map((data) => (
-                  <li
-                    key={data.id}
-                    className="p-4 cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md transition mb-2 shadow-sm"
-                    onClick={() => handleSearchResultClick(data)}>
-                    <div className="flex flex-col">
-                      <span className="text-pink-600 font-medium">{data.name}</span>
-                      <span className="text-gray-500 text-sm">{data.address}</span>
-                      <span className="text-gray-400 text-xs mt-1">{data.phone}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </div>
     </div>

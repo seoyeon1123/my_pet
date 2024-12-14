@@ -30,6 +30,7 @@ const config: Config = {
         darkPink: 'var(--darkPink)',
         lightPink: 'var(--lightPink)',
         lightPinkbg: 'var(--lightPinkbg)',
+        mediumPink: 'var(--mediumPink)',
       },
       fontFamily: {
         hakgyo: ["'HakgyoansimPuzzleTTF-Outline'", 'sans-serif'],
