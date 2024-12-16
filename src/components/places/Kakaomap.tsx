@@ -29,7 +29,7 @@ interface KakaoPlace {
   y: string;
   phone: string | undefined;
   place_url?: string;
-  category_name?: string; // 카테고리 추가
+  category_name?: string;
 }
 
 interface MarkerPosition {
@@ -50,7 +50,7 @@ const Kakao = () => {
     isLoading: true,
   });
   const [selectedMarker, setSelectedMarker] = useState<MarkerPosition | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [openMarkerId, setOpenMarkerId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState<MarkerPosition | null>(null);
@@ -121,6 +121,9 @@ const Kakao = () => {
     if (!isKakaoLoaded || !kakao || !kakao.maps || !kakao.maps.services) {
       return;
     }
+    setSearch([]);
+    setSelectedMarker(null);
+    setOpenMarkerId(null);
 
     const ps = new kakao.maps.services.Places();
     const options = {
@@ -246,7 +249,7 @@ const Kakao = () => {
             )}{' '}
           </div>
 
-          {isModalOpen && (
+          {isModalOpen && search.length > 0 && (
             <div className="absolute top-0 left-0  shadow-md z-20 transition-transform transform translate-x-0">
               <Modal
                 search={search}

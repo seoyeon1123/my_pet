@@ -74,7 +74,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
               moveLatLng(place);
             }}
             className={`p-4 flex flex-row justify-between border-b cursor-pointer transition-colors duration-300 ease-in-out
-            ${place.id === openMarkerId ? 'bg-lightPinkbg text-darkPink' : 'bg-lightPinkbg hover:bg-lightPinkbg'}`}>
+            ${place.id === openMarkerId ? 'bg-lightPink text-darkPink' : 'bg-white bg-opacity-40 hover:bg-lightPinkbg'}`}>
             <div className="flex flex-col gap-2">
               <div>
                 <h3 className="text-lg font-semibold">{place.name}</h3>
