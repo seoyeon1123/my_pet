@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import Modal from './Modal';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import { XMarkIcon } from '@heroicons/react/24/outline'; // XMark 아이콘 추가
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
@@ -17,6 +16,8 @@ export interface Place {
   x: string;
   y: string;
   phone: string | undefined;
+  place_url?: string;
+  category_name?: string;
 }
 
 interface KakaoPlace {
@@ -27,13 +28,15 @@ interface KakaoPlace {
   x: string;
   y: string;
   phone: string | undefined;
+  place_url?: string;
+  category_name?: string; // 카테고리 추가
 }
 
 interface MarkerPosition {
   lat: number;
   lng: number;
   name: string;
-  address: string; // address 추가
+  address: string;
   phone?: string;
 }
 
@@ -88,6 +91,7 @@ const Kakao = () => {
             },
             isLoading: false,
           }));
+          setIsCurrentLocationVisible(true);
         },
         (err) => {
           setState((prev) => ({
@@ -95,12 +99,25 @@ const Kakao = () => {
             errMsg: null,
             isLoading: false,
           }));
+          setIsCurrentLocationVisible(false);
         },
       );
     }
   }, []);
 
+  useEffect(() => {
+    if (window.Kakao) {
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init('acf4479a39c6800a7a112e1e85028978');
+        console.log('Kakao SDK Initialized:', window.Kakao.isInitialized());
+      }
+    } else {
+      console.error('Kakao SDK not loaded');
+    }
+  }, []);
+
   const handleKeywordSearch = (keyword: string, center: { lat: number; lng: number }) => {
+    console.log('버튼 클릭됨:', keyword);
     if (!isKakaoLoaded || !kakao || !kakao.maps || !kakao.maps.services) {
       return;
     }
@@ -115,14 +132,19 @@ const Kakao = () => {
       keyword,
       (data: KakaoPlace[], status: string) => {
         if (status === kakao.maps.services.Status.OK) {
-          const places = data.map((place) => ({
-            id: place.id,
-            name: place.place_name,
-            address: place.address_name,
-            x: place.x,
-            y: place.y,
-            phone: place.phone,
-          }));
+          const places = data.map((place) => {
+            console.log('Place URL:', place.place_url);
+            return {
+              id: place.id,
+              name: place.place_name,
+              address: place.address_name,
+              x: place.x,
+              y: place.y,
+              phone: place.phone,
+              place_url: place.place_url,
+              category_name: place.category_name || '카테고리 없음',
+            } as Place;
+          });
           setSearch(places);
         }
       },
@@ -132,20 +154,8 @@ const Kakao = () => {
 
   const handleMarkerClick = (marker: MarkerPosition) => {
     setSelectedMarker(marker);
-  };
-
-  const handleSearchResultClick = (place: Place) => {
-    const markerPosition = {
-      lat: parseFloat(place.y),
-      lng: parseFloat(place.x),
-      name: place.name,
-      address: place.address, // address 추가
-      phone: place.phone,
-    };
-
-    setSelectedLocation(markerPosition);
-    setSelectedMarker(markerPosition);
-    setIsModalOpen(false);
+    setOpenMarkerId(marker.name); // 마커 클릭 시 ID 저장
+    setIsModalOpen(true); // 모달 열기
   };
 
   const moveLatLng = (place: Place) => {
@@ -153,15 +163,24 @@ const Kakao = () => {
       lat: parseFloat(place.y),
       lng: parseFloat(place.x),
     };
-    setState((prev) => ({ ...prev, center: newCenter }));
-    setSelectedMarker({
+
+    const newMarker = {
       lat: newCenter.lat,
       lng: newCenter.lng,
       name: place.name,
-      address: place.address, // address 추가
+      address: place.address,
+      phone: place.phone,
+    };
+
+    setSelectedMarker(newMarker);
+
+    setSelectedLocation({
+      lat: newCenter.lat,
+      lng: newCenter.lng,
+      name: place.name,
+      address: place.address,
       phone: place.phone,
     });
-    setIsModalOpen(false);
   };
 
   const toggleModal = () => {
@@ -181,10 +200,7 @@ const Kakao = () => {
                 position={state.center}
                 image={{
                   src: 'https://velog.velcdn.com/images/leeeee/post/4f0de3cf-1cfe-4db2-9afc-c900e030516d/image.png',
-                  size: {
-                    width: 50,
-                    height: 50,
-                  },
+                  size: { width: 50, height: 50 },
                 }}
               />
             )}
@@ -194,7 +210,7 @@ const Kakao = () => {
                 name: data.name,
                 lat: parseFloat(data.y),
                 lng: parseFloat(data.x),
-                address: data.address, // address 추가
+                address: data.address,
               };
 
               return (
@@ -212,21 +228,24 @@ const Kakao = () => {
 
             {selectedMarker && (
               <CustomOverlayMap position={selectedMarker} yAnchor={1}>
-                <div className="bg-white p-2 rounded shadow-lg text-center z-10">
+                <div className="absolute -top-24 -left-20 bg-white p-2 rounded shadow-lg text-center z-10">
                   <p className="font-bold">{selectedMarker.name}</p>
-                  <p className="text-sm text-gray-600">{selectedMarker.address}</p> {/* address 표시 */}
+                  <p className="text-xs text-gray-600">{selectedMarker.address}</p>
                 </div>
               </CustomOverlayMap>
             )}
           </Map>
 
           <div
-            className="absolute top-1/2 left-0 z-50 transform -translate-y-1/2 p-2 rounded-full cursor-pointer"
+            className="absolute top-1/2 -left-3 z-50 transform -translate-y-1/2 p-2 rounded-full cursor-pointer"
             onClick={toggleModal}>
-            <ChevronRightIcon className="w-6 h-6 text-red-600" />
+            {isModalOpen ? (
+              <ChevronLeftIcon className="size-7 font-bold text-red-600" />
+            ) : (
+              <ChevronRightIcon className="size-7 font-bold text-red-600" />
+            )}{' '}
           </div>
 
-          {/* Modal 컴포넌트 */}
           {isModalOpen && (
             <div className="absolute top-0 left-0  shadow-md z-20 transition-transform transform translate-x-0">
               <Modal
@@ -236,9 +255,11 @@ const Kakao = () => {
                 moveLatLng={moveLatLng}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
+                currentLocation={state.center}
               />
             </div>
           )}
+
           <div className="flex flex-row gap-2 mt-4">
             {KEYWORD_LIST.map((keywordObj) => (
               <button

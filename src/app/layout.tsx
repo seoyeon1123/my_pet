@@ -9,6 +9,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
         <SessionProvider>
           <RecoilRoot>{children}</RecoilRoot>
         </SessionProvider>
