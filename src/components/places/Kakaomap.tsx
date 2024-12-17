@@ -52,27 +52,17 @@ const Kakao = () => {
 
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setState((prev) => ({
-            ...prev,
-            center: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
-            },
-            isLoading: false,
-          }));
-          setIsCurrentLocationVisible(true);
-        },
-        (err) => {
-          setState((prev) => ({
-            ...prev,
-            errMsg: null,
-            isLoading: false,
-          }));
-          setIsCurrentLocationVisible(false);
-        },
-      );
+      navigator.geolocation.getCurrentPosition((position) => {
+        setState((prev) => ({
+          ...prev,
+          center: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          },
+          isLoading: false,
+        }));
+        setIsCurrentLocationVisible(true);
+      });
     }
   }, []);
 
