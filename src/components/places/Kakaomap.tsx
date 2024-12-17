@@ -2,43 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import Modal from './Modal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { KakaoPlace, MarkerPosition, Place } from '@/types/kakaomap.types';
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
-  { id: 2, value: '동물병원', emoji: '🧑‍⚕️' },
-  { id: 3, value: '애견호텔', emoji: '🏨' },
+  { id: 2, value: '애견미용실', emoji: '✂️' },
+  { id: 3, value: '동물병원', emoji: '🏥' },
+  { id: 4, value: '애견호텔', emoji: '🏨' },
 ];
-
-export interface Place {
-  id: string;
-  name: string;
-  address: string;
-  x: string;
-  y: string;
-  phone: string | undefined;
-  place_url?: string;
-  category_name?: string;
-}
-
-interface KakaoPlace {
-  id: string;
-  place_name: string;
-  address_name: string;
-  road_address_name?: string;
-  x: string;
-  y: string;
-  phone: string | undefined;
-  place_url?: string;
-  category_name?: string;
-}
-
-interface MarkerPosition {
-  lat: number;
-  lng: number;
-  name: string;
-  address: string;
-  phone?: string;
-}
 
 const Kakao = () => {
   const [search, setSearch] = useState<Place[]>([]);
@@ -157,8 +128,7 @@ const Kakao = () => {
 
   const handleMarkerClick = (marker: MarkerPosition) => {
     setSelectedMarker(marker);
-    setOpenMarkerId(marker.name); // 마커 클릭 시 ID 저장
-    setIsModalOpen(true); // 모달 열기
+    setOpenMarkerId(marker.name);
   };
 
   const moveLatLng = (place: Place) => {
@@ -196,7 +166,9 @@ const Kakao = () => {
         <div className="flex flex-col gap-2 justify-center items-center relative">
           <Map
             center={selectedLocation || state.center}
-            className="w-[1000px] h-[600px] rounded-lg shadow-md"
+            className="w-[1000px] 
+            xs:w-[320px] sm:w-[320px] md:w-[500px]
+            h-[600px] rounded-lg shadow-md"
             level={3}>
             {isCurrentLocationVisible && (
               <MapMarker
@@ -232,7 +204,7 @@ const Kakao = () => {
             {selectedMarker && (
               <CustomOverlayMap position={selectedMarker} yAnchor={1}>
                 <div className="absolute -top-24 -left-20 bg-white p-2 rounded shadow-lg text-center z-10">
-                  <p className="font-bold">{selectedMarker.name}</p>
+                  <p className="font-bold xs:text-sm sm:text-sm">{selectedMarker.name}</p>
                   <p className="text-xs text-gray-600">{selectedMarker.address}</p>
                 </div>
               </CustomOverlayMap>
@@ -263,7 +235,9 @@ const Kakao = () => {
             </div>
           )}
 
-          <div className="flex flex-row gap-2 mt-4">
+          <div
+            className="flex flex-row gap-2 mt-4
+          xs:grid xs:grid-cols-2 sm:grid sm:grid-cols-2">
             {KEYWORD_LIST.map((keywordObj) => (
               <button
                 key={keywordObj.id}
