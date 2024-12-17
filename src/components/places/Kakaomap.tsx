@@ -3,6 +3,8 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk';
 import Modal from './Modal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { KakaoPlace, MarkerPosition, Place } from '@/types/kakaomap.types';
+import { useSetRecoilState } from 'recoil';
+import { placeState } from '@/state/PlaceState';
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
@@ -26,6 +28,8 @@ const Kakao = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState<MarkerPosition | null>(null);
   const [isCurrentLocationVisible, setIsCurrentLocationVisible] = useState(false);
+
+  const setPlace = useSetRecoilState(placeState);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -127,6 +131,17 @@ const Kakao = () => {
       lng: parseFloat(place.x),
     };
 
+    setPlace({
+      id: place.id,
+      name: place.name,
+      address: place.address,
+      category: place.category_name || '카테고리 없음',
+      phone: place.phone || '전화번호 없음',
+      placeUrl: place.place_url || '',
+      latitude: parseFloat(place.x),
+      longitude: parseFloat(place.x),
+    });
+
     const newMarker = {
       lat: newCenter.lat,
       lng: newCenter.lng,
@@ -152,12 +167,25 @@ const Kakao = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-row justify-center items-start gap-6">
+      <div className="flex flex-col justify-center items-start gap-6">
+        <div
+          className="flex flex-row gap-2 mt-4
+          xs:grid xs:grid-cols-2 sm:grid sm:grid-cols-2">
+          {KEYWORD_LIST.map((keywordObj) => (
+            <button
+              key={keywordObj.id}
+              type="button"
+              className="px-4 py-2 bg-darkPink text-white rounded-md hover:bg-mediumPink active:bg-mediumPink"
+              onClick={() => handleKeywordSearch(keywordObj.value, state.center)}>
+              {keywordObj.value + keywordObj.emoji}
+            </button>
+          ))}
+        </div>
         <div className="flex flex-col gap-2 justify-center items-center relative">
           <Map
             center={selectedLocation || state.center}
             className="w-[1000px] 
-            xs:w-[320px] sm:w-[320px] md:w-[500px]
+            xs:w-[320px] sm:w-[450px] md:w-[750px]
             h-[600px] rounded-lg shadow-md"
             level={3}>
             {isCurrentLocationVisible && (
@@ -224,20 +252,6 @@ const Kakao = () => {
               />
             </div>
           )}
-
-          <div
-            className="flex flex-row gap-2 mt-4
-          xs:grid xs:grid-cols-2 sm:grid sm:grid-cols-2">
-            {KEYWORD_LIST.map((keywordObj) => (
-              <button
-                key={keywordObj.id}
-                type="button"
-                className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-400"
-                onClick={() => handleKeywordSearch(keywordObj.value, state.center)}>
-                {keywordObj.value + keywordObj.emoji}
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>

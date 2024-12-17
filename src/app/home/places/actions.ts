@@ -28,4 +28,47 @@ const addPlace = async (data: IPlace) => {
   return place;
 };
 
+interface IPlaceReviewProps {
+  placeId: number;
+  userId: number;
+  rating: number;
+  comment: string;
+  placename: string;
+}
+
+export const addPlaceReview = async (data: IPlaceReviewProps) => {
+  const placeReview = await db.review.create({
+    data: {
+      placename: data.placename,
+      placeId: data.placeId,
+      userId: data.userId,
+      rating: data.rating,
+      comment: data.comment,
+    },
+  });
+
+  return placeReview;
+};
+
+export const getPlaceReview = async (placeId: number) => {
+  const placeReview = await db.review.findMany({
+    where: {
+      placeId,
+    },
+    select: {
+      user: {
+        select: {
+          username: true, // 사용자 이름
+        },
+      },
+      placeId: true, // 장소 ID
+      placename: true, // 장소 이름
+      rating: true, // 별점
+      comment: true, // 댓글
+    },
+  });
+
+  return placeReview;
+};
+
 export default addPlace;
