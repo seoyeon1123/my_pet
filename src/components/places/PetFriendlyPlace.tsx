@@ -34,7 +34,7 @@ const PetFriendlyPlace = () => {
     const getPlaceReviw = async () => {
       const placeReview = await getPlaceReview(Number(place.id));
       setReviews(placeReview);
-      console.log(placeReview);
+      // console.log(placeReview); // 개발 중에는 필요하지만, 프로덕션에서는 제거해야 합니다.
     };
 
     getPlaceReviw();
@@ -71,20 +71,15 @@ const PetFriendlyPlace = () => {
 
   return (
     <>
-      <div
-        className="w-[1000px] xs:w-[330px]
-       sm:w-[450px] md:w-[750px]
-    flex flex-col ">
+      <div className="w-[1000px] xs:w-[330px] sm:w-[450px] md:w-[750px] flex flex-col">
         <hr className="border border-b border-neutral-300 my-4" />
         <div className="flex flex-col w-full bp-6 mt-4 ">
           <div className="flex flex-row justify-between">
             <h2 className="text-3xl xs:text-base sm:text-base font-semibold text-gray-800">
-              "{place.name}"에 대한 리뷰
+              &quot;{place.name}&quot;에 대한 리뷰
             </h2>
             <button
-              className="px-3 
-              xs:text-sm sm:text-sm
-              bg-[rgba(78,140,133,0.7)] text-white py-3 rounded-md hover:bg-[rgba(94,148,142,0.7)] transition duration-200"
+              className="px-3 xs:text-sm sm:text-sm bg-[rgba(78,140,133,0.7)] text-white py-3 rounded-md hover:bg-[rgba(94,148,142,0.7)] transition duration-200"
               onClick={() => setOnClick(!onClick)}>
               리뷰 작성하기
             </button>
