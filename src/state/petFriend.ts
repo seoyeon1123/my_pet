@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 
-const { persistAtom } = recoilPersist<PetType[]>(); // 타입을 PetType[]으로 명시
+const { persistAtom } = recoilPersist<PetType[]>();
 
 export interface PetType {
   id: number;

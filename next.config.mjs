@@ -5,7 +5,7 @@ const nextConfig = {
     middleware: true,
   },
   images: {
-    domains: ['zaceflyqimwfxschnrpi.supabase.co'],
+    domains: ['zaceflyqimwfxschnrpi.supabase.co', 'shopping-phinf.pstatic.net'],
   },
 };
 
