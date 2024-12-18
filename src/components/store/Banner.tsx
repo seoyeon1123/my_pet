@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import store1 from '../../asserts/store/store1.png';
 import store2 from '../../asserts/store/store2.png';
 

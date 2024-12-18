@@ -1,5 +1,4 @@
 'use client';
-import { getProduct } from '@/app/home/store/actions';
 import { MagnifyingGlassCircleIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { IPetStore } from './ProductList';
