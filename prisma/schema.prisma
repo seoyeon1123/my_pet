@@ -110,3 +110,30 @@ model Review {
   placename String
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model GroupPurchase {
+  id               Int       @id @default(autoincrement())
+  title            String    // 공동구매 제목
+  description      String    // 설명
+  expectedPrice    Int       // 예상 단가
+  maxParticipants  Int       // 최대 참여 인원
+  deadline         DateTime  // 마감일
+  reason           String    // 공동구매 이유
+  deliveryMethod   String    
+  shippingCost     Int?      // 배송비 (optional)
+  direct String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  productId        BigInt      
+  productCategory  String
+  participants     GroupPurchaseParticipant[]
+}
+
+model GroupPurchaseParticipant {
+  id               Int       @id @default(autoincrement())
+  email            String    // 참여자의 이메일
+  groupPurchaseId  Int       // 참여한 공동구매의 ID
+  createdAt        DateTime  @default(now())
+
+  groupPurchase    GroupPurchase @relation(fields: [groupPurchaseId], references: [id])
+}

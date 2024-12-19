@@ -5,7 +5,7 @@ interface IInputProps {
   type: string;
   placeholder: string;
   error?: string[];
-  value?: string;
+  value?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void; // 타입 변경
 }
 

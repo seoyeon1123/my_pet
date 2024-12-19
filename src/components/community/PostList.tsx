@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CommunityActions from '@/app/home/community/actions';
 import Image from 'next/image';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import Link from 'next/link';
+import { useQuery } from 'react-query';
 
 interface PostListProps {
   isFor: string; // '견주' 또는 '애완견'
@@ -26,37 +27,34 @@ interface IcommunityDataProps {
 }
 
 const PostList = ({ isFor, type }: PostListProps) => {
-  const [community, setCommunity] = useState<IcommunityDataProps[]>([]);
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const postsPerPage = 10; // 페이지당 게시글 수
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 10;
 
-  useEffect(() => {
-    const getCommunity = async () => {
-      const communityData = await CommunityActions(isFor, type);
+  const {
+    data: community = [],
+    isLoading,
+    isError,
+  } = useQuery<IcommunityDataProps[]>(['community', isFor, type], () => CommunityActions(isFor, type), {
+    select: (data) => data.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()),
+  });
 
-      // 최신 글 순으로 정렬 (updatedAt 기준 내림차순)
-      const sortedData = communityData.sort(
-        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-      );
-
-      setCommunity(sortedData);
-    };
-
-    getCommunity();
-  }, [isFor, type]);
-
-  // 현재 페이지에 표시할 게시글 계산
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = community.slice(indexOfFirstPost, indexOfLastPost);
 
-  // 페이지 변경 핸들러
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  // 총 페이지 수 계산
   const totalPages = Math.ceil(community.length / postsPerPage);
+
+  if (isLoading) {
+    return <p className="text-center text-lg text-orange-500">로딩 중입니다...</p>;
+  }
+
+  if (isError) {
+    return <p className="text-center text-lg text-red-500">게시글을 불러오는 데 실패했습니다.</p>;
+  }
 
   return (
     <div className="w-full max-w-[1200px] mx-auto p-4">

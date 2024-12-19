@@ -7,8 +7,7 @@ import PostList from '@/components/community/PostList';
 const Community = () => {
   const [selectedCategory, setSelectedCategory] = useState('견주');
   const [selectedPetType, setSelectedPetType] = useState<string | undefined>(undefined);
-  const [isFilterOpen, setIsFilterOpen] = useState(false); // 필터 열림/닫힘 상태 추가
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };

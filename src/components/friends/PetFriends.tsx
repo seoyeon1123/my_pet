@@ -1,8 +1,8 @@
-import { PetType } from '@/app/home/friends/page';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
+import { PetType } from '@/types/ pet';
 
 const PetFriends = ({ pets }: { pets: PetType[] }) => {
   return (

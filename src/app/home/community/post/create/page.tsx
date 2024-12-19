@@ -6,9 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRecoilState } from 'recoil';
-import { postState } from '@/state/postState';
+import { IPostProps, postState } from '@/state/postState';
 import PostImageUpload from '@/components/community/PostImageUpload';
 import CreatePostActions from './actions';
+import { useMutation } from 'react-query';
+import { deletePost } from '../../[id]/actions';
 
 const PostCreate = () => {
   const router = useRouter();
@@ -21,6 +23,20 @@ const PostCreate = () => {
   const userId = Number(user?.id);
 
   const [post, setPost] = useRecoilState(postState);
+
+  const mutation = useMutation(
+    async (postData: IPostProps) => {
+      await CreatePostActions(postData, userId);
+    },
+    {
+      onSuccess: () => {
+        router.push('/home/community');
+      },
+      onError: (error) => {
+        console.error('Failed to create post:', error);
+      },
+    },
+  );
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -39,9 +55,9 @@ const PostCreate = () => {
       petId: isFor === '견주' ? '' : prev.petId,
     }));
 
-    await CreatePostActions(post, userId);
-    router.push('/home/community');
+    await mutation.mutateAsync(post);
   };
+
   return (
     <div className="pt-10 w-full flex flex-col justify-center items-center bg-lightPinkbg p-5">
       <form className="flex flex-col gap-4 lg:w-1/3 xl:w-1/3 p-6" onSubmit={handleSubmit}>

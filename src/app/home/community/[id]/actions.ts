@@ -28,4 +28,12 @@ const getPostDetail = async (id: number) => {
   return postDatail;
 };
 
+export const deletePost = async (id: number) => {
+  await db.post.delete({
+    where: {
+      id,
+    },
+  });
+};
+
 export default getPostDetail;

@@ -9,7 +9,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 const Places = () => {
   const setPlace = useSetRecoilState(placeState);
-  const place = useRecoilValue(placeState); // place 상태 값을 가져옴
+  const place = useRecoilValue(placeState);
 
   useEffect(() => {
     setPlace({
