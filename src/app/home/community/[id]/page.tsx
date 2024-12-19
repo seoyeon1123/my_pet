@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import getPostDetail, { deletePost } from './actions';
 import Image from 'next/image';
 import CommentInput from '@/components/comment/CommentInput';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -53,7 +52,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
       await deletePost(id);
       alert('게시물을 삭제하였습니다. ');
       router.push('/home/community');
-    } catch (error) {
+    } catch (error: unknown) {
       alert('게시물 삭제에 실패하셨습니다. ');
     }
   };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Banner from '@/components/friends/Banner';
 import PetSelector from '@/components/friends/PetSelector';
 import PetFriends from '@/components/friends/PetFriends';
@@ -13,7 +13,7 @@ const Friends = () => {
   const [selectedPet, setSelectedPet] = useState('댕이');
   const [petFriends, setPetFriends] = useRecoilState(petFriendAtom);
 
-  const { data, isLoading, isError } = useQuery(['pets', selectedPet], () => GetPetProfile(selectedPet), {
+  const { isLoading, isError } = useQuery(['pets', selectedPet], () => GetPetProfile(selectedPet), {
     onSuccess: (data) => {
       setPetFriends(data);
     },

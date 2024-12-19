@@ -10,7 +10,6 @@ import { IPostProps, postState } from '@/state/postState';
 import PostImageUpload from '@/components/community/PostImageUpload';
 import CreatePostActions from './actions';
 import { useMutation } from 'react-query';
-import { deletePost } from '../../[id]/actions';
 
 const PostCreate = () => {
   const router = useRouter();
