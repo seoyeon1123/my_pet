@@ -48,13 +48,9 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
   }
 
   const handleDelete = async (id: number) => {
-    try {
-      await deletePost(id);
-      alert('게시물을 삭제하였습니다. ');
-      router.push('/home/community');
-    } catch (error: unknown) {
-      alert('게시물 삭제에 실패하셨습니다. ');
-    }
+    await deletePost(id);
+    alert('게시물을 삭제하였습니다. ');
+    router.push('/home/community');
   };
 
   return (
