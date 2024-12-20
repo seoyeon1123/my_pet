@@ -4,6 +4,7 @@ import db from '@/lib/db';
 
 interface IPurchaseProps {
   data: {
+    image: string;
     title: string;
     description: string;
     expectedPrice: number;
@@ -15,12 +16,15 @@ interface IPurchaseProps {
     productId: number;
     productCategory: string;
     direct: string | null;
+    userId: number;
   };
 }
 
 const createPurchase = async ({ data }: IPurchaseProps) => {
   await db.groupPurchase.create({
     data: {
+      userId: data.userId,
+      image: data.image,
       title: data.title,
       description: data.description,
       expectedPrice: data.expectedPrice,

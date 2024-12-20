@@ -8,6 +8,7 @@ const GetGroupPurchase = async (productId: number) => {
       productId,
     },
     select: {
+      id: true,
       title: true,
       description: true,
       expectedPrice: true,
@@ -21,6 +22,12 @@ const GetGroupPurchase = async (productId: number) => {
       updatedAt: true,
       productId: true,
       productCategory: true,
+      participants: {
+        select: {
+          groupPurchaseId: true,
+          email: true,
+        },
+      },
     },
   });
 

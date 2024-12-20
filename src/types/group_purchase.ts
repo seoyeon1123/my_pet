@@ -1,4 +1,5 @@
 export interface GroupPurchase {
+  id: number;
   productId: bigint;
   title: string;
   description: string;
@@ -8,4 +9,8 @@ export interface GroupPurchase {
   reason: string;
   deliveryMethod: string;
   shippingCost: number | null;
+  participants: {
+    email: string;
+    groupPurchaseId: number;
+  }[];
 }

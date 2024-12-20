@@ -22,7 +22,6 @@ const handler = NextAuth({
         });
 
         if (!user) {
-          // 임시 비밀번호 생성
           const tempPassword = Date.now().toString(); // 임시 비밀번호
           const hashedPassword = await bcrypt.hash(tempPassword, 10); // bcrypt로 암호화
 
@@ -30,6 +29,7 @@ const handler = NextAuth({
             data: {
               email,
               name: profile.properties?.nickname || 'Unknown',
+              username: profile.properties?.nickname || 'Unknown',
               password: hashedPassword,
             },
           });

@@ -10,6 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { useMutation } from 'react-query';
 import createPurchase from './actions';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const GroupPurcase = () => {
   const [description, setDescription] = useState('');
@@ -17,13 +18,14 @@ const GroupPurcase = () => {
   const [maxParticipants, setMaxParticipants] = useState(2);
   const [deadline, setDeadline] = useState('');
   const [reason, setReason] = useState('');
-  const [reasonOption, setReasonOption] = useState('bulk_discount');
-  const [deliveryMethod, setDeliveryMethod] = useState('direct');
+  const [reasonOption, setReasonOption] = useState('하나를 구매해서 나눠서 사용해봐요!');
+  const [deliveryMethod, setDeliveryMethod] = useState('직거래');
   const [shippingCost, setShippingCost] = useState('');
   const [direct, setDirect] = useState('');
 
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { data } = useSession();
 
   const product = useRecoilValue(storeState);
   const { mutateAsync, isLoading } = useMutation(createPurchase, {
@@ -51,6 +53,7 @@ const GroupPurcase = () => {
     }
 
     const groupData = {
+      image: product.image,
       title: stripTags(product.title),
       description,
       expectedPrice: Number(expectedPrice),
@@ -62,6 +65,7 @@ const GroupPurcase = () => {
       productId: Number(product.productId),
       productCategory: product.category3,
       direct,
+      userId: Number(data?.user.id),
     };
 
     try {
@@ -83,7 +87,6 @@ const GroupPurcase = () => {
     <div className="max-w-2xl mx-auto mt-10 p-6">
       <h1 className="text-xl font-bold mb-6 text-center">공동구매 생성</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Product Info */}
         <div className="flex flex-col justify-center gap-2 items-center p-3 border-2 rounded-2xl">
           <label className="block text-xl font-semibold text-gray-800">상품명</label>
           <p className="text-lg text-gray-600 font-medium text-center">{stripTags(product.title)}</p>
@@ -99,7 +102,6 @@ const GroupPurcase = () => {
           />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700">설명</label>
           <textarea
@@ -113,7 +115,6 @@ const GroupPurcase = () => {
           />
         </div>
 
-        {/* Expected Price & Max Participants */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700">예상 단가 (원)</label>
@@ -156,10 +157,10 @@ const GroupPurcase = () => {
             value={reasonOption}
             onChange={(e) => setReasonOption(e.target.value)}
             className="w-full border border-gray-300 rounded-xl p-3 bg-white focus:outline-none focus:ring-2 focus:ring-darkPink mb-2">
-            <option value="bulk_discount">하나를 구매해서 나눠서 사용해봐요!</option>
-            <option value="rare_item">최소 주문 금액을 맞추려고 해요!</option>
-            <option value="save_on_shipping">배송비 절약하고 싶어요! </option>
-            <option value="other">기타</option>
+            <option value="하나를 구매해서 나눠서 사용해봐요!">하나를 구매해서 나눠서 사용해봐요!</option>
+            <option value="최소 주문 금액을 맞추려고 해요!">최소 주문 금액을 맞추려고 해요!</option>
+            <option value="배송비 절약하고 싶어요!">배송비 절약하고 싶어요! </option>
+            <option value="기타">기타</option>
           </select>
           {reasonOption === 'other' && (
             <textarea
@@ -180,10 +181,10 @@ const GroupPurcase = () => {
             value={deliveryMethod}
             onChange={(e) => setDeliveryMethod(e.target.value)}
             className="w-full border border-gray-300 rounded-xl p-3 bg-white focus:outline-none focus:ring-2 focus:ring-darkPink">
-            <option value="direct">직거래</option>
-            <option value="shipping">택배 배송</option>
+            <option value="직거래">직거래</option>
+            <option value="택배 배송">택배 배송</option>
           </select>
-          {deliveryMethod === 'shipping' && (
+          {deliveryMethod === '택배 배송' && (
             <Input
               name="shippingCost"
               type="number"
@@ -192,7 +193,7 @@ const GroupPurcase = () => {
               placeholder="추가 배송비 (원)"
             />
           )}
-          {deliveryMethod === 'direct' && (
+          {deliveryMethod === '직거래' && (
             <Input
               name="direct"
               type="text"
@@ -203,7 +204,6 @@ const GroupPurcase = () => {
           )}
         </div>
 
-        {/* Submit Button */}
         <Button type="submit">공동구매 생성</Button>
       </form>
     </div>

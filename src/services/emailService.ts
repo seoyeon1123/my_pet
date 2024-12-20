@@ -11,6 +11,20 @@ export const sendVerificationCode = async (email: string) => {
 
   return response.json();
 };
+
+export const sendEmail = async (email: string, product: string, deadline: string) => {
+  const response = await fetch('/api/sendEmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, product, deadline }),
+  });
+
+  if (!response.ok) {
+    throw new Error('이메일 전송에 실패했습니다. 서버 오류를 확인하세요.');
+  }
+
+  return response.json();
+};
 export const verifyCode = async (email: string, code: string) => {
   try {
     const response = await fetch('/api/verifyCode', {
