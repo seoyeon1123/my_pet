@@ -27,9 +27,13 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: userData, isLoading: isUserLoading } = useQuery(['user', data?.userId], () => FindUser(data?.userId!), {
-    enabled: !!data?.userId,
-  });
+  const { data: userData, isLoading: isUserLoading } = useQuery(
+    ['user', data?.userId],
+    () => (data?.userId ? FindUser(data.userId) : Promise.resolve(null)),
+    {
+      enabled: !!data?.userId, // userId가 존재할 때만 쿼리 실행
+    },
+  );
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);

@@ -1,7 +1,7 @@
 'use client';
 import GetGroupPurchase from '@/app/home/store/group_purchase/[productId]/actions';
 import { GroupPurchase } from '@/types/group_purchase';
-import { BellAlertIcon, CalendarDaysIcon, UserIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useQuery } from 'react-query';
 import dogcatIcon from '../../asserts/store/dogcatIcon.png';

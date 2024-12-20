@@ -46,6 +46,7 @@ export const sendConfirmationEmail = async (toEmail: string, product: string, de
     await transporter.sendMail(mailOptions);
     return { success: true, message: '인증번호가 전송되었습니다.' };
   } catch (error) {
+    console.log(error);
     throw new Error('이메일 전송에 실패했습니다.');
   }
 };

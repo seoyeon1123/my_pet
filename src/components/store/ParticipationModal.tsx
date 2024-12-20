@@ -26,11 +26,13 @@ const ParticipationModal = ({ closeModal, groupPurchaseId, userId, productName, 
           await sendEmail(email, productName, deadline);
         } catch (error) {
           alert('이메일 전송에 실패했습니다. 다시 시도해주세요.');
+          console.log(error);
         }
         closeModal();
       },
       onError: (error: Error) => {
         alert('신청 실패. 다시 시도해주세요.');
+        console.log(error);
       },
     },
   );
