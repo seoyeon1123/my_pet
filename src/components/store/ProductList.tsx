@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getProduct } from '@/app/home/store/actions';
+import { getProduct } from '@/app/(layout)/home/store/actions';
 import ProductSearchForm from './ProductSearch';
 import { formatToWon, stripTags } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';

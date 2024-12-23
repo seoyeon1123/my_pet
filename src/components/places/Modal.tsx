@@ -1,6 +1,6 @@
 import React from 'react';
 import { Place } from '@/types/kakaomap.types';
-import addPlace from '@/app/home/places/actions';
+import addPlace from '@/app/(layout)/home/places/actions';
 import { ShareIcon, BookmarkIcon } from '@heroicons/react/24/solid';
 
 const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): string => {

@@ -21,7 +21,7 @@ interface IPurchaseProps {
 }
 
 const createPurchase = async ({ data }: IPurchaseProps) => {
-  await db.groupPurchase.create({
+  const createdGroupPurchase = await db.groupPurchase.create({
     data: {
       userId: data.userId,
       image: data.image,
@@ -36,6 +36,13 @@ const createPurchase = async ({ data }: IPurchaseProps) => {
       productId: data.productId,
       productCategory: data.productCategory,
       direct: data.direct,
+    },
+  });
+
+  await db.groupPurchaseParticipant.create({
+    data: {
+      groupPurchaseId: createdGroupPurchase.id,
+      userId: data.userId,
     },
   });
 };

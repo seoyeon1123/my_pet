@@ -1,5 +1,6 @@
 'use client';
 
+import { ChatBubbleOvalLeftIcon } from '@heroicons/react/24/solid';
 import { EllipsisVerticalIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -44,11 +45,13 @@ const Header = () => {
         </Link>
       </div>
 
-      <div className="xs:hidden sm:hidden md:hidden w-40 flex flex-row justify-end">
+      <div className="xs:hidden sm:hidden md:hidden w-40 flex flex-row justify-end items-center">
+        <Link href={'/chatRoom'}>
+          <ChatBubbleOvalLeftIcon className=" w-7 h-7 text-yellow-500 font-extrabold" />
+        </Link>
         <UserIcon className="text-darkPink w-6 h-6 hover:text-darkPink" />
       </div>
 
-      {/* Mobile Menu Icon */}
       <div className="xl:hidden lg:hidden relative">
         <EllipsisVerticalIcon
           className="text-darkPink w-8 h-8 cursor-pointer"

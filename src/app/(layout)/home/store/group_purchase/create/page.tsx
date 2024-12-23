@@ -61,7 +61,7 @@ const GroupPurcase = () => {
       deadline: formattedDeadline,
       reason: reason || reasonOption,
       deliveryMethod,
-      shippingCost: deliveryMethod === 'shipping' ? (shippingCost ? parseFloat(shippingCost) : null) : null,
+      shippingCost: deliveryMethod === '택배 배송' ? (shippingCost ? parseFloat(shippingCost) : null) : null,
       productId: Number(product.productId),
       productCategory: product.category3,
       direct,

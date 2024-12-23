@@ -5,7 +5,7 @@ import Input from '../shared/Input';
 import Button from '../shared/Button';
 import { useRecoilValue } from 'recoil';
 import { placeState } from '@/state/PlaceState';
-import { addPlaceReview, getPlaceReview } from '@/app/home/places/actions';
+import { addPlaceReview, getPlaceReview } from '@/app/(layout)/home/places/actions';
 import { useSession } from 'next-auth/react';
 
 interface placeReview {

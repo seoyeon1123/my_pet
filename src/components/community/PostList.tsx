@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CommunityActions from '@/app/home/community/actions';
+import CommunityActions from '@/app/(layout)/home/community/actions';
 import Image from 'next/image';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import Link from 'next/link';

@@ -1,5 +1,5 @@
 'use client';
-import GetGroupPurchase from '@/app/home/store/group_purchase/[productId]/actions';
+import GetGroupPurchase from '@/app/(layout)/home/store/group_purchase/[productId]/actions';
 import { GroupPurchase } from '@/types/group_purchase';
 import { CalendarDaysIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -40,7 +40,9 @@ const GroupPurchaseList = ({ productId }: { productId: string }) => {
             <div className="space-y-4">
               <div className="flex flex-row items-center gap-2">
                 <Image src={dogcatIcon} alt="dogcatIcon" width={30} height={30} />
-                <p className="text-lg font-semibold  rounded-full inline-block">{purchase.reason}</p>
+                <p className="text-lg font-semibold rounded-full inline-block">
+                  {purchase.maxParticipants === purchase.participants?.length ? '인원 마감되었습니다' : purchase.reason}
+                </p>
               </div>
               <p className="text-gray-700 text-sm flex items-center">
                 <UserIcon className="size-5 text-red-500 mr-2" />

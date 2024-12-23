@@ -17,6 +17,7 @@ import ParticipationModal from '@/components/store/ParticipationModal';
 import { useSession } from 'next-auth/react';
 
 import { useMemo } from 'react';
+import { formatToWon } from '@/lib/utils';
 
 const GroupPurchaseListDetail = ({ params }: { params: { productId: string; listId: string } }) => {
   const { productId, listId } = params;
@@ -31,7 +32,7 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
     ['user', data?.userId],
     () => (data?.userId ? FindUser(data.userId) : Promise.resolve(null)),
     {
-      enabled: !!data?.userId, // userId가 존재할 때만 쿼리 실행
+      enabled: !!data?.userId,
     },
   );
 
@@ -42,6 +43,10 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
     if (!data?.participants || !userSession?.user.id) return false;
     return data.participants?.some((participant) => participant.userId.toString() === userSession.user.id.toString());
   }, [data, userSession]);
+
+  const isFullyBooked = useMemo(() => {
+    return data?.participants?.length! >= data?.maxParticipants!;
+  }, [data]);
 
   if (isLoading || isUserLoading) return <p>Loading...</p>;
   if (!data) return <p>공동 구매 정보를 찾을 수 없습니다.</p>;
@@ -83,7 +88,7 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
           <p className="text-gray-700 flex items-center gap-2">
             <BanknotesIcon className="w-5 h-5 text-green-600" />
             <span className="font-semibold">예상 가격:</span>
-            <span className="text-gray-600">{data.expectedPrice}원</span>
+            <span className="text-gray-600">{formatToWon(data.expectedPrice)}</span>
             <span>(조금은 변동이 있을 수도 있습니다 🙏🏼)</span>
           </p>
           <p className="text-gray-700 flex items-center gap-2">
@@ -94,7 +99,7 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
             {data.deliveryMethod === '직거래' ? (
               <span className="text-gray-600">{data.direct}</span>
             ) : (
-              <span className="text-gray-600">{data.shippingCost}</span>
+              <span className="text-gray-600">{formatToWon(data.shippingCost)}</span>
             )}
           </p>
         </div>
@@ -102,7 +107,11 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
         {userData?.id == userSession?.user.id ? null : (
           <>
             <div className="fixed bottom-6 right-6">
-              {isAlreadyParticipated ? (
+              {isFullyBooked ? (
+                <button className="bg-gray-400 text-white px-6 py-3 rounded-full shadow-lg cursor-not-allowed">
+                  마감
+                </button>
+              ) : isAlreadyParticipated ? (
                 <button className="bg-gray-400 text-white px-6 py-3 rounded-full shadow-lg cursor-not-allowed">
                   신청 완료
                 </button>

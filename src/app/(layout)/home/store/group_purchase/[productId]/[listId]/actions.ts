@@ -38,6 +38,7 @@ const GetGroupPurchaseDetail = async (productId: string, listId: string) => {
 };
 
 export const CreateGroupPurchaseParticipant = async (email: string, groupPurchaseId: number, userId: number) => {
+  // 참가자 추가
   const newParticipant = await db.groupPurchaseParticipant.create({
     data: {
       userId,
@@ -45,7 +46,33 @@ export const CreateGroupPurchaseParticipant = async (email: string, groupPurchas
       groupPurchaseId,
     },
   });
-  return newParticipant;
+
+  // 공동구매 정보 가져오기
+  const groupPurchase = await db.groupPurchase.findUnique({
+    where: { id: groupPurchaseId },
+    include: { participants: true },
+  });
+
+  if (!groupPurchase) {
+    throw new Error('공동구매를 찾을 수 없습니다.');
+  }
+
+  if (groupPurchase.participants.length === groupPurchase.maxParticipants) {
+    const chatRoom = await db.chatRoom.create({
+      data: {
+        groupPurchaseId,
+        participants: {
+          create: groupPurchase.participants.map((p) => ({
+            userId: p.userId,
+          })),
+        },
+      },
+    });
+
+    return { newParticipant, chatRoom };
+  }
+
+  return { newParticipant };
 };
 
 type User = {
@@ -60,7 +87,7 @@ export const FindUser = async (id: number): Promise<User | null> => {
       id,
     },
     select: {
-      id: true, // id 필드를 추가
+      id: true,
       username: true,
       email: true,
     },

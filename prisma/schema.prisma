@@ -23,6 +23,9 @@ model User {
   Review Review[]
   GroupPurchase GroupPurchase[]
   GroupPurchaseParticipant GroupPurchaseParticipant[]
+  ChatRoomParticipant ChatRoomParticipant[] 
+   message Message[]
+
 
 }
 
@@ -130,18 +133,50 @@ model GroupPurchase {
   productCategory  String
   participants     GroupPurchaseParticipant[]
   image            String
-  userId           Int       // 공동구매를 생성한 사용자 ID
-  user             User      @relation(fields: [userId], references: [id]) // User와 연결
+  userId           Int       
+  user             User      @relation(fields: [userId], references: [id]) 
+  chatRooms        ChatRoom[] 
 }
 
 model GroupPurchaseParticipant {
   id               Int       @id @default(autoincrement())
-  email            String    // 참여자의 이메일
+  email            String?    // 참여자의 이메일
   groupPurchaseId  Int       // 참여한 공동구매의 ID
   createdAt        DateTime  @default(now())
   userId           Int       // 참여한 사용자 ID
   user             User      @relation(fields: [userId], references: [id]) // User와 연결
-
   groupPurchase    GroupPurchase @relation(fields: [groupPurchaseId], references: [id]) // GroupPurchase와 연결
 }
 
+model ChatRoom {
+  id               Int                @id @default(autoincrement())
+  groupPurchaseId  Int
+  participants     ChatRoomParticipant[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  groupPurchase    GroupPurchase      @relation(fields: [groupPurchaseId], references: [id]) 
+
+   message Message[]
+}
+
+model ChatRoomParticipant {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  chatRoomId Int
+
+  user      User     @relation(fields: [userId], references: [id]) // User와 연결
+  chatRoom  ChatRoom @relation(fields: [chatRoomId], references: [id]) // ChatRoom과 연결
+ 
+}
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  content     String    // 메시지 내용
+  userId      Int       // 메시지를 보낸 사용자 ID
+  chatRoomId  Int       // 메시지가 속한 채팅방 ID
+  createdAt   DateTime  @default(now()) // 메시지 전송 시간
+
+  user        User      @relation(fields: [userId], references: [id]) // 사용자와 연결
+  chatRoom    ChatRoom  @relation(fields: [chatRoomId], references: [id]) // 채팅방과 연결
+}

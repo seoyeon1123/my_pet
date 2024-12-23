@@ -1,6 +1,6 @@
 export interface GroupPurchase {
-  id: number;
   productId: bigint;
+  id: number;
   title: string;
   description: string;
   expectedPrice: number;
@@ -9,8 +9,5 @@ export interface GroupPurchase {
   reason: string;
   deliveryMethod: string;
   shippingCost: number | null;
-  participants: {
-    email: string;
-    groupPurchaseId: number;
-  }[];
+  participants: { email: string; groupPurchaseId: number }[];
 }

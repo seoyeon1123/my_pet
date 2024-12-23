@@ -31,7 +31,14 @@ const GetGroupPurchase = async (productId: number) => {
     },
   });
 
-  return groupPurchase;
+  // participants.email이 null인 경우 빈 문자열로 처리
+  return groupPurchase.map((purchase) => ({
+    ...purchase,
+    participants: purchase.participants.map((participant) => ({
+      ...participant,
+      email: participant.email || '', // null을 빈 문자열로 처리
+    })),
+  }));
 };
 
 export default GetGroupPurchase;
