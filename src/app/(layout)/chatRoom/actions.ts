@@ -7,7 +7,9 @@ const GetChatRoomList = async (userId: number) => {
     where: {
       participants: {
         some: {
-          userId: userId,
+          user: {
+            id: userId,
+          },
         },
       },
     },
@@ -17,13 +19,14 @@ const GetChatRoomList = async (userId: number) => {
           user: {
             select: {
               username: true,
+              id: true,
             },
           },
         },
       },
       groupPurchase: {
         select: {
-          title: true, // 'select'를 사용하여 'title'만 가져옴
+          title: true,
         },
       },
     },

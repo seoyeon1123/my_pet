@@ -17,6 +17,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
     enabled: !!chatRoomId,
     onSuccess: (data) => {
       setMessages(data);
+      console.log(data);
     },
   });
 
@@ -60,41 +61,47 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-between">
-      <div className="flex-grow p-4 space-y-4 chat-container overflow-auto">
-        {messages?.map((msg: any) => (
-          <div key={msg.id} className={`flex justify-${msg.userId === userId ? 'end' : 'start'} items-start mb-4`}>
-            {msg.userId !== userId && <div className="text-xs text-gray-500 mr-2">{msg.user.username}</div>}
-            <div
-              className={`max-w-xs p-3 rounded-lg shadow ${
-                msg.userId === userId
-                  ? 'bg-blue-500 text-white rounded-br-none'
-                  : 'bg-gray-200 text-black rounded-bl-none'
-              }`}>
-              <div className="text-sm">{msg.content}</div>
-              <div className="text-xs text-gray-400 mt-1 text-right">
-                {new Date(msg.createdAt).toLocaleTimeString('ko-KR', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-col w-full max-w-7xl mx-auto justify-center items-center bg-white border border-neutral-200 rounded-2xl">
+        <div className="flex-grow p-4 space-y-4 chat-container overflow-auto w-full">
+          {messages?.map((msg: any) => (
+            <div key={msg.id} className={`flex justify-${msg.userId === userId ? 'end' : 'start'} items-start mb-4`}>
+              <div
+                className={`max-w-xs p-3 rounded-lg shadow ${
+                  msg.userId === userId
+                    ? 'bg-darkPink text-white rounded-br-none'
+                    : 'bg-gray-200 text-black rounded-bl-none'
+                }`}>
+                {msg.userId !== userId && (
+                  <div className="text-xs font-bold text-gray-700 mb-1">
+                    {msg.user?.username || '알 수 없는 사용자'}
+                  </div>
+                )}
+                <div className="text-sm">{msg.content}</div>
+                <div className="text-xs text-gray-300 mt-1 text-right">
+                  {new Date(msg.createdAt).toLocaleTimeString('ko-KR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <div className="input flex items-center p-4 bg-white border-t">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="메시지를 입력하세요..."
-          className="flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={handleSendMessage}
-          className="ml-2 p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-          전송
-        </button>
+          ))}
+        </div>
+        <div className="input flex items-center p-4 bg-white border-t w-full">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="메시지를 입력하세요..."
+            className="flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-darkPink"
+          />
+          <button
+            onClick={handleSendMessage}
+            className="ml-2 p-2 bg-darkPink text-white rounded-lg hover:bg-darkPink transition">
+            전송
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -25,9 +25,11 @@ export const messageList = async (chatRoomId: number) => {
     select: {
       content: true,
       createdAt: true,
+      userId: true,
       user: {
         select: {
           username: true,
+          id: true,
         },
       },
     },
