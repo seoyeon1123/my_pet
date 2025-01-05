@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import GetChatRoomList from './actions';
+import { useSession } from 'next-auth/react';
 
-type ChatRoom = {
+interface ChatRoom {
   id: number;
   groupPurchase?: {
     title: string;
@@ -16,10 +17,12 @@ type ChatRoom = {
   }[];
   lastMessage?: string;
   updatedAt: Date;
-};
+}
 
-const ChatRoomList = ({ userId }: { userId: number }) => {
+const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const { data } = useSession();
+  const userId = Number(data?.user.id);
 
   useEffect(() => {
     const fetchChatRooms = async () => {
