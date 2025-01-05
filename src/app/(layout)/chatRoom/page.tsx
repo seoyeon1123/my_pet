@@ -3,12 +3,27 @@
 import { useEffect, useState } from 'react';
 import GetChatRoomList from './actions';
 
+type ChatRoom = {
+  id: number;
+  groupPurchase?: {
+    title: string;
+  };
+  participants: {
+    id: number;
+    user?: {
+      username: string | null;
+    };
+  }[];
+  lastMessage?: string;
+  updatedAt: Date;
+};
+
 const ChatRoomList = ({ userId }: { userId: number }) => {
-  const [chatRooms, setChatRooms] = useState<any[]>([]);
+  const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
 
   useEffect(() => {
     const fetchChatRooms = async () => {
-      const rooms = await GetChatRoomList(userId);
+      const rooms: ChatRoom[] = await GetChatRoomList(userId);
       setChatRooms(rooms);
     };
 
@@ -33,7 +48,7 @@ const ChatRoomList = ({ userId }: { userId: number }) => {
                 {chatRoom.participants && chatRoom.participants.length > 0 && (
                   <p className="text-sm text-gray-500 mt-1">
                     참여자:
-                    {chatRoom.participants.map((participant: any, index: number) => (
+                    {chatRoom.participants.map((participant, index) => (
                       <span key={participant.id}>
                         {participant.user?.username || '알 수 없음'}
                         {index < chatRoom.participants.length - 1 ? ', ' : ''}

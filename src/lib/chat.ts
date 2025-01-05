@@ -1,6 +1,14 @@
 import { supabase } from './supabaseClient';
 
-export const subscribeToMessages = (chatRoomId: number, onMessage: (message: any) => void) => {
+interface Message {
+  id: number;
+  content: string;
+  userId: number;
+  chatRoomId: number;
+  createdAt: Date;
+}
+
+export const subscribeToMessages = (chatRoomId: number, onMessage: (message: Message) => void) => {
   const subscription = supabase
     .channel(`chatRoom:${chatRoomId}`)
     .on(
@@ -11,9 +19,11 @@ export const subscribeToMessages = (chatRoomId: number, onMessage: (message: any
         table: 'Message',
         filter: `chatRoomId=eq.${chatRoomId}`,
       },
-      (payload) => {
-        console.log('새 메시지:', payload.new);
-        onMessage(payload.new);
+      (payload: { new: Message }) => {
+        // Directly type `payload.new` as `Message`
+        const newMessage = payload.new; // No need for type casting anymore
+        console.log('새 메시지:', newMessage);
+        onMessage(newMessage); // Pass the typed message to the callback
       },
     )
     .subscribe();

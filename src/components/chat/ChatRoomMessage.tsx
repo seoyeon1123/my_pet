@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -5,15 +6,16 @@ import { messageList, sendMessage } from '@/app/(layout)/chatRoom/[id]/actions';
 import { useSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
 import { subscribeToMessages } from '@/lib/chat'; // 실시간 구독 함수
+import { IChatRoomMessageProps } from '@/types/chatMessage';
 
 const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const { data: session } = useSession();
   const userId = Number(session?.user.id);
 
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<IChatRoomMessageProps[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const { data, isLoading, error } = useQuery(['messages', chatRoomId], () => messageList(chatRoomId), {
+  const { isLoading, error } = useQuery(['messages', chatRoomId], () => messageList(chatRoomId), {
     enabled: !!chatRoomId,
     onSuccess: (data) => {
       setMessages(data);
@@ -24,7 +26,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   useEffect(() => {
     if (!chatRoomId) return;
 
-    const unsubscribe = subscribeToMessages(chatRoomId, (message) => {
+    const unsubscribe = subscribeToMessages(chatRoomId, (message: IChatRoomMessageProps) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
@@ -65,6 +67,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
       <div className="flex flex-col w-full max-w-7xl mx-auto justify-center items-center bg-white border border-neutral-200 rounded-2xl">
         <div className="flex-grow p-4 space-y-4 chat-container overflow-auto w-full">
           {messages?.map((msg: any) => (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <div key={msg.id} className={`flex justify-${msg.userId === userId ? 'end' : 'start'} items-start mb-4`}>
               <div
                 className={`max-w-xs p-3 rounded-lg shadow ${
