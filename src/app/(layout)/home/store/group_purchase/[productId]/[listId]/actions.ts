@@ -38,16 +38,15 @@ const GetGroupPurchaseDetail = async (productId: string, listId: string) => {
 };
 
 export const CreateGroupPurchaseParticipant = async (email: string, groupPurchaseId: number, userId: number) => {
-  // 참가자 추가
   const newParticipant = await db.groupPurchaseParticipant.create({
     data: {
       userId,
       email,
       groupPurchaseId,
+      isHost: false,
     },
   });
 
-  // 공동구매 정보 가져오기
   const groupPurchase = await db.groupPurchase.findUnique({
     where: { id: groupPurchaseId },
     include: { participants: true },

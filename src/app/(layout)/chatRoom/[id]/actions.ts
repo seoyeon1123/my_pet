@@ -23,6 +23,17 @@ export const ProductInfo = async (chatRoomId: number) => {
       groupPurchase: {
         select: {
           title: true,
+          productId: true,
+          participants: {
+            select: {
+              isHost: true,
+              user: {
+                select: {
+                  username: true,
+                },
+              },
+            },
+          },
         },
       },
       participants: {
@@ -70,4 +81,149 @@ export const messageList = async (chatRoomId: number) => {
   });
 
   return messageList;
+};
+
+interface IMeetingProps {
+  productId: bigint | undefined;
+  meetingLocation: string;
+  meetingTime: string;
+}
+
+export const Meeting = async ({ productId, meetingLocation, meetingTime }: IMeetingProps) => {
+  const groupPurchase = await db.groupPurchase.findFirst({
+    where: {
+      productId: productId,
+    },
+  });
+
+  if (!groupPurchase) {
+    throw new Error('해당 상품에 대한 공동구매를 찾을 수 없습니다.');
+  }
+
+  const addMeeting = await db.groupPurchase.update({
+    where: {
+      id: groupPurchase.id,
+    },
+    data: {
+      meetingLocation: meetingLocation,
+      meetingTime: meetingTime,
+    },
+  });
+
+  return addMeeting;
+};
+
+interface IInvoiceProps {
+  productId: bigint | undefined;
+  selectedCourier: string;
+  trackingNumber: string;
+  userId: number; // 송장 등록을 요청한 사용자 (호스트)
+  recipientId: number; // 송장을 등록할 대상 사용자 (호스트가 아닌 참여자)
+}
+
+export const Invoice = async ({ productId, selectedCourier, trackingNumber, userId, recipientId }: IInvoiceProps) => {
+  // 해당 상품에 대한 공동구매 정보 찾기
+  const groupPurchase = await db.groupPurchase.findFirst({
+    where: {
+      productId: productId,
+    },
+  });
+
+  if (!groupPurchase) {
+    throw new Error('해당 상품에 대한 공동구매를 찾을 수 없습니다.');
+  }
+
+  // 해당 공동구매에 참여한 특정 사용자 찾기
+  const participant = await db.groupPurchaseParticipant.findFirst({
+    where: {
+      groupPurchaseId: groupPurchase.id,
+      userId: recipientId, // 송장 등록 대상 사용자의 ID
+    },
+  });
+
+  if (!participant) {
+    throw new Error('해당 사용자는 이 공동구매에 참여하지 않았습니다.');
+  }
+
+  // 송장 정보 업데이트
+  const addInvoice = await db.groupPurchaseParticipant.update({
+    where: {
+      id: participant.id, // 참여자의 ID로 업데이트
+    },
+    data: {
+      invoiceCourier: selectedCourier,
+      invoiceTrackingNumber: trackingNumber,
+    },
+  });
+
+  return addInvoice;
+};
+
+interface Participant {
+  userId: number;
+  username: string | null;
+}
+
+export const getChatRoomHosts = async (chatRoomId: number) => {
+  const chatRoomParticipants = await db.chatRoomParticipant.findMany({
+    where: {
+      chatRoomId: chatRoomId,
+    },
+    select: {
+      userId: true,
+      user: {
+        select: {
+          username: true,
+        },
+      },
+      chatRoom: {
+        select: {
+          groupPurchase: {
+            select: {
+              participants: {
+                select: {
+                  isHost: true,
+                  userId: true,
+                  user: {
+                    select: {
+                      username: true,
+                    },
+                  }, // 참여자의 userId를 가져옵니다.
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  // 각 채팅방 참여자에 대해 해당 공동구매의 참여자들 중 isHost가 true인 유저와 false인 유저를 구분합니다.
+  const hosts: Participant[] = [];
+  const nonHosts: Participant[] = [];
+
+  chatRoomParticipants.forEach((participant) => {
+    // 채팅방에 참여한 유저의 userId를 통해 해당 공동구매 참여자의 isHost 값을 찾습니다.
+    const participantInfo = participant.chatRoom.groupPurchase.participants.find(
+      (p) => p.userId === participant.userId,
+    );
+
+    if (participantInfo?.isHost) {
+      hosts.push({
+        userId: participant.userId,
+        username: participant.user.username,
+      });
+    } else {
+      nonHosts.push({
+        userId: participant.userId,
+        username: participant.user.username,
+      });
+    }
+  });
+
+  // 결과 반환
+  return {
+    hosts,
+    nonHosts,
+  };
 };

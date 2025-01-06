@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
-import { messageList, ProductInfo, sendMessage } from '@/app/(layout)/chatRoom/[id]/actions';
+import { getChatRoomHosts, messageList, ProductInfo, sendMessage } from '@/app/(layout)/chatRoom/[id]/actions';
 import { useSession } from 'next-auth/react';
 import { useQuery } from 'react-query';
 import { subscribeToMessages } from '@/lib/chat';
 import { IChatRoomMessageProps } from '@/types/chatMessage';
-import ChatRoomProduct from './ChatRoomProduct';
-import Input from '../shared/Input';
-import Button from '../shared/Button';
+import ChatPlusModal from './ChatPlusModal';
+
+type Participant = {
+  userId: number;
+  username: string | null;
+};
 
 const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const { data: session } = useSession();
@@ -17,6 +17,8 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
 
   const [messages, setMessages] = useState<IChatRoomMessageProps[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [hosts, setHosts] = useState<Participant[]>([]); // 주최자 상태 추가
+  const [nonHosts, setNonHosts] = useState<Participant[]>([]); // 참여자 상태 추가
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { isLoading, error } = useQuery(['messages', chatRoomId], () => messageList(chatRoomId), {
@@ -26,6 +28,19 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
       console.log(data);
     },
   });
+
+  // getChatRoomHosts 함수 사용하여 주최자와 참여자 구분
+  useEffect(() => {
+    if (!chatRoomId) return;
+
+    const fetchHosts = async () => {
+      const { hosts, nonHosts } = await getChatRoomHosts(chatRoomId);
+      setHosts(hosts);
+      setNonHosts(nonHosts);
+    };
+
+    fetchHosts();
+  }, [chatRoomId]);
 
   useEffect(() => {
     if (!chatRoomId) return;
@@ -72,23 +87,46 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
     return <div className="text-center p-4 text-red-500">오류가 발생했습니다!</div>;
   }
 
+  // 주최자인지 확인
+  const isHost = hosts.some((host) => host.userId === userId);
+
+  const participants = [
+    ...hosts.map((host) => ({
+      userId: host.userId,
+      chatRoomId,
+      productId: data?.groupPurchase.productId,
+      isHost: true,
+      username: host.username, // 주최자 username 추가
+    })),
+    ...nonHosts.map((nonHost) => ({
+      userId: nonHost.userId,
+      chatRoomId,
+      productId: data?.groupPurchase.productId,
+      isHost: false,
+      username: nonHost.username, // 참여자 username 추가
+    })),
+  ];
+
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-col w-full max-w-4xl mx-auto justify-center items-start bg-white border border-neutral-200 rounded-2xl shadow-lg">
+    <div className="flex flex-col ">
+      <div className="flex flex-col w-full max-w-4xl mx-auto justify-center items-start bg-white border border-neutral-200 rounded-2xl shadow-lg min-h-screen">
         <div className="p-5 flex flex-col justify-start items-start sticky top-[80px] bg-white w-full z-20 border  ">
           <h1 className="text-2xl font-bold text-gray-800">{data?.groupPurchase.title}</h1>
           <div className="flex flex-row gap-2 mt-2 *:text-sm justify-center items-center">
             <h2 className="font-semibold text-gray-400">참여인원 :</h2>
-            {data?.participants.map((v, index) => {
-              return (
-                <div key={index} className="bg-mediumPink rounded-xl text-white px-2 py-1">
-                  {v.user.username}
-                </div>
-              );
-            })}
+            {hosts.map((v, index) => (
+              <div key={index} className="bg-mediumPink rounded-xl text-white px-2 py-1">
+                주최자 {v.username}
+              </div>
+            ))}
+            {nonHosts.map((v, index) => (
+              <div key={index} className="bg-gray-200 rounded-xl text-black px-2 py-1">
+                {v.username}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="flex-grow p-4 chat-container overflow-auto w-full">
+        <div className="flex-grow p-4 chat-container overflow-auto w-full flex flex-col justify-end">
           {messages?.map((msg: any, index: number) => {
             const currentDate = formatDate(msg.createdAt);
             const prevDate = index > 0 ? formatDate(messages[index - 1]?.createdAt) : null;
@@ -139,7 +177,16 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
           })}
           <div ref={bottomRef} />
         </div>
-        <div className="input flex items-center p-4 bg-white border-t w-full sticky bottom-0">
+        <div className="input flex items-center p-4 bg-white border-t w-full sticky bottom-0 ">
+          {isHost && (
+            <ChatPlusModal
+              userId={userId}
+              chatRoomId={chatRoomId}
+              productId={data?.groupPurchase.productId}
+              isHost={isHost}
+              participants={participants} // participants 추가
+            />
+          )}
           <input
             type="text"
             value={newMessage}

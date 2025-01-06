@@ -21,6 +21,7 @@ interface IPurchaseProps {
 }
 
 const createPurchase = async ({ data }: IPurchaseProps) => {
+  // 공동구매 생성
   const createdGroupPurchase = await db.groupPurchase.create({
     data: {
       userId: data.userId,
@@ -43,6 +44,7 @@ const createPurchase = async ({ data }: IPurchaseProps) => {
     data: {
       groupPurchaseId: createdGroupPurchase.id,
       userId: data.userId,
+      isHost: true,
     },
   });
 };

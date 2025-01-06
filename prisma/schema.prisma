@@ -136,16 +136,25 @@ model GroupPurchase {
   userId           Int       
   user             User      @relation(fields: [userId], references: [id]) 
   chatRooms        ChatRoom[] 
+
+   meetingLocation  String?   // 약속 장소
+  meetingTime      DateTime? // 약속 시간
+
 }
 
 model GroupPurchaseParticipant {
   id               Int       @id @default(autoincrement())
-  email            String?    // 참여자의 이메일
+  email            String?   // 참여자의 이메일
   groupPurchaseId  Int       // 참여한 공동구매의 ID
   createdAt        DateTime  @default(now())
   userId           Int       // 참여한 사용자 ID
-  user             User      @relation(fields: [userId], references: [id]) // User와 연결
-  groupPurchase    GroupPurchase @relation(fields: [groupPurchaseId], references: [id]) // GroupPurchase와 연결
+  user             User      @relation(fields: [userId], references: [id])
+  groupPurchase    GroupPurchase @relation(fields: [groupPurchaseId], references: [id])
+  
+  invoiceCourier   String?   // 송장 택배사
+  invoiceTrackingNumber String? // 송장 번호
+
+  isHost           Boolean   @default(false) // 주최자 여부
 }
 
 model ChatRoom {

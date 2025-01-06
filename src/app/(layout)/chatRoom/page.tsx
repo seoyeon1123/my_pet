@@ -23,7 +23,6 @@ const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const { data, status } = useSession();
 
-  // 세션이 로딩 중이거나 데이터가 없는 경우를 처리
   const userId = data?.user?.id ? Number(data.user.id) : null;
 
   useEffect(() => {
