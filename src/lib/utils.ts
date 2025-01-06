@@ -16,7 +16,7 @@ export function formatToTime(date: string): string {
   const formatter = new Intl.DateTimeFormat('ko', {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true, // Ensures that the time is displayed in 12-hour format with AM/PM
+    hour12: true,
   });
 
   return formatter.format(time);
@@ -26,7 +26,7 @@ export function formatToDayAndTime(date: string): string {
   const dateObj = new Date(date);
 
   if (isNaN(dateObj.getTime())) {
-    return 'Invalid date'; // 유효하지 않은 날짜일 경우 반환
+    return 'Invalid date';
   }
 
   // 날짜 부분 포맷팅

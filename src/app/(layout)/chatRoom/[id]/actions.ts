@@ -1,6 +1,7 @@
 'use server';
 
 import db from '@/lib/db';
+import { tr } from 'date-fns/locale';
 
 export const sendMessage = async (chatRoomId: number, userId: number, content: string) => {
   const message = await db.message.create({
@@ -26,6 +27,8 @@ export const ProductInfo = async (chatRoomId: number) => {
           productId: true,
           participants: {
             select: {
+              invoiceTrackingNumber: true,
+              invoiceCourier: true,
               isHost: true,
               user: {
                 select: {
@@ -34,6 +37,8 @@ export const ProductInfo = async (chatRoomId: number) => {
               },
             },
           },
+          meetingLocation: true,
+          meetingTime: true,
         },
       },
       participants: {
@@ -100,13 +105,15 @@ export const Meeting = async ({ productId, meetingLocation, meetingTime }: IMeet
     throw new Error('해당 상품에 대한 공동구매를 찾을 수 없습니다.');
   }
 
+  const formattedMeetingTime = new Date(meetingTime).toISOString();
+
   const addMeeting = await db.groupPurchase.update({
     where: {
       id: groupPurchase.id,
     },
     data: {
       meetingLocation: meetingLocation,
-      meetingTime: meetingTime,
+      meetingTime: formattedMeetingTime,
     },
   });
 
@@ -117,12 +124,10 @@ interface IInvoiceProps {
   productId: bigint | undefined;
   selectedCourier: string;
   trackingNumber: string;
-  userId: number; // 송장 등록을 요청한 사용자 (호스트)
-  recipientId: number; // 송장을 등록할 대상 사용자 (호스트가 아닌 참여자)
+  recipientId: number | null;
 }
 
-export const Invoice = async ({ productId, selectedCourier, trackingNumber, userId, recipientId }: IInvoiceProps) => {
-  // 해당 상품에 대한 공동구매 정보 찾기
+export const Invoice = async ({ productId, selectedCourier, trackingNumber, recipientId }: IInvoiceProps) => {
   const groupPurchase = await db.groupPurchase.findFirst({
     where: {
       productId: productId,
@@ -132,12 +137,10 @@ export const Invoice = async ({ productId, selectedCourier, trackingNumber, user
   if (!groupPurchase) {
     throw new Error('해당 상품에 대한 공동구매를 찾을 수 없습니다.');
   }
-
-  // 해당 공동구매에 참여한 특정 사용자 찾기
   const participant = await db.groupPurchaseParticipant.findFirst({
     where: {
       groupPurchaseId: groupPurchase.id,
-      userId: recipientId, // 송장 등록 대상 사용자의 ID
+      userId: recipientId!,
     },
   });
 

@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { subscribeToMessages } from '@/lib/chat';
 import { IChatRoomMessageProps } from '@/types/chatMessage';
 import ChatPlusModal from './ChatPlusModal';
+import { BellAlertIcon } from '@heroicons/react/24/outline';
 
 type Participant = {
   userId: number;
@@ -17,8 +18,9 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
 
   const [messages, setMessages] = useState<IChatRoomMessageProps[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [hosts, setHosts] = useState<Participant[]>([]); // 주최자 상태 추가
-  const [nonHosts, setNonHosts] = useState<Participant[]>([]); // 참여자 상태 추가
+  const [hosts, setHosts] = useState<Participant[]>([]);
+  const [nonHosts, setNonHosts] = useState<Participant[]>([]);
+  const [showNotification, setShowNotification] = useState(false); // 알림 표시 상태
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { isLoading, error } = useQuery(['messages', chatRoomId], () => messageList(chatRoomId), {
@@ -29,7 +31,6 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
     },
   });
 
-  // getChatRoomHosts 함수 사용하여 주최자와 참여자 구분
   useEffect(() => {
     if (!chatRoomId) return;
 
@@ -79,6 +80,10 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
 
   const { data } = useQuery(['productInfo', chatRoomId], () => ProductInfo(chatRoomId));
 
+  const invoiceCourier = data?.groupPurchase.participants.map((v) => v.invoiceCourier);
+  const invoiceTrackingNumber = data?.groupPurchase.participants.map((v) => v.invoiceTrackingNumber);
+  console.log('invoiceCourier', invoiceCourier, 'invoiceTrackingNumber', invoiceTrackingNumber);
+
   if (isLoading) {
     return <div className="text-center p-4">로딩 중...</div>;
   }
@@ -87,7 +92,6 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
     return <div className="text-center p-4 text-red-500">오류가 발생했습니다!</div>;
   }
 
-  // 주최자인지 확인
   const isHost = hosts.some((host) => host.userId === userId);
 
   const participants = [
@@ -96,34 +100,80 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
       chatRoomId,
       productId: data?.groupPurchase.productId,
       isHost: true,
-      username: host.username, // 주최자 username 추가
+      username: host.username,
     })),
     ...nonHosts.map((nonHost) => ({
       userId: nonHost.userId,
       chatRoomId,
       productId: data?.groupPurchase.productId,
       isHost: false,
-      username: nonHost.username, // 참여자 username 추가
+      username: nonHost.username,
     })),
   ];
 
   return (
     <div className="flex flex-col ">
       <div className="flex flex-col w-full max-w-4xl mx-auto justify-center items-start bg-white border border-neutral-200 rounded-2xl shadow-lg min-h-screen">
-        <div className="p-5 flex flex-col justify-start items-start sticky top-[80px] bg-white w-full z-20 border  ">
-          <h1 className="text-2xl font-bold text-gray-800">{data?.groupPurchase.title}</h1>
-          <div className="flex flex-row gap-2 mt-2 *:text-sm justify-center items-center">
-            <h2 className="font-semibold text-gray-400">참여인원 :</h2>
-            {hosts.map((v, index) => (
-              <div key={index} className="bg-mediumPink rounded-xl text-white px-2 py-1">
-                주최자 {v.username}
+        <div className="p-5 flex flex-row justify-between items-start sticky top-[80px] bg-white w-full z-20 border">
+          <div className="flex flex-col justify-start items-start">
+            <h1 className="text-2xl font-bold text-gray-800">{data?.groupPurchase.title}</h1>
+            <div className="flex flex-row gap-2 mt-2 *:text-sm justify-center items-center">
+              <h2 className="font-semibold text-gray-400">참여인원 :</h2>
+              {hosts.map((v, index) => (
+                <div key={index} className="bg-mediumPink rounded-xl text-white px-2 py-1">
+                  주최자 {v.username}
+                </div>
+              ))}
+              {nonHosts.map((v, index) => (
+                <div key={index} className="bg-gray-200 rounded-xl text-black px-2 py-1">
+                  {v.username}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative">
+            {invoiceCourier || data?.groupPurchase.meetingLocation ? (
+              <BellAlertIcon
+                className="size-10 text-red-600 hover:animate-bounce transition-transform cursor-pointer"
+                onClick={() => setShowNotification(!showNotification)}
+              />
+            ) : null}
+            {showNotification && (
+              <div className="absolute -left-5 top-8 bg-white border border-neutral-300 shadow-lg rounded-lg p-4 w-72">
+                {invoiceCourier &&
+                invoiceTrackingNumber &&
+                invoiceCourier.some((courier) => courier !== null) &&
+                invoiceTrackingNumber.some((tracking) => tracking !== null) ? (
+                  <div className="mb-4">
+                    <h3 className="font-semibold text-gray-800">배송 정보</h3>
+                    {invoiceCourier
+                      .filter((courier) => courier !== null) // null 값 제외
+                      .map((courier, idx) => (
+                        <p key={idx} className="text-sm text-gray-600">
+                          {courier} : {invoiceTrackingNumber[idx]}
+                        </p>
+                      ))}
+                  </div>
+                ) : null}
+
+                {data?.groupPurchase.meetingLocation && data?.groupPurchase.meetingTime ? (
+                  <div>
+                    <h3 className="font-semibold text-gray-800">모임 정보</h3>
+                    <p className="text-sm text-gray-600">장소: {data.groupPurchase.meetingLocation}</p>
+                    <p className="text-sm text-gray-600">
+                      시간:{' '}
+                      {new Date(data.groupPurchase.meetingTime).toLocaleString('ko-KR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </p>
+                  </div>
+                ) : null}
               </div>
-            ))}
-            {nonHosts.map((v, index) => (
-              <div key={index} className="bg-gray-200 rounded-xl text-black px-2 py-1">
-                {v.username}
-              </div>
-            ))}
+            )}
           </div>
         </div>
         <div className="flex-grow p-4 chat-container overflow-auto w-full flex flex-col justify-end">
@@ -184,7 +234,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
               chatRoomId={chatRoomId}
               productId={data?.groupPurchase.productId}
               isHost={isHost}
-              participants={participants} // participants 추가
+              participants={participants}
             />
           )}
           <input

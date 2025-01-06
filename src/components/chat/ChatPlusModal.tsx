@@ -1,3 +1,5 @@
+import { Invoice, Meeting } from '@/app/(layout)/chatRoom/[id]/actions';
+import { formatToDayAndTime } from '@/lib/utils';
 import { ArchiveBoxIcon, MapIcon, MapPinIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -24,16 +26,15 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [meetingLocation, setMeetingLocation] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
-  const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [recipientId, setRecipientId] = useState<number | null>(null);
 
   const modifiedParticipants = participants.map((participant) => ({
-    id: participant.userId, // userId를 id로 변환
+    id: participant.userId,
     name: ` ${participant.username}`,
   }));
 
-  // 송장 등록 핸들러
   const handleInvoiceSubmit = async () => {
-    if (!selectedUser) {
+    if (!setRecipientId) {
       alert('송장을 등록할 사용자를 선택해주세요.');
       return;
     }
@@ -46,9 +47,13 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
     try {
       console.log('택배사:', selectedCourier);
       console.log('송장 번호:', trackingNumber);
-      console.log('선택된 사용자 ID:', selectedUser);
-      // 송장 등록 로직
+      console.log('선택된 사용자 ID:', recipientId);
+      Invoice({ productId, selectedCourier, trackingNumber, recipientId });
+      setIsInvoiceModalOpen(false);
       alert('송장이 등록되었습니다!');
+      setSelectedCourier('');
+      setTrackingNumber('');
+      setRecipientId(null);
     } catch (error) {
       console.error('송장 등록 실패:', error);
       alert('송장 등록에 실패했습니다.');
@@ -57,7 +62,6 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
     }
   };
 
-  // 약속 설정 핸들러
   const handleMeetingSubmit = async () => {
     if (!meetingLocation || !meetingTime) {
       alert('장소와 시간을 모두 입력해주세요.');
@@ -66,8 +70,11 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
 
     setIsSubmitting(true);
     try {
-      // 약속 설정 로직
+      Meeting({ productId, meetingLocation, meetingTime });
+      setIsMeetingModalOpen(false);
       alert(`약속이 등록되었습니다!\n장소: ${meetingLocation}\n시간: ${meetingTime}`);
+      setMeetingLocation('');
+      setMeetingTime('');
     } catch (error) {
       console.error('약속 등록 실패:', error);
       alert('약속 등록에 실패했습니다.');
@@ -80,10 +87,10 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
 
   return (
     <div className="relative">
-      <PlusIcon className="size-8 text-darkPink" onClick={() => setClicked((prev) => !prev)} />
+      <PlusIcon className="size-8 text-darkPink pr-2 font-semibold" onClick={() => setClicked((prev) => !prev)} />
 
       {clicked && (
-        <div className="absolute -top-[75px]  bg-white flex flex-row gap-4">
+        <div className="absolute -top-[75px] *:text-white bg-white flex flex-row gap-3">
           <MapPinIcon className="size-10 bg-orange-600 rounded-full p-2" onClick={() => setIsMeetingModalOpen(true)} />
           <ArchiveBoxIcon
             className="size-10 bg-green-600 rounded-full p-2"
@@ -100,8 +107,8 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
             <div className="mt-4">
               <label>송장 등록할 사용자 선택</label>
               <select
-                value={selectedUser ?? ''}
-                onChange={(e) => setSelectedUser(Number(e.target.value))}
+                value={recipientId ?? ''}
+                onChange={(e) => setRecipientId(Number(e.target.value))}
                 className="w-full p-2 border rounded mt-2">
                 <option value="">사용자 선택</option>
                 {modifiedParticipants
@@ -153,7 +160,6 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
         </div>
       )}
 
-      {/* 약속 설정 모달 */}
       {isMeetingModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg w-96">
