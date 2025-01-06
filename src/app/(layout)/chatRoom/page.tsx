@@ -21,40 +21,45 @@ interface ChatRoom {
 
 const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
-  const { data } = useSession();
-  const userId = Number(data?.user.id);
+  const { data, status } = useSession();
+
+  // 세션이 로딩 중이거나 데이터가 없는 경우를 처리
+  const userId = data?.user?.id ? Number(data.user.id) : null;
 
   useEffect(() => {
-    const fetchChatRooms = async () => {
-      const rooms: ChatRoom[] = await GetChatRoomList(userId);
-      setChatRooms(rooms);
-    };
+    if (userId !== null) {
+      const fetchChatRooms = async () => {
+        const rooms: ChatRoom[] = await GetChatRoomList(userId);
+        setChatRooms(rooms);
+      };
 
-    fetchChatRooms();
+      fetchChatRooms();
+    }
   }, [userId]);
+
+  if (status === 'loading') {
+    return <div>로딩 중...</div>; // 세션이 로딩 중일 때 처리
+  }
+
+  if (!userId) {
+    return <div>로그인 정보가 없습니다.</div>; // 로그인되지 않았을 때 처리
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-semibold mb-4">참여한 채팅방 목록</h1>
-      <ul className="space-y-4">
+      <h1 className="text-2xl font-semibold mb-4">채팅</h1>
+      <ul className="list-none p-0 m-0">
         {chatRooms.map((chatRoom) => (
-          <li
-            key={chatRoom.id}
-            className="bg-white shadow-lg rounded-lg p-4 hover:shadow-2xl transition-shadow duration-300">
-            <a href={`/chatRoom/${chatRoom.id}`} className="flex items-center space-x-4">
-              <div className="flex-1">
-                {chatRoom.groupPurchase?.title && (
-                  <h3 className="text-lg font-semibold text-gray-800">{chatRoom.groupPurchase.title}</h3>
-                )}
-                <p className="text-sm text-gray-600">{chatRoom.lastMessage || '새로운 메시지'}</p>
-
-                {chatRoom.participants && chatRoom.participants.length > 0 && (
-                  <p className="text-sm text-gray-500 mt-1">
+          <li key={chatRoom.id} className="border-b border-gray-200 p-4">
+            <a href={`/chatRoom/${chatRoom.id}`} className="flex flex-row justify-between items-center">
+              <div>
+                <div className="text-lg font-semibold text-gray-800">{chatRoom.groupPurchase?.title}</div>
+                {chatRoom.participants.length > 0 && (
+                  <p className="text-sm text-gray-500 flex flex-row gap-2 mt-1 justify-start items-center">
                     참여자:
-                    {chatRoom.participants.map((participant, index) => (
-                      <span key={participant.id}>
+                    {chatRoom.participants.map((participant) => (
+                      <span key={participant.id} className="bg-darkPink rounded-3xl px-2 py-1 text-white">
                         {participant.user?.username || '알 수 없음'}
-                        {index < chatRoom.participants.length - 1 ? ', ' : ''}
                       </span>
                     ))}
                   </p>

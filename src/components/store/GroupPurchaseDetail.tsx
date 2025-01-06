@@ -27,17 +27,17 @@ const GroupPurchaseDetail = ({ productId }: { productId: string }) => {
 
   return (
     <div className=" mx-auto p-5">
-      <p>
+      <p className="xs:text-sm sm:text-sm ">
         {product.category1} &gt; {product.category2} &gt; {product.category3} &gt; {product.category4}
       </p>
       <hr className="border border-b border-neutral-300 my-5" />
 
-      <div className="flex flex-row justify-center items-center gap-5">
+      <div className="flex flex-row justify-center items-center gap-5 xs:flex-col sm:flex-col">
         {product.image && (
           <Image src={product.image} alt={product.title} width={500} height={500} className="rounded-xl" />
         )}
 
-        <div className="flex flex-col justify-around w-[500px] h-[500px]">
+        <div className="flex flex-col justify-around lg:w-[500px] lg:h-[500px]">
           <div>
             <p className="mb-4 space-x-2">
               <span className="font-semibold text-xl text-darkPink">{product.mallName}</span>

@@ -54,10 +54,12 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
   return (
     <div className="p-10 mx-auto max-w-4xl">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-darkPink mb-6 text-center">{data.title}</h1>
+        <h1 className="text-2xl font-bold text-darkPink mb-6 text-center xs:text-sm sm:text-sm md:text-lg">
+          {data.title}
+        </h1>
 
         <div className="flex justify-center mb-6">
-          <Image src={data.image} alt={data.title} width={300} height={300} className="rounded-lg shadow-md" />
+          <Image src={data.image} alt={data.title} width={300} height={300} className="rounded-lg shadow-md " />
         </div>
 
         {/* 설명 */}

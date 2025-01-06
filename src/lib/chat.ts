@@ -1,14 +1,7 @@
+import { IChatRoomMessageProps } from '@/types/chatMessage';
 import { supabase } from './supabaseClient';
 
-interface Message {
-  id: number;
-  content: string;
-  userId: number;
-  chatRoomId: number;
-  createdAt: Date;
-}
-
-export const subscribeToMessages = (chatRoomId: number, onMessage: (message: Message) => void) => {
+export const subscribeToMessages = (chatRoomId: number, onMessage: (message: IChatRoomMessageProps) => void) => {
   const subscription = supabase
     .channel(`chatRoom:${chatRoomId}`)
     .on(
@@ -19,7 +12,7 @@ export const subscribeToMessages = (chatRoomId: number, onMessage: (message: Mes
         table: 'Message',
         filter: `chatRoomId=eq.${chatRoomId}`,
       },
-      (payload: { new: Message }) => {
+      (payload: { new: IChatRoomMessageProps }) => {
         // Directly type `payload.new` as `Message`
         const newMessage = payload.new; // No need for type casting anymore
         console.log('새 메시지:', newMessage);

@@ -7,9 +7,7 @@ const GetChatRoomList = async (userId: number) => {
     where: {
       participants: {
         some: {
-          user: {
-            id: userId,
-          },
+          userId,
         },
       },
     },

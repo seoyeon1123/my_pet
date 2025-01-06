@@ -14,6 +14,31 @@ export const sendMessage = async (chatRoomId: number, userId: number, content: s
   return message;
 };
 
+export const ProductInfo = async (chatRoomId: number) => {
+  const chatRoomProduct = await db.chatRoom.findFirst({
+    where: {
+      id: chatRoomId,
+    },
+    select: {
+      groupPurchase: {
+        select: {
+          title: true,
+        },
+      },
+      participants: {
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return chatRoomProduct;
+};
+
 export const messageList = async (chatRoomId: number) => {
   const messageList = await db.message.findMany({
     where: {
@@ -30,6 +55,15 @@ export const messageList = async (chatRoomId: number) => {
         select: {
           username: true,
           id: true,
+        },
+      },
+      chatRoom: {
+        select: {
+          groupPurchase: {
+            select: {
+              title: true,
+            },
+          },
         },
       },
     },

@@ -24,14 +24,14 @@ const GroupPurchaseList = ({ productId }: { productId: string }) => {
   return (
     <div className="p-6 mx-auto">
       {data && data.length > 0 ? (
-        <h2 className="text-2xl font-semibold text-start mb-6">
+        <h2 className="text-2xl font-semibold text-start mb-6 xs:text-lg sm:text-lg">
           <strong className="text-darkPink mr-2">{data[0].title}</strong>의 공동 구매 리스트입니다!
         </h2>
       ) : (
         <h2 className="text-2xl font-semibold text-start mb-6">공동 구매 리스트가 없습니다.</h2>
       )}
 
-      <ul className="grid grid-cols-2 gap-4">
+      <ul className="grid grid-cols-2 gap-4 xs:grid-cols-1 sm:grid-cols-1">
         {data?.map((purchase) => (
           <Link
             href={`/home/store/group_purchase/${productId}/${purchase.id}`}

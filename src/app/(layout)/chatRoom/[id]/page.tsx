@@ -7,7 +7,6 @@ const ChatRoomMessage = ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <>
-      {/* <ChatRoomMessageList chatRoomId={chatRoomId} /> */}
       <ChatRoom chatRoomId={chatRoomId} />
     </>
   );
