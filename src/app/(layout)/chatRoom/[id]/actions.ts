@@ -24,6 +24,9 @@ export const ProductInfo = async (chatRoomId: number) => {
         select: {
           title: true,
           productId: true,
+          description: true,
+          image: true,
+          reason: true,
           participants: {
             select: {
               invoiceTrackingNumber: true,

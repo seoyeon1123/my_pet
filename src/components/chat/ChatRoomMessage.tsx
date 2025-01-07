@@ -8,6 +8,7 @@ import { subscribeToMessages } from '@/lib/chat';
 import { IChatRoomMessageProps } from '@/types/chatMessage';
 import ChatPlusModal from './ChatPlusModal';
 import { BellAlertIcon } from '@heroicons/react/24/outline';
+import { formatDateWeek } from '@/lib/utils';
 
 type Participant = {
   userId: number;
@@ -22,7 +23,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const [newMessage, setNewMessage] = useState('');
   const [hosts, setHosts] = useState<Participant[]>([]);
   const [nonHosts, setNonHosts] = useState<Participant[]>([]);
-  const [showNotification, setShowNotification] = useState(false); // 알림 표시 상태
+  const [showNotification, setShowNotification] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { isLoading, error } = useQuery(['messages', chatRoomId], () => messageList(chatRoomId), {
@@ -72,13 +73,6 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  const formatDate = (date: string | Date) => {
-    const d = new Date(date);
-    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}. ${
-      ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'][d.getDay()]
-    }`;
-  };
 
   const { data } = useQuery(['productInfo', chatRoomId], () => ProductInfo(chatRoomId));
 
@@ -191,8 +185,8 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
         </div>
         <div className="flex-grow p-4 chat-container overflow-auto w-full flex flex-col justify-end">
           {messages?.map((msg: any, index: number) => {
-            const currentDate = formatDate(msg.createdAt);
-            const prevDate = index > 0 ? formatDate(messages[index - 1]?.createdAt) : null;
+            const currentDate = formatDateWeek(msg.createdAt);
+            const prevDate = index > 0 ? formatDateWeek(messages[index - 1]?.createdAt) : null;
 
             return (
               <div key={msg.id}>

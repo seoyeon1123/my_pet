@@ -25,6 +25,9 @@ const GetChatRoomList = async (userId: number) => {
       groupPurchase: {
         select: {
           title: true,
+          image: true,
+          reason: true,
+          description: true,
         },
       },
     },

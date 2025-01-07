@@ -3,21 +3,8 @@
 import { useEffect, useState } from 'react';
 import GetChatRoomList from './actions';
 import { useSession } from 'next-auth/react';
-
-interface ChatRoom {
-  id: number;
-  groupPurchase?: {
-    title: string;
-  };
-  participants: {
-    id: number;
-    user?: {
-      username: string | null;
-    };
-  }[];
-  lastMessage?: string;
-  updatedAt: Date;
-}
+import { ChatRoom } from '@/types/chatRoom';
+import { useSetRecoilState } from 'recoil';
 
 const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
@@ -35,9 +22,8 @@ const ChatRoomList = () => {
       fetchChatRooms();
     }
   }, [userId]);
-
   if (status === 'loading') {
-    return <div>로딩 중...</div>; // 세션이 로딩 중일 때 처리
+    return <div>로딩 중...</div>;
   }
 
   if (!userId) {
@@ -49,7 +35,7 @@ const ChatRoomList = () => {
       <h1 className="text-2xl font-semibold mb-4">채팅</h1>
       <ul className="list-none p-0 m-0">
         {chatRooms.map((chatRoom) => (
-          <li key={chatRoom.id} className="border-b border-gray-200 p-4">
+          <li key={chatRoom.id} className="border-b border-gray-200 last:border-none p-4">
             <a href={`/chatRoom/${chatRoom.id}`} className="flex flex-row justify-between items-center">
               <div>
                 <div className="text-lg font-semibold text-gray-800">{chatRoom.groupPurchase?.title}</div>
@@ -64,7 +50,9 @@ const ChatRoomList = () => {
                   </p>
                 )}
               </div>
-              <div className="text-sm text-gray-500">{new Date(chatRoom.updatedAt).toLocaleTimeString()}</div>
+              <div className="text-sm text-gray-500">
+                {new Date(chatRoom.updatedAt).toLocaleTimeString('ko-KR', { hour: 'numeric', minute: 'numeric' })}
+              </div>
             </a>
           </li>
         ))}

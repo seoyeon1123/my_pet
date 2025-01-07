@@ -1,6 +1,9 @@
-import { Invoice, Meeting } from '@/app/(layout)/chatRoom/[id]/actions';
+'use client';
+
+import { Invoice, Meeting, ProductInfo } from '@/app/(layout)/chatRoom/[id]/actions';
 import { ArchiveBoxIcon, ClipboardDocumentCheckIcon, MapPinIcon, PlusIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 interface IChatPlusModalProps {
   chatRoomId: number;
@@ -20,12 +23,14 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
   const [clicked, setClicked] = useState(false);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [selectedCourier, setSelectedCourier] = useState('');
   const [trackingNumber, setTrackingNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [meetingLocation, setMeetingLocation] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
   const [recipientId, setRecipientId] = useState<number | null>(null);
+  const [productInfo, setProductInfo] = useState<any>();
 
   const modifiedParticipants = participants.map((participant) => ({
     id: participant.userId,
@@ -82,6 +87,15 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
     }
   };
 
+  useEffect(() => {
+    const chatRoomProduct = async () => {
+      const productInfo = await ProductInfo(participants[0].chatRoomId);
+      setProductInfo(productInfo);
+      console.log('productInfo', productInfo);
+    };
+    chatRoomProduct();
+  }, [participants]);
+
   if (!isHost) return null;
 
   return (
@@ -98,7 +112,10 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
             className="size-10 bg-green-600 rounded-full p-2 hover:cursor-pointer"
             onClick={() => setIsInvoiceModalOpen(true)}
           />
-          <ClipboardDocumentCheckIcon className="size-10 bg-blue-600 rounded-full p-2 hover:cursor-pointer" />
+          <ClipboardDocumentCheckIcon
+            className="size-10 bg-blue-600 rounded-full p-2 hover:cursor-pointer"
+            onClick={() => setIsInfoModalOpen(true)}
+          />
         </div>
       )}
 
@@ -197,6 +214,47 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
                 약속 설정
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {isInfoModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-96 flex flex-col gap-4">
+            <h2 className="text-xl font-semibold text-center">공구 상품</h2>
+            {productInfo ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-center">
+                  <Image
+                    src={productInfo.groupPurchase.image!}
+                    alt="상품이미지"
+                    width={200}
+                    height={200}
+                    className="rounded-2xl aspect-square"
+                  />
+                </div>
+                <div className="flex flex-col gap-3 justify-start items-center">
+                  <p className="font-semibold text-base">{productInfo.groupPurchase.title}</p>
+
+                  <p className="text-white w-full py-2 rounded-xl bg-neutral-400 text-center">
+                    {productInfo.groupPurchase.description}
+                  </p>
+
+                  <div className="flex flex-row items-center justify-start gap-2">
+                    <span className="text-white bg-yellow-500 rounded-full px-3 py-1 text-sm">why?</span>
+                    <p className="text-gray-700">{productInfo.groupPurchase.reason}</p>
+                  </div>
+
+                  <button
+                    onClick={() => setIsInfoModalOpen(false)}
+                    className="bg-gray-500 text-white py-2 px-4 rounded">
+                    닫기
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center text-gray-500">상품 정보를 불러오는 중입니다...</div>
+            )}
           </div>
         </div>
       )}
