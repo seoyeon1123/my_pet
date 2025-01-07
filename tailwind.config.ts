@@ -10,6 +10,8 @@ const config: Config = {
     extend: {
       animation: {
         'jumping-text': 'jumping 0.7s ease-out ',
+        firstJump: 'firstJump 1s ease-in-out infinite',
+        lastJump: 'lastJump 1s ease-in-out infinite',
       },
       keyframes: {
         jumping: {
@@ -21,6 +23,22 @@ const config: Config = {
           },
           '100%': {
             transform: 'translateY(0)', // 원위치
+          },
+        },
+        firstJump: {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-20px)',
+          },
+        },
+        lastJump: {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-20px)',
           },
         },
       },

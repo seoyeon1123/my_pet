@@ -15,6 +15,17 @@ type Participant = {
   username: string | null;
 };
 
+interface IChatRoomMessageListProps {
+  id: number; // 메시지 고유 ID
+  userId: number; // 메시지를 보낸 사용자의 ID
+  content: string; // 메시지 내용
+  createdAt: string; // 메시지가 생성된 시간 (ISO 8601 형식 등)
+  user?: {
+    // 메시지를 보낸 사용자 정보 (선택 사항)
+    username: string | null; // 사용자 이름
+  };
+}
+
 const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const { data: session } = useSession();
   const userId = Number(session?.user.id);
@@ -30,7 +41,6 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
     enabled: !!chatRoomId,
     onSuccess: (data) => {
       setMessages(data);
-      console.log(data);
     },
   });
 
@@ -78,7 +88,6 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
 
   const invoiceCourier = data?.groupPurchase.participants.map((v) => v.invoiceCourier);
   const invoiceTrackingNumber = data?.groupPurchase.participants.map((v) => v.invoiceTrackingNumber);
-  console.log('invoiceCourier', invoiceCourier, 'invoiceTrackingNumber', invoiceTrackingNumber);
 
   if (isLoading) {
     return <div className="text-center p-4">로딩 중...</div>;
@@ -112,7 +121,9 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
       <div className="flex flex-col w-full max-w-4xl mx-auto justify-center items-start bg-white border border-neutral-200 rounded-2xl shadow-lg min-h-screen">
         <div className="p-5 flex flex-row justify-between items-start sticky top-[80px] bg-white w-full z-20 border">
           <div className="flex flex-col justify-start items-start">
-            <h1 className="text-2xl font-bold text-gray-800">{data?.groupPurchase.title}</h1>
+            <h1 className="text-2xl xs:text-base sm:text-base md:text-lg font-bold text-gray-800">
+              {data?.groupPurchase.title}
+            </h1>
             <div className="flex flex-row gap-2 mt-2 *:text-sm justify-center items-center">
               <h2 className="font-semibold text-gray-400">참여인원 :</h2>
               {hosts.map((v, index) => (
@@ -130,26 +141,30 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
           <div className="relative">
             {invoiceCourier || data?.groupPurchase.meetingLocation ? (
               <BellAlertIcon
-                className="size-10 text-red-600 hover:animate-pulse transition-transform cursor-pointer"
+                className="size-10
+                xs:size-8 sm:size-8 text-red-600 hover:animate-pulse transition-transform cursor-pointer m-3"
                 onClick={() => setShowNotification(!showNotification)}
               />
             ) : null}
             {showNotification && (
-              <div className="absolute left-16 top-0 bg-white border border-neutral-300 shadow-lg rounded-lg p-6 w-80">
+              <div
+                className="absolute left-24
+                xs:-left-32 sm:-left-32 md:-left-32 lg:-left-32
+                xs:top-14 sm:top-14 md:top-14 lg:top-14
+              top-0 bg-white border border-neutral-300 shadow-lg rounded-lg p-6 w-80 xs:w-48 sm:w-48 md:w-48 lg:w-60">
                 {invoiceCourier &&
                 invoiceTrackingNumber &&
                 invoiceCourier.some((courier) => courier !== null) &&
                 invoiceTrackingNumber.some((tracking) => tracking !== null) ? (
-                  <div className="mb-6">
+                  <div className="mb-6 *:xs:text-xs">
                     <h3 className="font-bold text-lg text-gray-800 mb-2 flex items-center">
-                      <span className="material-icons text-blue-500 mr-2">local_shipping</span>
-                      배송 정보
+                      <span className="material-icons text-darkPink mr-2"> 배송 정보</span>
                     </h3>
                     <ul className="space-y-2">
                       {invoiceCourier
                         .filter((courier) => courier !== null)
                         .map((courier, idx) => (
-                          <li key={idx} className="text-sm text-gray-600">
+                          <li key={idx} className="text-sm text-gray-600 xs:text-xs sm:text-xs">
                             <span className="font-medium text-gray-700">{courier}</span>: {invoiceTrackingNumber[idx]}
                           </li>
                         ))}
@@ -160,14 +175,13 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
 
                 {data?.groupPurchase.meetingLocation && data?.groupPurchase.meetingTime ? (
                   <div>
-                    <h3 className="font-bold text-lg text-gray-800 mb-2 flex items-center">
-                      <span className="material-icons text-darkPink mr-2">공동구매</span>
-                      모임 정보
+                    <h3 className="font-bold text-lg xs:text-sm sm:text-sm text-gray-800 mb-2 flex items-center">
+                      <span className="material-icons text-darkPink mr-2">모임정보</span>
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 xs:text-xs sm:text-xs">
                       <span className="font-medium text-gray-700">장소:</span> {data.groupPurchase.meetingLocation}
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-600 xs:text-xs sm:text-xs">
                       <span className="font-medium text-gray-700">시간:</span>{' '}
                       {new Date(data.groupPurchase.meetingTime).toLocaleString('ko-KR', {
                         year: 'numeric',
@@ -184,12 +198,12 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
           </div>
         </div>
         <div className="flex-grow p-4 chat-container overflow-auto w-full flex flex-col justify-end">
-          {messages?.map((msg: any, index: number) => {
+          {messages?.map((msg: IChatRoomMessageProps, index: number) => {
             const currentDate = formatDateWeek(msg.createdAt);
             const prevDate = index > 0 ? formatDateWeek(messages[index - 1]?.createdAt) : null;
 
             return (
-              <div key={msg.id}>
+              <div key={index}>
                 {currentDate !== prevDate && (
                   <div className="text-center text-gray-500 text-sm my-2 w-full flex items-center">
                     <div className="flex-grow border-t border-neutral-300 ml-4" />

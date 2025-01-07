@@ -2,8 +2,13 @@ export interface IChatRoomMessageProps {
   content: string;
   userId: number;
   createdAt: Date;
-  // user: {
-  //   id: number;
-  //   username: string | null;
-  // };
+  user?: {
+    id?: number;
+    username?: string | null;
+  };
+  chatRoom?: {
+    groupPurchase: {
+      title: string;
+    };
+  };
 }

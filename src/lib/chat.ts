@@ -13,10 +13,9 @@ export const subscribeToMessages = (chatRoomId: number, onMessage: (message: ICh
         filter: `chatRoomId=eq.${chatRoomId}`,
       },
       (payload: { new: IChatRoomMessageProps }) => {
-        // Directly type `payload.new` as `Message`
-        const newMessage = payload.new; // No need for type casting anymore
+        const newMessage = payload.new;
         console.log('새 메시지:', newMessage);
-        onMessage(newMessage); // Pass the typed message to the callback
+        onMessage(newMessage);
       },
     )
     .subscribe();

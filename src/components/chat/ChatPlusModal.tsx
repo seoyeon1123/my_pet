@@ -1,6 +1,7 @@
 'use client';
 
 import { Invoice, Meeting, ProductInfo } from '@/app/(layout)/chatRoom/[id]/actions';
+import { ProductInfoType } from '@/types/chatPlusModel';
 import { ArchiveBoxIcon, ClipboardDocumentCheckIcon, MapPinIcon, PlusIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -30,7 +31,7 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
   const [meetingLocation, setMeetingLocation] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
   const [recipientId, setRecipientId] = useState<number | null>(null);
-  const [productInfo, setProductInfo] = useState<any>();
+  const [productInfo, setProductInfo] = useState<ProductInfoType | null>(null);
 
   const modifiedParticipants = participants.map((participant) => ({
     id: participant.userId,
@@ -103,17 +104,20 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
       <PlusIcon className="size-8 text-darkPink pr-2 font-semibold" onClick={() => setClicked((prev) => !prev)} />
 
       {clicked && (
-        <div className="absolute -top-[16px] right-14 *:text-white bg-white p-3 border rounded-xl flex flex-row gap-3">
+        <div
+          className="absolute top-[-24px] right-14 xs:-top-20 xs:-left-3 sm:-top-20 sm:-left-3
+        md:-top-[86px] md:-left-3 lg:-top-[86px] lg:-left-3 
+        *:text-white bg-white p-3 border rounded-xl flex flex-row gap-3 xs:w-36 sm:w-36 md:w-44 lg:w-44">
           <MapPinIcon
-            className="size-10 bg-orange-600 rounded-full p-2 hover:cursor-pointer"
+            className="size-10 xs:size-8 sm:size-8 bg-orange-600 rounded-full p-2 hover:cursor-pointer"
             onClick={() => setIsMeetingModalOpen(true)}
           />
           <ArchiveBoxIcon
-            className="size-10 bg-green-600 rounded-full p-2 hover:cursor-pointer"
+            className="size-10 xs:size-8 sm:size-8 bg-green-600 rounded-full p-2 hover:cursor-pointer"
             onClick={() => setIsInvoiceModalOpen(true)}
           />
           <ClipboardDocumentCheckIcon
-            className="size-10 bg-blue-600 rounded-full p-2 hover:cursor-pointer"
+            className="size-10 xs:size-8 sm:size-8 bg-blue-600 rounded-full p-2 hover:cursor-pointer"
             onClick={() => setIsInfoModalOpen(true)}
           />
         </div>

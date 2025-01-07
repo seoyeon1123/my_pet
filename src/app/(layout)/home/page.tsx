@@ -1,9 +1,11 @@
 'use client';
 
+import Loading from '@/components/Loading';
+
 const HomePage = () => {
   return (
     <>
-      <h1>안녕하세</h1>
+      <Loading />
     </>
   );
 };
