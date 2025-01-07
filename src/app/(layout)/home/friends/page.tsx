@@ -8,6 +8,7 @@ import GetPetProfile from '@/app/(layout)/home/friends/actions';
 import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { petFriendAtom } from '@/state/petFriend';
+import Loading from '@/components/Loading';
 
 const Friends = () => {
   const [selectedPet, setSelectedPet] = useState('댕이');
@@ -19,7 +20,7 @@ const Friends = () => {
     },
   });
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <Loading />;
   if (isError) return <div>데이터를 가져오는 데 실패했습니다.</div>;
 
   return (

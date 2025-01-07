@@ -11,7 +11,7 @@ const PlacesBanner = () => {
             오늘은 <br className="lg:hidden xl:hidden md:hidden" /> 나를 위한 <br />
             플랜 <br className="lg:hidden xl:hidden md:hidden" /> 좀 짜볼래?
           </h1>
-          <Image src={dogPlaces} alt="hug" width={250} />
+          <Image src={dogPlaces} alt="hug" width={250} className="xs:w-52 sm:w-52" />
         </div>
       </div>
     </>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { formatToWon, stripTags } from '@/lib/utils';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Loading from '../Loading';
 
 const GroupPurchaseDetail = ({ productId }: { productId: string }) => {
   const product = useRecoilValue(storeState);
@@ -18,7 +19,7 @@ const GroupPurchaseDetail = ({ productId }: { productId: string }) => {
   }, [product]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (product.productId !== productId) {

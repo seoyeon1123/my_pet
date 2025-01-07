@@ -9,6 +9,7 @@ import { IChatRoomMessageProps } from '@/types/chatMessage';
 import ChatPlusModal from './ChatPlusModal';
 import { BellAlertIcon } from '@heroicons/react/24/outline';
 import { formatDateWeek } from '@/lib/utils';
+import Loading from '../Loading';
 
 type Participant = {
   userId: number;
@@ -90,7 +91,7 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const invoiceTrackingNumber = data?.groupPurchase.participants.map((v) => v.invoiceTrackingNumber);
 
   if (isLoading) {
-    return <div className="text-center p-4">로딩 중...</div>;
+    return <Loading />;
   }
 
   if (error) {

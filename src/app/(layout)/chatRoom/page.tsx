@@ -6,6 +6,7 @@ import GetChatRoomList from './actions';
 import { useSession } from 'next-auth/react';
 import { ChatRoom } from '@/types/chatRoom';
 import Image from 'next/image';
+import Loading from '@/components/Loading';
 
 const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
@@ -24,7 +25,7 @@ const ChatRoomList = () => {
     }
   }, [userId]);
   if (status === 'loading') {
-    return <div>로딩 중...</div>;
+    return <Loading />;
   }
 
   if (!userId) {

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import CommentInput from '@/components/comment/CommentInput';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Loading from '@/components/Loading';
 
 interface IPostDetail {
   id: number;
@@ -42,7 +43,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
   if (!post) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-500 text-lg">로딩 중...</p>
+        <Loading />
       </div>
     );
   }

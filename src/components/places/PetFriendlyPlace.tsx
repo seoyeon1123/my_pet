@@ -34,7 +34,6 @@ const PetFriendlyPlace = () => {
     const getPlaceReviw = async () => {
       const placeReview = await getPlaceReview(Number(place.id));
       setReviews(placeReview);
-      // console.log(placeReview); // 개발 중에는 필요하지만, 프로덕션에서는 제거해야 합니다.
     };
 
     getPlaceReviw();
@@ -71,7 +70,7 @@ const PetFriendlyPlace = () => {
 
   return (
     <>
-      <div className="w-[1000px] xs:w-[330px] sm:w-[450px] md:w-[750px] flex flex-col">
+      <div className="w-[1000px] xs:w-[330px] sm:w-[450px] md:w-[750px] flex flex-col p-3">
         <hr className="border border-b border-neutral-300 my-4" />
         <div className="flex flex-col w-full bp-6 mt-4 ">
           <div className="flex flex-row justify-between">

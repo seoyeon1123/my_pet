@@ -27,7 +27,7 @@ const Loading = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-start pt-64 h-svh">
       <div className="flex gap-4">
         {[catRun, dogRun, catRun, dogRun].map((src, index) => (
           <motion.div

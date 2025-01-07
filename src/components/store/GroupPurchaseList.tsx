@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useQuery } from 'react-query';
 import dogcatIcon from '../../asserts/store/dogcatIcon.png';
 import Image from 'next/image';
+import Loading from '../Loading';
 
 const GroupPurchaseList = ({ productId }: { productId: string }) => {
   const id = Number(productId);
@@ -14,7 +15,7 @@ const GroupPurchaseList = ({ productId }: { productId: string }) => {
   );
 
   if (isLoading) {
-    return <p className="text-center text-gray-500">Loading...</p>;
+    return <Loading />;
   }
 
   if (isError) {

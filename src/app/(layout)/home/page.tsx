@@ -1,11 +1,15 @@
 'use client';
 
+import Banner from '@/components/friends/Banner';
 import Loading from '@/components/Loading';
 
 const HomePage = () => {
   return (
     <>
-      <Loading />
+      <div>
+        <Banner />
+        <Loading />
+      </div>
     </>
   );
 };

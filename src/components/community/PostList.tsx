@@ -4,6 +4,7 @@ import Image from 'next/image';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import Link from 'next/link';
 import { useQuery } from 'react-query';
+import Loading from '../Loading';
 
 interface PostListProps {
   isFor: string; // '견주' 또는 '애완견'
@@ -49,7 +50,7 @@ const PostList = ({ isFor, type }: PostListProps) => {
   const totalPages = Math.ceil(community.length / postsPerPage);
 
   if (isLoading) {
-    return <p className="text-center text-lg text-orange-500">로딩 중입니다...</p>;
+    return <Loading />;
   }
 
   if (isError) {

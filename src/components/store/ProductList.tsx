@@ -8,6 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { storeState } from '@/state/storeState';
+import Loading from '../Loading';
 
 export interface IPetStore {
   link: string;
@@ -132,10 +133,10 @@ const ProductList = () => {
             </li>
           ))
         ) : (
-          <p className="text-center text-xl text-gray-500">반려동물 관련 상품을 찾을 수 없습니다.</p>
+          <Loading />
         )}
       </ul>
-      {loading && <p className="text-center text-lg text-gray-500 mt-4">로딩 중...</p>}
+      {loading && <Loading />}
       <div ref={ref} className="h-10" />
     </div>
   );
