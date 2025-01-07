@@ -1,7 +1,6 @@
 'use server';
 
 import db from '@/lib/db';
-import { tr } from 'date-fns/locale';
 
 export const sendMessage = async (chatRoomId: number, userId: number, content: string) => {
   const message = await db.message.create({

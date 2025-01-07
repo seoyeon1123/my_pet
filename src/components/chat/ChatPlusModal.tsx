@@ -1,6 +1,5 @@
 import { Invoice, Meeting } from '@/app/(layout)/chatRoom/[id]/actions';
-import { formatToDayAndTime } from '@/lib/utils';
-import { ArchiveBoxIcon, MapIcon, MapPinIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ArchiveBoxIcon, ClipboardDocumentCheckIcon, MapPinIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
 interface IChatPlusModalProps {
@@ -17,7 +16,7 @@ interface IChatPlusModalProps {
   }[];
 }
 
-const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: IChatPlusModalProps) => {
+const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusModalProps) => {
   const [clicked, setClicked] = useState(false);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
@@ -90,12 +89,16 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
       <PlusIcon className="size-8 text-darkPink pr-2 font-semibold" onClick={() => setClicked((prev) => !prev)} />
 
       {clicked && (
-        <div className="absolute -top-[75px] *:text-white bg-white flex flex-row gap-3">
-          <MapPinIcon className="size-10 bg-orange-600 rounded-full p-2" onClick={() => setIsMeetingModalOpen(true)} />
+        <div className="absolute -top-[16px] right-14 *:text-white bg-white p-3 border rounded-xl flex flex-row gap-3">
+          <MapPinIcon
+            className="size-10 bg-orange-600 rounded-full p-2 hover:cursor-pointer"
+            onClick={() => setIsMeetingModalOpen(true)}
+          />
           <ArchiveBoxIcon
-            className="size-10 bg-green-600 rounded-full p-2"
+            className="size-10 bg-green-600 rounded-full p-2 hover:cursor-pointer"
             onClick={() => setIsInvoiceModalOpen(true)}
           />
+          <ClipboardDocumentCheckIcon className="size-10 bg-blue-600 rounded-full p-2 hover:cursor-pointer" />
         </div>
       )}
 
@@ -152,7 +155,7 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
               <button
                 onClick={handleInvoiceSubmit}
                 disabled={isSubmitting}
-                className="bg-blue-500 text-white py-2 px-4 rounded">
+                className="bg-darkPink text-white py-2 px-4 rounded">
                 {isSubmitting ? '등록 중...' : '송장 등록'}
               </button>
             </div>
@@ -190,7 +193,7 @@ const ChatPlusModal = ({ chatRoomId, productId, isHost, userId, participants }: 
               <button onClick={() => setIsMeetingModalOpen(false)} className="bg-gray-500 text-white py-2 px-4 rounded">
                 닫기
               </button>
-              <button onClick={handleMeetingSubmit} className="bg-blue-500 text-white py-2 px-4 rounded">
+              <button onClick={handleMeetingSubmit} className="bg-darkPink text-white py-2 px-4 rounded">
                 약속 설정
               </button>
             </div>

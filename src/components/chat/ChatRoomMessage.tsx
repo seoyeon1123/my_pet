@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 import { useEffect, useRef, useState } from 'react';
 import { getChatRoomHosts, messageList, ProductInfo, sendMessage } from '@/app/(layout)/chatRoom/[id]/actions';
 import { useSession } from 'next-auth/react';
@@ -134,34 +136,45 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
           <div className="relative">
             {invoiceCourier || data?.groupPurchase.meetingLocation ? (
               <BellAlertIcon
-                className="size-10 text-red-600 hover:animate-bounce transition-transform cursor-pointer"
+                className="size-10 text-red-600 hover:animate-pulse transition-transform cursor-pointer"
                 onClick={() => setShowNotification(!showNotification)}
               />
             ) : null}
             {showNotification && (
-              <div className="absolute -left-5 top-8 bg-white border border-neutral-300 shadow-lg rounded-lg p-4 w-72">
+              <div className="absolute left-16 top-0 bg-white border border-neutral-300 shadow-lg rounded-lg p-6 w-80">
                 {invoiceCourier &&
                 invoiceTrackingNumber &&
                 invoiceCourier.some((courier) => courier !== null) &&
                 invoiceTrackingNumber.some((tracking) => tracking !== null) ? (
-                  <div className="mb-4">
-                    <h3 className="font-semibold text-gray-800">배송 정보</h3>
-                    {invoiceCourier
-                      .filter((courier) => courier !== null) // null 값 제외
-                      .map((courier, idx) => (
-                        <p key={idx} className="text-sm text-gray-600">
-                          {courier} : {invoiceTrackingNumber[idx]}
-                        </p>
-                      ))}
+                  <div className="mb-6">
+                    <h3 className="font-bold text-lg text-gray-800 mb-2 flex items-center">
+                      <span className="material-icons text-blue-500 mr-2">local_shipping</span>
+                      배송 정보
+                    </h3>
+                    <ul className="space-y-2">
+                      {invoiceCourier
+                        .filter((courier) => courier !== null)
+                        .map((courier, idx) => (
+                          <li key={idx} className="text-sm text-gray-600">
+                            <span className="font-medium text-gray-700">{courier}</span>: {invoiceTrackingNumber[idx]}
+                          </li>
+                        ))}
+                    </ul>
+                    <hr className="border border-b border-neutral-300" />
                   </div>
                 ) : null}
 
                 {data?.groupPurchase.meetingLocation && data?.groupPurchase.meetingTime ? (
                   <div>
-                    <h3 className="font-semibold text-gray-800">모임 정보</h3>
-                    <p className="text-sm text-gray-600">장소: {data.groupPurchase.meetingLocation}</p>
+                    <h3 className="font-bold text-lg text-gray-800 mb-2 flex items-center">
+                      <span className="material-icons text-darkPink mr-2">공동구매</span>
+                      모임 정보
+                    </h3>
                     <p className="text-sm text-gray-600">
-                      시간:{' '}
+                      <span className="font-medium text-gray-700">장소:</span> {data.groupPurchase.meetingLocation}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-medium text-gray-700">시간:</span>{' '}
                       {new Date(data.groupPurchase.meetingTime).toLocaleString('ko-KR', {
                         year: 'numeric',
                         month: 'long',

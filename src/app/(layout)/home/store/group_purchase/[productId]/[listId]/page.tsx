@@ -45,7 +45,8 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
   }, [data, userSession]);
 
   const isFullyBooked = useMemo(() => {
-    return data?.participants!.length! >= data?.maxParticipants!;
+    if (!data?.participants || !data?.maxParticipants) return false;
+    return data.participants.length >= data.maxParticipants;
   }, [data]);
 
   if (isLoading || isUserLoading) return <p>Loading...</p>;
