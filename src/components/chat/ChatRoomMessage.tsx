@@ -16,17 +16,6 @@ type Participant = {
   username: string | null;
 };
 
-interface IChatRoomMessageListProps {
-  id: number; // 메시지 고유 ID
-  userId: number; // 메시지를 보낸 사용자의 ID
-  content: string; // 메시지 내용
-  createdAt: string; // 메시지가 생성된 시간 (ISO 8601 형식 등)
-  user?: {
-    // 메시지를 보낸 사용자 정보 (선택 사항)
-    username: string | null; // 사용자 이름
-  };
-}
-
 const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const { data: session } = useSession();
   const userId = Number(session?.user.id);
