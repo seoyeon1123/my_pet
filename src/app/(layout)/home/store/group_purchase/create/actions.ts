@@ -37,6 +37,7 @@ const createPurchase = async ({ data }: IPurchaseProps) => {
       productId: data.productId,
       productCategory: data.productCategory,
       direct: data.direct,
+      status: 'RECRUITING',
     },
   });
 

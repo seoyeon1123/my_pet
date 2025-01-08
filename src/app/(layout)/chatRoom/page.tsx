@@ -10,6 +10,7 @@ import Loading from '@/components/Loading';
 
 const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // 데이터 로딩 상태 추가
   const { data, status } = useSession();
 
   const userId = data?.user?.id ? Number(data.user.id) : null;
@@ -17,14 +18,17 @@ const ChatRoomList = () => {
   useEffect(() => {
     if (userId !== null) {
       const fetchChatRooms = async () => {
+        setIsLoading(true); // 로딩 시작
         const rooms: ChatRoom[] = await GetChatRoomList(userId);
         setChatRooms(rooms);
+        setIsLoading(false); // 로딩 완료
       };
 
       fetchChatRooms();
     }
   }, [userId]);
-  if (status === 'loading') {
+
+  if (status === 'loading' || isLoading) {
     return <Loading />;
   }
 

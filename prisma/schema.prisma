@@ -116,6 +116,12 @@ model Review {
   user      User     @relation(fields: [userId], references: [id])
 }
 
+enum GroupPurchaseStatus {
+  RECRUITING      // 모집 중
+  CLOSED          // 마감 (공구 진행)
+  FAILED          // 공구 실패
+}
+
 model GroupPurchase {
   id               Int       @id @default(autoincrement())
   title            String    // 공동구매 제목
@@ -126,7 +132,7 @@ model GroupPurchase {
   reason           String    // 공동구매 이유
   deliveryMethod   String    
   shippingCost     Int?      // 배송비 (optional)
-  direct String?
+  direct           String?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   productId        BigInt      
@@ -136,10 +142,10 @@ model GroupPurchase {
   userId           Int       
   user             User      @relation(fields: [userId], references: [id]) 
   chatRooms        ChatRoom[] 
-
-   meetingLocation  String?   // 약속 장소
+  meetingLocation  String?   // 약속 장소
   meetingTime      DateTime? // 약속 시간
 
+  status           GroupPurchaseStatus @default(RECRUITING) // 상태
 }
 
 model GroupPurchaseParticipant {

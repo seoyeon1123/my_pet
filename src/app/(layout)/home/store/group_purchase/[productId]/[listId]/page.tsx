@@ -18,6 +18,7 @@ import { useSession } from 'next-auth/react';
 
 import { useMemo } from 'react';
 import { formatToWon } from '@/lib/utils';
+import Loading from '@/components/Loading';
 
 const GroupPurchaseListDetail = ({ params }: { params: { productId: string; listId: string } }) => {
   const { productId, listId } = params;
@@ -49,7 +50,7 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
     return data.participants.length >= data.maxParticipants;
   }, [data]);
 
-  if (isLoading || isUserLoading) return <p>Loading...</p>;
+  if (isLoading || isUserLoading) return <Loading />;
   if (!data) return <p>공동 구매 정보를 찾을 수 없습니다.</p>;
 
   return (
@@ -110,13 +111,17 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
         {userData?.id == userSession?.user.id ? null : (
           <>
             <div className="fixed bottom-6 right-6">
-              {isFullyBooked ? (
+              {isFullyBooked && data.status === 'CLOSED' ? (
                 <button className="bg-gray-400 text-white px-6 py-3 rounded-full shadow-lg cursor-not-allowed">
                   마감
                 </button>
               ) : isAlreadyParticipated ? (
                 <button className="bg-gray-400 text-white px-6 py-3 rounded-full shadow-lg cursor-not-allowed">
                   신청 완료
+                </button>
+              ) : data.status === 'FAILED' ? (
+                <button className="bg-gray-400 text-white px-6 py-3 rounded-full shadow-lg cursor-not-allowed">
+                  공구 실패
                 </button>
               ) : (
                 <button

@@ -33,6 +33,7 @@ const GetGroupPurchaseDetail = async (productId: string, listId: string) => {
           email: true,
         },
       },
+      status: true,
     },
   });
 };
@@ -68,7 +69,12 @@ export const CreateGroupPurchaseParticipant = async (email: string, groupPurchas
       },
     });
 
-    return { newParticipant, chatRoom };
+    const GroupPurchaseStatus = await db.groupPurchase.update({
+      where: { id: groupPurchaseId },
+      data: { status: 'CLOSED' },
+    });
+
+    return { newParticipant, chatRoom, GroupPurchaseStatus };
   }
 
   return { newParticipant };
