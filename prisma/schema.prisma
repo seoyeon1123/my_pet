@@ -25,6 +25,7 @@ model User {
   GroupPurchaseParticipant GroupPurchaseParticipant[]
   ChatRoomParticipant ChatRoomParticipant[] 
    message Message[]
+   place Place[]
 
 
 }
@@ -101,6 +102,10 @@ model Place {
   longitude   Float   
   createdAt   DateTime @default(now()) 
   updatedAt   DateTime @updatedAt 
+
+   userId    Int
+   user      User     @relation(fields: [userId], references: [id])
+  
 }
 
 

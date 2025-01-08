@@ -2,22 +2,8 @@ import React from 'react';
 import { Place } from '@/types/kakaomap.types';
 import addPlace from '@/app/(layout)/home/places/actions';
 import { ShareIcon, BookmarkIcon } from '@heroicons/react/24/solid';
-
-const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): string => {
-  const toRad = (value: number) => (value * Math.PI) / 180;
-  const R = 6371;
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c;
-
-  return distance.toFixed(2) + ' km';
-};
+import { calculateDistance } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
 
 export interface ModalProps {
   search: Place[];
@@ -26,11 +12,13 @@ export interface ModalProps {
   moveLatLng: (place: Place) => void;
   pagination?: { last: number };
   currentPage: number;
-  currentLocation: { lat: number; lng: number }; // 사용자 위치
+  currentLocation: { lat: number; lng: number };
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocation }: ModalProps) => {
+  const { data } = useSession();
+  const userId = Number(data?.user?.id);
   const handleShare = (place: Place) => {
     const defaultImageUrl =
       'https://velog.velcdn.com/images/leeeee/post/ab76b009-c886-4305-8adb-09abd4bd675a/image.png';
@@ -73,6 +61,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
       placeUrl: place.place_url,
       latitude: parseFloat(place.y),
       longitude: parseFloat(place.x),
+      userId: userId,
     };
 
     await addPlace(placeData);

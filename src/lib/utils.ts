@@ -61,3 +61,38 @@ export const formatDateWeek = (date: string | Date) => {
     ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'][d.getDay()]
   }`;
 };
+
+export const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): string => {
+  const toRad = (value: number) => (value * Math.PI) / 180;
+  const R = 6371;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+
+  return distance.toFixed(2) + ' km';
+};
+
+export function formatToYearMonthDay(date: string | Date | null | undefined): string {
+  // date가 string이라면 Date 객체로 변환
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  // date가 유효한 Date 객체인지 확인
+  if (!dateObj || isNaN(dateObj.getTime())) {
+    return 'Invalid date';
+  }
+
+  // 날짜 포맷팅
+  const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric', // '2024'
+    month: 'long', // 'November'
+    day: '2-digit', // '24'
+  });
+
+  return dateFormatter.format(dateObj);
+}

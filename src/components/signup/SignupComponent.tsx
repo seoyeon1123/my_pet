@@ -35,12 +35,8 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
       return;
     }
 
-    const { data: session } = useSession();
-    const user = session?.user;
-
     try {
       const newUser: IUserProps = {
-        id: user!.id!,
         name,
         phone,
         email,

@@ -22,7 +22,7 @@ const Places = () => {
       latitude: 0,
       longitude: 0,
     });
-  }, [setPlace]); // 빈 배열을 넣어주면 컴포넌트가 처음 렌더링될 때만 실행됩니다.
+  }, [setPlace]);
 
   // placeState가 초기화된 상태인지 확인하고 렌더링 여부를 결정
   if (!place || !place.id) {

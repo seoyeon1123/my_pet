@@ -5,7 +5,7 @@ import CommunityBanner from '@/components/community/Banner';
 import PostList from '@/components/community/PostList';
 
 const Community = () => {
-  const [selectedCategory, setSelectedCategory] = useState('견주');
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined); // 기본값을 undefined로 설정
   const [selectedPetType, setSelectedPetType] = useState<string | undefined>(undefined);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const toggleFilter = () => {
@@ -29,6 +29,16 @@ const Community = () => {
                 {isFilterOpen && (
                   <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-300 rounded-b-xl shadow-md z-10">
                     <div className="p-2">
+                      {/* "모든 카테고리" 버튼 추가 */}
+                      <button
+                        className={`w-full text-sm font-semibold px-4 py-2 ${selectedCategory === undefined ? 'bg-orange-200 text-orange-600' : 'hover:bg-orange-100'}`}
+                        onClick={() => {
+                          setSelectedCategory(undefined); // 모든 카테고리 표시
+                          setSelectedPetType(undefined);
+                          setIsFilterOpen(false);
+                        }}>
+                        모든 카테고리
+                      </button>
                       <button
                         className={`w-full text-sm font-semibold px-4 py-2 ${selectedCategory === '견주' ? 'bg-orange-200 text-orange-600' : 'hover:bg-orange-100'}`}
                         onClick={() => {
@@ -73,7 +83,7 @@ const Community = () => {
             </div>
           </div>
 
-          <PostList isFor={selectedCategory} type={selectedPetType} />
+          <PostList isFor={selectedCategory!} type={selectedPetType} />
         </div>
       </div>
     </>

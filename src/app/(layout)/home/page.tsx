@@ -1,14 +1,14 @@
 'use client';
 
-import Banner from '@/components/friends/Banner';
-import Loading from '@/components/Loading';
+import HomeBanner from '@/components/home/HomeBanner';
+import HomeMyContent from '@/components/home/HomeMyContent';
 
 const HomePage = () => {
   return (
     <>
       <div>
-        <Banner />
-        <Loading />
+        <HomeBanner />
+        <HomeMyContent />
       </div>
     </>
   );

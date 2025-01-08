@@ -129,7 +129,8 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
             </div>
           </div>
           <div className="relative">
-            {invoiceCourier || data?.groupPurchase.meetingLocation ? (
+            {(invoiceCourier && invoiceTrackingNumber && invoiceCourier.some((courier) => courier !== null)) ||
+            data?.groupPurchase.meetingLocation ? (
               <BellAlertIcon
                 className="size-10
                 xs:size-8 sm:size-8 text-red-600 hover:animate-pulse transition-transform cursor-pointer m-3"

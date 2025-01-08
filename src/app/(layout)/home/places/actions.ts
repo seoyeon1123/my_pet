@@ -10,6 +10,7 @@ interface IPlace {
   placeUrl: string | undefined;
   latitude: number;
   longitude: number;
+  userId: number;
 }
 
 const addPlace = async (data: IPlace) => {
@@ -22,6 +23,7 @@ const addPlace = async (data: IPlace) => {
       placeUrl: data.placeUrl,
       latitude: data.latitude,
       longitude: data.longitude,
+      userId: data.userId,
     },
   });
 
