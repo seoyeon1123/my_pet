@@ -105,9 +105,14 @@ const ProductList = () => {
   return (
     <div className="mx-auto p-4 max-w-7xl">
       <ProductSearchForm setProducts={setProducts} setQuery={setQuery} />
-      <ul className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2  xs:grid-cols-2 gap-6">
-        {product && product.length > 0 ? (
-          product.map((pet, index) => (
+
+      {loading ? (
+        <div className="flex justify-center items-center h-[calc(100vh-100px)]">
+          <Loading />
+        </div>
+      ) : product && product.length > 0 ? (
+        <ul className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-6">
+          {product.map((pet, index) => (
             <li key={index} className="p-4">
               <div
                 onClick={() => handleProductClick(pet.productId)}
@@ -131,12 +136,14 @@ const ProductList = () => {
                 <p className="text-base text-red-500 mb-2"> {formatToWon(pet.lprice)} </p>
               </div>
             </li>
-          ))
-        ) : (
-          <Loading />
-        )}
-      </ul>
-      {loading && <Loading />}
+          ))}
+        </ul>
+      ) : (
+        <div className="flex justify-center items-center h-[calc(100vh-100px)]">
+          <p className="text-xl text-gray-600">상품이 존재하지 않습니다.</p>
+        </div>
+      )}
+
       <div ref={ref} className="h-10" />
     </div>
   );

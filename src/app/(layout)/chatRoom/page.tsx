@@ -64,7 +64,7 @@ const ChatRoomList = () => {
             </li>
           ))
         ) : (
-          <div className="flex flex-row gap-4 justify-center items-center">
+          <div className="flex flex-row gap-4 justify-center items-center mt-20">
             <Image src={chatCatDog} alt="cat&dog" width={200} height={200} />
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl font-bold text-darkPink">채팅이 없습니다!</h1>

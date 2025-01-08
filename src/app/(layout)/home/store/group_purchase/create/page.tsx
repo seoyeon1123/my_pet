@@ -11,6 +11,7 @@ import { useMutation } from 'react-query';
 import createPurchase from './actions';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Loading from '@/components/Loading';
 
 const GroupPurcase = () => {
   const [description, setDescription] = useState('');
@@ -76,7 +77,7 @@ const GroupPurcase = () => {
   };
 
   if (loading || isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!product || !product.title) {

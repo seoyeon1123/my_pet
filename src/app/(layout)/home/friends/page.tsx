@@ -20,14 +20,19 @@ const Friends = () => {
     },
   });
 
-  if (isLoading) return <Loading />;
-  if (isError) return <div>데이터를 가져오는 데 실패했습니다.</div>;
-
   return (
-    <div className="flex flex-col justify-center items-center text-center gap-2 ">
+    <div className="flex flex-col justify-center items-center text-center gap-2">
       <Banner />
-      <PetSelector initialSelected={selectedPet} setSelected={setSelectedPet} />
-      <PetFriends pets={petFriends} />
+      {isLoading ? (
+        <Loading />
+      ) : isError ? (
+        <div>데이터를 가져오는 데 실패했습니다.</div>
+      ) : (
+        <>
+          <PetSelector initialSelected={selectedPet} setSelected={setSelectedPet} />
+          <PetFriends pets={petFriends} />
+        </>
+      )}
     </div>
   );
 };

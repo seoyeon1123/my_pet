@@ -1,5 +1,7 @@
 'use server';
 
+import db from '@/lib/db';
+
 export interface GetProductParams {
   query: string;
   offset?: number;
@@ -25,3 +27,28 @@ export async function getProduct({ query, offset = 0 }: GetProductParams) {
 
   return data.items;
 }
+
+export const getGroupPurchasesList = async () => {
+  const GroupPurchasesList = await db.groupPurchase.findMany({
+    select: {
+      id: true,
+      title: true,
+      image: true,
+      description: true,
+      expectedPrice: true,
+      maxParticipants: true,
+      deadline: true,
+      reason: true,
+      deliveryMethod: true,
+      shippingCost: true,
+      direct: true,
+      createdAt: true,
+      updatedAt: true,
+      productId: true,
+      productCategory: true,
+      status: true,
+    },
+  });
+
+  return GroupPurchasesList;
+};

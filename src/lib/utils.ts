@@ -7,7 +7,8 @@ export const formatToWon = (price: number | string | null) => {
 };
 
 export const stripTags = (input: string) => {
-  return input.replace(/<\/?[^>]+(>|$)/g, '');
+  const doc = new DOMParser().parseFromString(input, 'text/html');
+  return doc.body.textContent || ''; // HTML 엔티티를 변환한 후 텍스트 반환
 };
 
 export function formatToTime(date: string): string {
