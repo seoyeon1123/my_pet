@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
-      <form className="flex flex-col gap-8 lg:w-1/3 xl:w-1/3 w-full" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-8 xs:w-80 sm:w-80 md:w-96 lg:w-[450px] xl:w-[450px]" onSubmit={handleSubmit}>
         <h1 className="text-3xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
 
         <div className="flex flex-col gap-2 mb-6">
@@ -71,12 +71,12 @@ const Login = () => {
         </div>
       )}
 
-      <div className="lg:w-1/3 xl:w-1/3 text-center">
+      <div className=" text-center">
         <hr className="border-t border-neutral-300 my-6" />
 
         <button
           onClick={() => signIn('kakao', { redirect: true, callbackUrl: '/home' })}
-          className="w-full bg-[#FEE500] text-[#000000 85%] py-3 rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out">
+          className="xs:w-80 sm:w-80 md:w-96 lg:w-[450px] xl:w-[450px] bg-[#FEE500] text-[#000000 85%] py-3 rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out">
           카카오로 로그인하기
         </button>
       </div>

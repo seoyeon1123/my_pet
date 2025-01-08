@@ -29,6 +29,7 @@ const ProductList = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState('강아지 간식');
+  const [hasMore, setHasMore] = useState(true); // 더 이상 로드할 데이터가 있는지 체크
   const setStoreState = useSetRecoilState(storeState);
 
   const fetchPets = async (page: number, query: string) => {
@@ -36,7 +37,13 @@ const ProductList = () => {
       setLoading(true);
       const offset = (page - 1) * 16;
       const petData = await getProduct({ query, offset });
-      setProducts((prevPets) => [...prevPets, ...petData]);
+
+      if (petData.length > 0) {
+        setProducts((prevPets) => [...prevPets, ...petData]);
+      } else {
+        setHasMore(false); // 더 이상 데이터가 없으면 hasMore를 false로 설정
+      }
+
       setLoading(false);
     } catch (error) {
       console.error('데이터 가져오기 실패:', error);
@@ -50,10 +57,10 @@ const ProductList = () => {
   });
 
   useEffect(() => {
-    if (inView && !loading) {
+    if (inView && !loading && hasMore) {
       setPage((prevPage) => prevPage + 1);
     }
-  }, [inView, loading]);
+  }, [inView, loading, hasMore]);
 
   useEffect(() => {
     fetchPets(page, query);
@@ -76,7 +83,7 @@ const ProductList = () => {
           category4: '',
         };
       }
-      return prevState; // 기존 상태 유지
+      return prevState;
     });
   }, []);
 
@@ -106,7 +113,7 @@ const ProductList = () => {
     <div className="mx-auto p-4 max-w-7xl">
       <ProductSearchForm setProducts={setProducts} setQuery={setQuery} />
 
-      {loading ? (
+      {loading && page === 1 ? (
         <div className="flex justify-center items-center h-[calc(100vh-100px)]">
           <Loading />
         </div>
@@ -141,6 +148,12 @@ const ProductList = () => {
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-100px)]">
           <p className="text-xl text-gray-600">상품이 존재하지 않습니다.</p>
+        </div>
+      )}
+
+      {loading && hasMore && (
+        <div className="flex justify-center items-center h-[60px]">
+          <Loading />
         </div>
       )}
 

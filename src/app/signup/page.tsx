@@ -53,7 +53,7 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
       {currentStep === 1 && (
-        <form className="flex flex-col gap-10 lg:w-1/3 xl:w-1/3">
+        <form className="flex flex-col gap-10 xs:w-80 sm:w-80 md:w-96 lg:w-[450px] xl:w-[450px] ">
           <h1 className="text-2xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-bold">회원가입</h2>

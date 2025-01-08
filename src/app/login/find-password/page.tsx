@@ -37,7 +37,7 @@ const FindPassword = () => {
   };
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightPinkbg p-5 pt-10 pb-20">
-      <div className="lg:w-1/3 xl:w-1/3 w-full">
+      <div className="xs:w-80 sm:w-80 md:w-96 lg:w-[450px] xl:w-[450px]">
         <h1 className="text-3xl font-bold text-center text-darkPink py-6 font-hakgyo">댕냥살롱</h1>
 
         <form className="flex flex-col gap-8">
