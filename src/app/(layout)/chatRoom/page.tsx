@@ -12,7 +12,7 @@ import ChatBanner from '@/components/chat/ChatBanner';
 const ChatRoomList = () => {
   const [chatRooms, setChatRooms] = useState<ChatRoom[]>([]);
   const [isLoading, setIsLoading] = useState(true); // 데이터 로딩 상태 추가
-  const { data, status } = useSession();
+  const { data } = useSession();
 
   const userId = data?.user?.id ? Number(data.user.id) : null;
 
