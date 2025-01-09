@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getProduct } from '@/app/(layout)/home/store/actions';
+import { getProduct } from '@/app/(layout)/store/actions';
 import ProductSearchForm from './ProductSearch';
 import { formatToWon, stripTags } from '@/lib/utils';
 import { useInView } from 'react-intersection-observer';
@@ -105,7 +105,7 @@ const ProductList = () => {
         category3: selectedProduct.category3,
         category4: selectedProduct.category4,
       });
-      router.push(`/home/store/group_purchase/${productId}`);
+      router.push(`/store/group_purchase/${productId}`);
     }
   };
 

@@ -1,4 +1,4 @@
-import { petId, userPet } from '@/app/(layout)/home/community/post/create/actions';
+import { petId, userPet } from '@/app/(layout)/community/post/create/actions';
 import { postState } from '@/state/postState';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';

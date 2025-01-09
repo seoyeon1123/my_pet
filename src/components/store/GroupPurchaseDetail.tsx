@@ -81,7 +81,7 @@ const GroupPurchaseDetail = ({ productId }: { productId: string }) => {
                   <span>{formatToWon((Number(product.lprice) / 3).toFixed(1))}</span>
                 </div>
 
-                <Link href="/home/store/group_purchase/create" className="text-end my-1">
+                <Link href="/store/group_purchase/create" className="text-end my-1">
                   공동구매 시작하기
                 </Link>
               </div>

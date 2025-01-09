@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react';
 import Input from '../shared/Input';
 import { useMutation } from 'react-query';
 import { useState } from 'react';
-import { CreateGroupPurchaseParticipant } from '@/app/(layout)/home/store/group_purchase/[productId]/[listId]/actions';
+import { CreateGroupPurchaseParticipant } from '@/app/(layout)/store/group_purchase/[productId]/[listId]/actions';
 import { sendEmail } from '@/services/emailService';
 
 interface IModalProps {

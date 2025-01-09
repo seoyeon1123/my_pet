@@ -1,5 +1,5 @@
 'use client';
-import GetGroupPurchase from '@/app/(layout)/home/store/group_purchase/[productId]/actions';
+import GetGroupPurchase from '@/app/(layout)/store/group_purchase/[productId]/actions';
 import { GroupPurchase } from '@/types/group_purchase';
 import { CalendarDaysIcon, UserIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ const GroupPurchaseList = ({ productId }: { productId: string }) => {
       <ul className="grid grid-cols-2 gap-4 xs:grid-cols-1 sm:grid-cols-1">
         {data?.map((purchase) => (
           <Link
-            href={`/home/store/group_purchase/${productId}/${purchase.id}`}
+            href={`/store/group_purchase/${productId}/${purchase.id}`}
             key={purchase.id}
             className="border border-gray-200 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 bg-white">
             <div className="space-y-4">

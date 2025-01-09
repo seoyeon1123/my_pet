@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 
   if (token) {
     if (url.pathname === '/login' || url.pathname === '/signup' || url.pathname === '/') {
-      url.pathname = '/home';
+      url.pathname = '/myPage';
       return NextResponse.redirect(url);
     }
   } else {
@@ -25,13 +25,14 @@ export const config = {
     '/',
     '/login',
     '/signup',
-    '/home',
     '/dashboard',
-    '/home/friends',
-    '/home/friends/pet-info-setup',
-    '/home/community',
-    '/home/caregivers',
-    '/home/store',
-    '/home/places',
+    '/friends/:path*',
+    '/friends/pet-info-setup/:path*',
+    '/community/:path*',
+    '/caregivers/:path*',
+    '/store/:path*',
+    '/places/:path*',
+    '/myPage/:path*',
+    '/chatRoom/:path*',
   ],
 };

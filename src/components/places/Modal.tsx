@@ -1,6 +1,6 @@
 import React from 'react';
 import { Place } from '@/types/kakaomap.types';
-import addPlace from '@/app/(layout)/home/places/actions';
+import addPlace from '@/app/(layout)/places/actions';
 import { ShareIcon, BookmarkIcon } from '@heroicons/react/24/solid';
 import { calculateDistance } from '@/lib/utils';
 import { useSession } from 'next-auth/react';

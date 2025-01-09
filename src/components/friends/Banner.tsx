@@ -14,7 +14,7 @@ const Banner = () => {
           <Image src={dogNcat} alt="hug" width={200} />
         </div>
         <div>
-          <Link href={'/home/friends/pet-info-setup'} className="font-semibold hover:text-pink-500">
+          <Link href={'/friends/pet-info-setup'} className="font-semibold hover:text-pink-500">
             애완견 등록하기
           </Link>
         </div>

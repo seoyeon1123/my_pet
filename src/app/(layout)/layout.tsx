@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import '../styles/Font.css';
-import Header from '@/components/home/Header';
 import GoToTopButton from '@/components/shared/BackToTopButton';
+import Header from '@/components/Header';
 
 export default function RootLayout({
   children,

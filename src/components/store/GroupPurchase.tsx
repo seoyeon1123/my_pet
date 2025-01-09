@@ -1,4 +1,4 @@
-import { getGroupPurchasesList } from '@/app/(layout)/home/store/actions';
+import { getGroupPurchasesList } from '@/app/(layout)/store/actions';
 import { useQuery } from 'react-query';
 import Loading from '../Loading';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ const GroupPurchase = () => {
     <div className="flex flex-col justify-center items-center">
       {data?.map((v) => (
         <Link
-          href={`/home/store/group_purchase/${v.productId}/${v.id}`}
+          href={`/store/group_purchase/${v.productId}/${v.id}`}
           key={v.id}
           className="flex flex-row gap-4 justify-between m-5 w-full max-w-[1200px] p-3">
           <div className="flex flex-row">

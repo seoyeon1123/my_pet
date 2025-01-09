@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Make HTTP request to Vercel API
         run: |
-          curl -X GET https://https://mypat.vercel.app/api/cron
+          curl -X GET https://mypat.vercel.app/api/cron

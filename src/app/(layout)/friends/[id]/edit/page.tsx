@@ -53,7 +53,7 @@ const PetEdit = () => {
         setPetFriend((prev) => prev.map((p) => (p.id === paramsId ? { ...p, ...petState } : p)));
 
         alert('반려동물 정보가 수정되었습니다.');
-        router.push(`/home/friends`);
+        router.push(`/friends`);
         router.refresh();
       }
     } catch (err) {

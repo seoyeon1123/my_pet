@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CommunityActions from '@/app/(layout)/home/community/actions';
+import CommunityActions from '@/app/(layout)/community/actions';
 import Image from 'next/image';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import Link from 'next/link';
@@ -65,7 +65,7 @@ const PostList = ({ isFor, type }: PostListProps) => {
         <div>
           <ul className="space-y-6">
             {currentPosts.map((post, index) => (
-              <Link href={`/home/community/${post.id}`} key={index} className="flex items-start gap-4 border-b pb-6">
+              <Link href={`/community/${post.id}`} key={index} className="flex items-start gap-4 border-b pb-6">
                 <div className="flex-1">
                   <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
                     <span className="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-md">

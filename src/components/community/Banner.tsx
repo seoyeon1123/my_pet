@@ -15,7 +15,7 @@ const CommunityBanner = () => {
               같이 <br className="lg:hidden xl:hidden md:hidden" /> 이야기해요!
             </h1>
             <Link
-              href={'/home/community/post/create'}
+              href={'/community/post/create'}
               className="font-semibold bg-orange-500 mb-6 px-2 py-1 rounded-xl xs:text-sm sm:text-sm">
               광장에 글쓰기
             </Link>

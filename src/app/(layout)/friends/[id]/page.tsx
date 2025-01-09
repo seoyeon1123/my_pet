@@ -44,7 +44,7 @@ const PetDetail = () => {
     <div className="flex justify-center items-center p-5">
       <div className="mx-auto mt-10 p-6 flex flex-row gap-6 border-2 border-darkPink rounded-xl xs:flex-col sm:flex-col">
         {canEdit && (
-          <Link href={`/home/friends/${pet.id}/edit`}>
+          <Link href={`/friends/${pet.id}/edit`}>
             <PencilSquareIcon className="size-7" />
           </Link>
         )}

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Banner from '@/components/friends/Banner';
 import PetSelector from '@/components/friends/PetSelector';
 import PetFriends from '@/components/friends/PetFriends';
-import GetPetProfile from '@/app/(layout)/home/friends/actions';
+import GetPetProfile from '@/app/(layout)/friends/actions';
 import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { petFriendAtom } from '@/state/petFriend';
