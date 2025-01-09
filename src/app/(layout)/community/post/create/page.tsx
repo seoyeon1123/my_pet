@@ -5,7 +5,7 @@ import Input from '@/components/shared/Input';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { IPostProps, postState } from '@/state/postState';
 import PostImageUpload from '@/components/community/PostImageUpload';
 import CreatePostActions from './actions';
