@@ -1,7 +1,7 @@
 'use client';
 
 import { MyCommunity, MyGroupPurchase, MyJoinGroupPurchase, MyPet, MyPlace } from '@/app/(layout)/myPage/actions';
-import { formatDate, formatDateWeek, formatToYearMonthDay } from '@/lib/utils';
+import { formatToYearMonthDay } from '@/lib/utils';
 import { GroupPurchase, Pet, Place, Post } from '@/types/myPage';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -17,7 +17,6 @@ const MyPageContent = () => {
   const [placeFilter, setPlaceFilter] = useState<'동물병원' | '애견카페' | '반려동물미용' | '반려견놀이터' | '전체'>(
     '전체',
   );
-  const [showCreatedPurchases, setShowCreatedPurchases] = useState(true);
 
   // useQuery hooks for fetching data
   const { data: pets } = useQuery<Pet[]>(['pets', userId], () => MyPet(userId!), {

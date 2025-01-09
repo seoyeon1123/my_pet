@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import homeImage from '../../asserts/home/homeImage.png';
 
 const MyPageBanner = () => {

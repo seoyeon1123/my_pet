@@ -4,7 +4,6 @@ import Input from '../shared/Input';
 import { useSetRecoilState } from 'recoil';
 import { userState, IUserProps } from '@/state/userState'; // Recoil atom 가져오기
 import { createUser } from '@/app/signup/actions';
-import { useSession } from 'next-auth/react';
 
 interface SignupComponentProps {
   name: string;
