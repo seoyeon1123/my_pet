@@ -5,7 +5,7 @@ import Input from '@/components/shared/Input';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { IPostProps, postState } from '@/state/postState';
 import PostImageUpload from '@/components/community/PostImageUpload';
 import CreatePostActions from './actions';
@@ -21,7 +21,7 @@ const PostCreate = () => {
   const user = session?.user;
   const userId = Number(user?.id);
 
-  const [post, setPost] = useRecoilState(postState);
+  const post = useRecoilValue(postState);
 
   const mutation = useMutation(
     async (postData: IPostProps) => {
