@@ -45,16 +45,18 @@ const PostCreate = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setPost((prev) => ({
-      ...prev,
+    // 필요한 데이터를 명시적으로 생성
+    const postData: IPostProps = {
+      ...post,
       title: title,
       content: content,
       isFor: isFor,
-      petname: isFor === '견주' ? '' : prev.petname,
-      petId: isFor === '견주' ? '' : prev.petId,
-    }));
+      petname: isFor === '견주' ? '' : post.petname,
+      petId: isFor === '견주' ? '' : post.petId,
+    };
 
-    await mutation.mutateAsync(post);
+    // mutation 호출 시 명시적으로 생성한 데이터를 전달
+    await mutation.mutateAsync(postData);
   };
 
   return (

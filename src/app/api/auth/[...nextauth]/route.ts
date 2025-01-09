@@ -122,7 +122,7 @@ const handler = NextAuth({
 
     async redirect({ url, baseUrl }) {
       if (url === baseUrl) {
-        return `${baseUrl}/home`;
+        return `${baseUrl}/friends`;
       }
       return url;
     },

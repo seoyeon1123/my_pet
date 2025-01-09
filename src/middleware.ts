@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 
   if (token) {
     if (url.pathname === '/login' || url.pathname === '/signup' || url.pathname === '/') {
-      url.pathname = '/myPage';
+      url.pathname = '/friends';
       return NextResponse.redirect(url);
     }
   } else {

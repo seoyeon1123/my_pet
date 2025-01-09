@@ -39,7 +39,7 @@ const ChatRoomList = () => {
       <div className="max-w-4xl mx-auto p-4">
         <h1 className="text-2xl font-semibold mb-4">채팅</h1>
         {isLoading ? ( // 로딩 상태 표시
-          <div className="flex justify-center items-center h-64">
+          <div className="flex justify-center items-center h-[400px]">
             <Loading />
           </div>
         ) : (

@@ -54,35 +54,36 @@ const Kakao = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setState((prev) => ({
-          ...prev,
-          center: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          isLoading: false,
-        }));
-        setIsCurrentLocationVisible(true);
-      });
-    }
-  }, []);
+  const [isFetchingLocation, setIsFetchingLocation] = useState(true); // 추가
 
   useEffect(() => {
-    if (window.Kakao) {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init('acf4479a39c6800a7a112e1e85028978');
-        console.log('Kakao SDK Initialized:', window.Kakao.isInitialized());
-      }
+    if (navigator.geolocation) {
+      setIsFetchingLocation(true); // 로딩 시작
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setState((prev) => ({
+            ...prev,
+            center: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            },
+            isLoading: false,
+          }));
+          setIsFetchingLocation(false); // 로딩 완료
+          setIsCurrentLocationVisible(true);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setIsFetchingLocation(false); // 에러 발생 시 로딩 종료
+        },
+      );
     } else {
-      console.error('Kakao SDK not loaded');
+      console.error('Geolocation is not supported by this browser.');
+      setIsFetchingLocation(false); // 지원하지 않을 경우 로딩 종료
     }
   }, []);
 
   const handleKeywordSearch = (keyword: string, center: { lat: number; lng: number }) => {
-    console.log('버튼 클릭됨:', keyword);
     if (!isKakaoLoaded || !kakao || !kakao.maps || !kakao.maps.services) {
       return;
     }
@@ -100,19 +101,16 @@ const Kakao = () => {
       keyword,
       (data: KakaoPlace[], status: string) => {
         if (status === kakao.maps.services.Status.OK) {
-          const places = data.map((place) => {
-            console.log('Place URL:', place.place_url);
-            return {
-              id: place.id,
-              name: place.place_name,
-              address: place.address_name,
-              x: place.x,
-              y: place.y,
-              phone: place.phone,
-              place_url: place.place_url,
-              category_name: place.category_name || '카테고리 없음',
-            } as Place;
-          });
+          const places = data.map((place) => ({
+            id: place.id,
+            name: place.place_name,
+            address: place.address_name,
+            x: place.x,
+            y: place.y,
+            phone: place.phone,
+            place_url: place.place_url,
+            category_name: place.category_name || '카테고리 없음',
+          }));
           setSearch(places);
         }
       },
@@ -142,15 +140,13 @@ const Kakao = () => {
       longitude: parseFloat(place.x),
     });
 
-    const newMarker = {
+    setSelectedMarker({
       lat: newCenter.lat,
       lng: newCenter.lng,
       name: place.name,
       address: place.address,
       phone: place.phone,
-    };
-
-    setSelectedMarker(newMarker);
+    });
 
     setSelectedLocation({
       lat: newCenter.lat,
@@ -182,52 +178,62 @@ const Kakao = () => {
           ))}
         </div>
         <div className="flex flex-col gap-2 justify-center items-center relative">
-          <Map
-            center={selectedLocation || state.center}
-            className="w-[1000px] 
+          {isKakaoLoaded ? (
+            <Map
+              center={selectedLocation || state.center}
+              className="w-[1000px] 
             xs:w-[320px] sm:w-[450px] md:w-[750px]
-            h-[600px] rounded-lg shadow-md"
-            level={3}>
-            {isCurrentLocationVisible && (
-              <MapMarker
-                position={state.center}
-                image={{
-                  src: 'https://velog.velcdn.com/images/leeeee/post/4f0de3cf-1cfe-4db2-9afc-c900e030516d/image.png',
-                  size: { width: 50, height: 50 },
-                }}
-              />
-            )}
-
-            {search.map((data) => {
-              const markerPosition = {
-                name: data.name,
-                lat: parseFloat(data.y),
-                lng: parseFloat(data.x),
-                address: data.address,
-              };
-
-              return (
-                <MapMarker
-                  key={data.id}
-                  position={markerPosition}
-                  image={{
-                    src: 'https://cdn-icons-png.flaticon.com/128/2098/2098567.png',
-                    size: { width: 35, height: 35 },
-                  }}
-                  onClick={() => handleMarkerClick(markerPosition)}
-                />
-              );
-            })}
-
-            {selectedMarker && (
-              <CustomOverlayMap position={selectedMarker} yAnchor={1}>
-                <div className="absolute -top-24 -left-20 bg-white p-2 rounded shadow-lg text-center z-10">
-                  <p className="font-bold xs:text-sm sm:text-sm">{selectedMarker.name}</p>
-                  <p className="text-xs text-gray-600">{selectedMarker.address}</p>
+            h-[600px] rounded-lg shadow-md relative"
+              level={3}>
+              {isFetchingLocation && (
+                <div className="absolute inset-0 flex justify-center items-center bg-neutral-200 bg-opacity-50 z-10">
+                  <p className="text-lg font-bold text-gray-700">현재 위치를 불러오는 중입니다...</p>
                 </div>
-              </CustomOverlayMap>
-            )}
-          </Map>
+              )}
+
+              {isCurrentLocationVisible && (
+                <MapMarker
+                  position={state.center}
+                  image={{
+                    src: 'https://velog.velcdn.com/images/leeeee/post/4f0de3cf-1cfe-4db2-9afc-c900e030516d/image.png',
+                    size: { width: 50, height: 50 },
+                  }}
+                />
+              )}
+
+              {search.map((data) => {
+                const markerPosition = {
+                  name: data.name,
+                  lat: parseFloat(data.y),
+                  lng: parseFloat(data.x),
+                  address: data.address,
+                };
+
+                return (
+                  <MapMarker
+                    key={data.id}
+                    position={markerPosition}
+                    image={{
+                      src: 'https://cdn-icons-png.flaticon.com/128/2098/2098567.png',
+                      size: { width: 35, height: 35 },
+                    }}
+                    onClick={() => handleMarkerClick(markerPosition)}
+                  />
+                );
+              })}
+
+              {selectedMarker && (
+                <CustomOverlayMap position={selectedMarker} yAnchor={1}>
+                  <div className="absolute -top-24 -left-20 bg-white p-2 rounded shadow-lg text-center z-10">
+                    <p className="font-bold xs:text-sm sm:text-sm">{selectedMarker.name}</p>
+                    <p className="text-xs text-gray-600">{selectedMarker.address}</p>
+                  </div>
+                </CustomOverlayMap>
+              )}
+            </Map>
+          ) : (
+            <div>지도 로드 중...</div>
+          )}
 
           <div
             className="absolute top-1/2 -left-3 z-50 transform -translate-y-1/2 p-2 rounded-full cursor-pointer"
@@ -236,11 +242,11 @@ const Kakao = () => {
               <ChevronLeftIcon className="size-7 font-bold text-red-600" />
             ) : (
               <ChevronRightIcon className="size-7 font-bold text-red-600" />
-            )}{' '}
+            )}
           </div>
 
           {isModalOpen && search.length > 0 && (
-            <div className="absolute top-0 left-0  shadow-md z-20 transition-transform transform translate-x-0">
+            <div className="absolute top-0 left-0 shadow-md z-20 transition-transform transform translate-x-0">
               <Modal
                 search={search}
                 openMarkerId={openMarkerId}
