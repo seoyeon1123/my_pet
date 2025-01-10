@@ -9,4 +9,9 @@ const scheduleCronJob = () => {
   });
 };
 
+export const initializeCronJob = () => {
+  console.log('Initializing cron job...');
+  scheduleCronJob();
+};
+
 export default scheduleCronJob;

@@ -7,7 +7,7 @@ const groupPurchaseStatusCheck = async () => {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
         deadline: {
-          lt: new Date(),
+          lt: new Date().toISOString(), // UTC 기준
         },
         status: GroupPurchaseStatus.RECRUITING,
       },
