@@ -15,16 +15,19 @@ const Friends = () => {
   const [petFriends, setPetFriends] = useRecoilState(petFriendAtom);
 
   const { isLoading, isError } = useQuery(['pets', selectedPet], () => GetPetProfile(selectedPet), {
+    enabled: !!selectedPet,
     onSuccess: (data) => {
       setPetFriends(data);
     },
   });
 
   return (
-    <div className="flex flex-col justify-center items-center text-center gap-2">
+    <div className="flex flex-col justify-center items-center text-center gap-2 ">
       <Banner />
       {isLoading ? (
-        <Loading />
+        <div className="flex justify-center items-center ">
+          <Loading />
+        </div>
       ) : isError ? (
         <div>데이터를 가져오는 데 실패했습니다.</div>
       ) : (

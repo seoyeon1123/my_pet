@@ -5,6 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { KakaoPlace, MarkerPosition, Place } from '@/types/kakaomap.types';
 import { useSetRecoilState } from 'recoil';
 import { placeState } from '@/state/PlaceState';
+import Loading from '../Loading';
 
 const KEYWORD_LIST = [
   { id: 1, value: '애견카페', emoji: '☕️' },
@@ -54,11 +55,11 @@ const Kakao = () => {
     };
   }, []);
 
-  const [isFetchingLocation, setIsFetchingLocation] = useState(true); // 추가
+  const [isFetchingLocation, setIsFetchingLocation] = useState(true);
 
   useEffect(() => {
     if (navigator.geolocation) {
-      setIsFetchingLocation(true); // 로딩 시작
+      setIsFetchingLocation(true);
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setState((prev) => ({
@@ -69,17 +70,17 @@ const Kakao = () => {
             },
             isLoading: false,
           }));
-          setIsFetchingLocation(false); // 로딩 완료
+          setIsFetchingLocation(false);
           setIsCurrentLocationVisible(true);
         },
         (error) => {
           console.error('Error getting location:', error);
-          setIsFetchingLocation(false); // 에러 발생 시 로딩 종료
+          setIsFetchingLocation(false);
         },
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
-      setIsFetchingLocation(false); // 지원하지 않을 경우 로딩 종료
+      setIsFetchingLocation(false);
     }
   }, []);
 
@@ -94,7 +95,7 @@ const Kakao = () => {
     const ps = new kakao.maps.services.Places();
     const options = {
       location: new kakao.maps.LatLng(center.lat, center.lng),
-      radius: 4000,
+      radius: 10000,
     };
 
     ps.keywordSearch(
@@ -121,6 +122,17 @@ const Kakao = () => {
   const handleMarkerClick = (marker: MarkerPosition) => {
     setSelectedMarker(marker);
     setOpenMarkerId(marker.name);
+
+    setPlace({
+      id: marker.id,
+      name: marker.name,
+      address: marker.address,
+      phone: marker.phone || '전화번호 없음',
+      placeUrl: marker.place_url || '',
+      latitude: marker.lat,
+      longitude: marker.lng,
+      category: marker.category_name || '카테고리 없음',
+    });
   };
 
   const moveLatLng = (place: Place) => {
@@ -136,30 +148,36 @@ const Kakao = () => {
       category: place.category_name || '카테고리 없음',
       phone: place.phone || '전화번호 없음',
       placeUrl: place.place_url || '',
-      latitude: parseFloat(place.x),
+      latitude: parseFloat(place.y),
       longitude: parseFloat(place.x),
     });
 
     setSelectedMarker({
+      id: place.id,
       lat: newCenter.lat,
       lng: newCenter.lng,
       name: place.name,
       address: place.address,
       phone: place.phone,
+      place_url: place.place_url,
+      category_name: place.category_name,
     });
 
     setSelectedLocation({
+      id: place.id,
       lat: newCenter.lat,
       lng: newCenter.lng,
       name: place.name,
       address: place.address,
       phone: place.phone,
+      place_url: place.place_url,
+      category_name: place.category_name,
     });
   };
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
-  };
+  }; // <-- Added the missing closing bracket here
 
   return (
     <div className="flex flex-col items-center">
@@ -186,7 +204,7 @@ const Kakao = () => {
             h-[600px] rounded-lg shadow-md relative"
               level={3}>
               {isFetchingLocation && (
-                <div className="absolute inset-0 flex justify-center items-center bg-neutral-200 bg-opacity-50 z-10">
+                <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-30 z-10">
                   <p className="text-lg font-bold text-gray-700">현재 위치를 불러오는 중입니다...</p>
                 </div>
               )}
@@ -202,11 +220,14 @@ const Kakao = () => {
               )}
 
               {search.map((data) => {
-                const markerPosition = {
+                const markerPosition: MarkerPosition = {
+                  id: data.id, // id를 추가
                   name: data.name,
                   lat: parseFloat(data.y),
                   lng: parseFloat(data.x),
                   address: data.address,
+                  place_url: data.place_url || '', // place_url을 추가
+                  category_name: data.category_name, // 선택적으로 category_name도 추가
                 };
 
                 return (
@@ -232,7 +253,9 @@ const Kakao = () => {
               )}
             </Map>
           ) : (
-            <div>지도 로드 중...</div>
+            <div className="flex justify-center items-center">
+              <Loading />
+            </div>
           )}
 
           <div

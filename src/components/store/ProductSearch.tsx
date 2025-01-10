@@ -14,7 +14,6 @@ export default function ProductSearchForm({ setProducts, setQuery }: ProductSear
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!product.trim()) {
-      console.error('검색어가 비어있습니다.');
       return;
     }
     try {

@@ -24,7 +24,6 @@ const Places = () => {
     });
   }, [setPlace]);
 
-  // placeState가 초기화된 상태인지 확인하고 렌더링 여부를 결정
   if (!place || !place.id) {
     return (
       <div className="flex flex-col justify-center items-center gap-5 mb-10">

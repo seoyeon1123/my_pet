@@ -3,6 +3,7 @@ import { ICommentProps } from './CommentList';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import { EditComment, DeleteComment } from './actions';
 import { ArrowTurnDownRightIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import { useSession } from 'next-auth/react';
 
 interface CommentItemProps {
   comment: ICommentProps;
@@ -11,6 +12,8 @@ interface CommentItemProps {
 }
 
 const CommentItem = ({ comment, isReply = false, onRefresh }: CommentItemProps) => {
+  const { data } = useSession();
+  const userId = data!.user.id;
   const [editMode, setEditMode] = useState(false);
   const [editContent, setEditContent] = useState(comment.content);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -44,7 +47,7 @@ const CommentItem = ({ comment, isReply = false, onRefresh }: CommentItemProps) 
             className={`${
               comment.user.username === comment.post.user.username ? 'text-orange-400' : 'text-black'
             } font-medium text-sm`}>
-            {comment.user.username === comment.post.user.username ? '글쓴이' : comment.user.username}
+            {Number(userId) === comment.post.user.id ? '글쓴이' : data?.user.name}
           </p>
         </div>
         <div className="relative">

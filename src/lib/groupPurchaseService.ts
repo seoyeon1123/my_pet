@@ -3,11 +3,15 @@ import db from './db';
 import { sendFailGroupPurchase } from '@/utils/emailSender';
 
 const groupPurchaseStatusCheck = async () => {
+  const currentDate = new Date();
+  currentDate.setMinutes(currentDate.getMinutes() + 5); // 현재 시간에 5분을 더함
+  const currentDateISOString = currentDate.toISOString(); // UTC 기준으로 변환
+
   try {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
         deadline: {
-          lt: new Date().toISOString(), // UTC 기준
+          lt: currentDateISOString,
         },
         status: GroupPurchaseStatus.RECRUITING,
       },
@@ -30,7 +34,6 @@ const groupPurchaseStatusCheck = async () => {
       return;
     }
 
-    // 2. 상태를 'FAILED'로 업데이트
     const failedGroupPurchaseIds = expiredGroupPurchases.map((gp) => gp.id);
     await db.groupPurchase.updateMany({
       where: {
@@ -43,8 +46,6 @@ const groupPurchaseStatusCheck = async () => {
       },
     });
 
-    console.log('Updated group purchases to "FAILED".');
-
     for (const gp of expiredGroupPurchases) {
       const emails = gp.participants.map((p) => p.email);
       const productTitle = gp.title;
@@ -53,8 +54,6 @@ const groupPurchaseStatusCheck = async () => {
         await sendFailGroupPurchase(email!, productTitle);
       }
     }
-
-    console.log('Emails sent to participants.');
   } catch (error) {
     console.error('Error processing group purchases:', error);
   }

@@ -33,8 +33,8 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
             ? `https://api.map.kakao.com/v2/maps/apis/places/${place.place_url}/image`
             : defaultImageUrl,
           link: {
-            mobileWebUrl: 'http://localhost:3000',
-            webUrl: 'http://localhost:3000',
+            mobileWebUrl: 'https://mypat.vercel.app',
+            webUrl: 'https://mypat.vercel.app',
           },
         },
         buttons: [
@@ -47,8 +47,6 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
           },
         ],
       });
-    } else {
-      console.error('Kakao Link is not available');
     }
   };
 
@@ -99,8 +97,8 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
                   </button>
                   <BookmarkIcon
                     onClick={(e) => {
-                      e.stopPropagation(); // 클릭 이벤트 전파 방지
-                      handleAddPlace(place); // 클릭한 place만 저장
+                      e.stopPropagation();
+                      handleAddPlace(place);
                     }}
                     className="w-5 h-5 sm:w-3 sm:h-3 xs:w-3 xs:h-3 text-darkPink active:text-lightPink mt-2"
                   />

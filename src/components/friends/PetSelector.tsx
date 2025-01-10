@@ -19,7 +19,7 @@ const PetSelector = ({ initialSelected, setSelected }: IPetSelectorProps) => {
   };
 
   return (
-    <div className="flex flex-row w-[190px] border border-darkPink rounded-2xl overflow-hidden my-2">
+    <div className="flex flex-row w-[190px] border border-darkPink rounded-2xl overflow-hidden my-2 ">
       <button
         onClick={() => handleSelection('댕이')}
         className={`flex flex-row justify-center items-center px-3 py-2 transition-colors ease-in-out border-r border-darkPink flex-1 ${

@@ -3,7 +3,6 @@ import db from '@/lib/db';
 
 export const MyPet = async (userId: number | null) => {
   if (!userId) {
-    console.error('Missing userId in MyPet');
     return [];
   }
 
@@ -24,7 +23,6 @@ export const MyPet = async (userId: number | null) => {
 
 export const MyCommunity = async (userId: number | null) => {
   if (!userId) {
-    console.error('Missing userId in MyCommunity');
     return [];
   }
 
@@ -46,7 +44,6 @@ export const MyCommunity = async (userId: number | null) => {
 
 export const MyPlace = async (userId: number | null) => {
   if (!userId) {
-    console.error('Missing userId in MyPlace');
     return [];
   }
 
@@ -68,7 +65,6 @@ export const MyPlace = async (userId: number | null) => {
 
 export const MyGroupPurchase = async (userId: number | null) => {
   if (!userId) {
-    console.error('Missing userId in MyGroupPurchase');
     return [];
   }
 
@@ -93,7 +89,6 @@ export const MyGroupPurchase = async (userId: number | null) => {
 
 export const MyJoinGroupPurchase = async (userId: number | null) => {
   if (!userId) {
-    console.error('Missing userId in MyGroupPurchase');
     return [];
   }
 

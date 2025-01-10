@@ -22,9 +22,12 @@ export interface KakaoPlace {
 }
 
 export interface MarkerPosition {
+  id: string;
   lat: number;
   lng: number;
   name: string;
   address: string;
   phone?: string;
+  place_url: string | undefined;
+  category_name?: string;
 }

@@ -31,9 +31,6 @@ const PostCreate = () => {
       onSuccess: () => {
         router.push('/community');
       },
-      onError: (error) => {
-        console.error('Failed to create post:', error);
-      },
     },
   );
 

@@ -18,6 +18,7 @@ export interface ICommentProps {
   post: {
     user: {
       username: string | null;
+      id: number;
     };
   };
   replies?: ICommentProps[];

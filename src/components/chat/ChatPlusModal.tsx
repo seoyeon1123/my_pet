@@ -50,9 +50,6 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
 
     setIsSubmitting(true);
     try {
-      console.log('택배사:', selectedCourier);
-      console.log('송장 번호:', trackingNumber);
-      console.log('선택된 사용자 ID:', recipientId);
       Invoice({ productId, selectedCourier, trackingNumber, recipientId });
       setIsInvoiceModalOpen(false);
       alert('송장이 등록되었습니다!');
@@ -60,7 +57,7 @@ const ChatPlusModal = ({ productId, isHost, userId, participants }: IChatPlusMod
       setTrackingNumber('');
       setRecipientId(null);
     } catch (error) {
-      console.error('송장 등록 실패:', error);
+      console.log(error);
       alert('송장 등록에 실패했습니다.');
     } finally {
       setIsSubmitting(false);

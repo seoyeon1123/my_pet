@@ -31,11 +31,13 @@ const PostList = ({ isFor, type }: PostListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
 
+  // 'enabled' 옵션을 사용하여 isFor와 type이 존재할 때만 쿼리 실행
   const {
     data: community = [],
     isLoading,
     isError,
   } = useQuery<IcommunityDataProps[]>(['community', isFor, type], () => CommunityActions(isFor, type), {
+    enabled: !!isFor,
     select: (data) => data.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()),
   });
 
@@ -50,7 +52,11 @@ const PostList = ({ isFor, type }: PostListProps) => {
   const totalPages = Math.ceil(community.length / postsPerPage);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="flex justify-center items-center ">
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {

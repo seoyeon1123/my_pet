@@ -14,7 +14,6 @@ export const subscribeToMessages = (chatRoomId: number, onMessage: (message: ICh
       },
       (payload: { new: IChatRoomMessageProps }) => {
         const newMessage = payload.new;
-        console.log('새 메시지:', newMessage);
         onMessage(newMessage);
       },
     )

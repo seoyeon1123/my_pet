@@ -70,6 +70,9 @@ const Header = () => {
           <Link href="/chatRoom" onClick={() => setClick(false)}>
             댕냥챗
           </Link>
+          <Link href="/myPage" onClick={() => setClick(false)}>
+            마이페이지
+          </Link>
         </div>
       )}
     </div>

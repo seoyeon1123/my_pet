@@ -25,20 +25,22 @@ const GroupPurchase = () => {
           className={`flex flex-row gap-4 justify-between w-full max-w-[1200px] px-3 py-5 my-2 ${
             index !== data.length - 1 ? 'border-b' : ''
           } border-gray-300`}>
-          <div className="flex flex-row">
+          <div className="flex flex-row xs:flex-col w-full">
             <Image src={v.image} alt={v.title} width={100} height={100} className="rounded-lg mr-4" />
-            <div className="flex flex-col">
-              <div className="flex flex-row gap-2 items-center">
-                <p className="text-sm bg-blue-400 text-white px-2 py-1 rounded-2xl">{v.productCategory}</p>
-                <h1 className="text-xl font-semibold text-gray-800 mb-2">{v.reason}</h1>
+            <div className="flex flex-col w-full">
+              <div className="flex flex-row justify-between w-full">
+                <div className="flex flex-row xs:flex-col xs:items-start gap-2 items-center mt-3">
+                  <p className="text-sm bg-blue-400 text-white px-2 py-1 rounded-2xl">{v.productCategory}</p>
+                  <h1 className="text-xl font-semibold text-gray-800 mb-2">{v.reason}</h1>
+                </div>
+                <div className="flex items-center ml-auto text-sm">
+                  {v.status === 'RECRUITING' && <p className="bg-red-500 text-white px-2 py-1 rounded-full">진행중</p>}
+                  {v.status === 'CLOSED' && <p className="bg-gray-500 text-white px-2 py-1 rounded-full">마감</p>}
+                </div>
               </div>
               <p className="text-sm text-gray-500 pb-2">{v.title}</p>
               <p className="text-sm text-gray-600 mb-2">마감 시간: {formatDateWeek(v.deadline.toString())}</p>
             </div>
-          </div>
-          <div className="flex items-center ml-auto">
-            {v.status === 'RECRUITING' && <p className="bg-red-500 text-white px-2 py-1 rounded-full">진행중</p>}
-            {v.status === 'CLOSED' && <p className="bg-gray-500 text-white px-2 py-1 rounded-full">마감</p>}
           </div>
         </Link>
       ))}

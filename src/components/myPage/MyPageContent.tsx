@@ -18,9 +18,8 @@ const MyPageContent = () => {
     '전체',
   );
 
-  // useQuery hooks for fetching data
   const { data: pets } = useQuery<Pet[]>(['pets', userId], () => MyPet(userId!), {
-    enabled: !!userId, // only fetch if userId exists
+    enabled: !!userId,
   });
 
   const { data: posts } = useQuery<Post[]>(['posts', userId], () => MyCommunity(userId!), {
@@ -57,7 +56,7 @@ const MyPageContent = () => {
       <section className="p-4 flex flex-col justify-between">
         {pets && pets?.length > 0 ? (
           pets.map((pet) => (
-            <Link href={`/home/friends/${pet.id}`} key={pet.id} className="flex flex-col justify-center items-center">
+            <Link href={`/friends/${pet.id}`} key={pet.id} className="flex flex-col justify-center items-center">
               <Image
                 src={pet.imageUrl}
                 alt={pet.name}
@@ -76,7 +75,7 @@ const MyPageContent = () => {
         )}
       </section>
 
-      <div className="flex flex-row justify-between gap-2 w-full">
+      <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full">
         <section className="bg-gray-100 p-4 rounded-lg flex flex-col h-[500px] w-full overflow-hidden">
           <h2 className="text-lg font-bold ">댕냥 광장 속 내 광장</h2>
           <div className="flex gap-4 mb-2 sticky top-0 bg-gray-100 z-10 p-4">
@@ -99,7 +98,7 @@ const MyPageContent = () => {
           <div className="flex-1 overflow-y-auto">
             {filteredPosts && filteredPosts?.length > 0 ? (
               filteredPosts.map((post, index) => (
-                <Link key={post.id} href={`/home/community/${post.id}`} className="flex flex-col">
+                <Link key={post.id} href={`/community/${post.id}`} className="flex flex-col">
                   <div className="flex flex-row justify-between items-center">
                     <h3 className="text-base font-semibold text-gray-800">{post.title}</h3>
                     <p className="text-sm text-gray-500">{formatToYearMonthDay(post.createdAt)}</p>
@@ -115,7 +114,7 @@ const MyPageContent = () => {
 
         <section className="bg-gray-100 p-6 rounded-lg flex flex-col justify-start w-full h-[500px] overflow-hidden">
           <h2 className="text-lg font-bold ">댕냥터</h2>
-          <div className="flex gap-4 mb-2 sticky top-0 bg-gray-100 z-10 p-4">
+          <div className="grid-cols-5 xs:grid-cols-3 space-x-2 space-y-2 gap-4 mb-2 sticky top-0 bg-gray-100 z-10 p-4">
             <button
               onClick={() => setPlaceFilter('전체')}
               className={`px-4 py-2 rounded-lg ${placeFilter === '전체' ? 'bg-darkPink text-white' : 'bg-gray-200'}`}>
@@ -168,7 +167,7 @@ const MyPageContent = () => {
 
       <section className="bg-gray-100 p-4 rounded-lg flex flex-col w-full h-[500px]">
         <h2 className="text-lg font-bold ">내 공동 구매</h2>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-row xs:flex-col sm:flex-col gap-4">
           {/* 내가 만든 공동구매 */}
           <div className="w-full md:w-1/2 p-4 border-r ">
             <h2 className="text-lg font-semibold mb-4 bg-darkPink rounded-2xl text-white inline-block px-2 py-1">

@@ -60,17 +60,43 @@ export const getPlaceReview = async (placeId: number) => {
     select: {
       user: {
         select: {
+          id: true,
           username: true, // 사용자 이름
         },
       },
+      id: true,
       placeId: true, // 장소 ID
       placename: true, // 장소 이름
       rating: true, // 별점
       comment: true, // 댓글
+      createdAt: true,
     },
   });
 
   return placeReview;
+};
+
+export const editPlaceReview = async (id: number, comment: string) => {
+  const editReview = await db.review.update({
+    where: {
+      id,
+    },
+    data: {
+      comment,
+    },
+  });
+
+  return editReview;
+};
+
+export const deletePlaceReview = async (id: number) => {
+  const deleteReview = await db.review.delete({
+    where: {
+      id,
+    },
+  });
+
+  return deleteReview;
 };
 
 export default addPlace;

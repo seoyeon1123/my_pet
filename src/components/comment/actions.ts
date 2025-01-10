@@ -48,6 +48,7 @@ export const getComments = async (postId: number) => {
           user: {
             select: {
               username: true,
+              id: true,
             },
           },
         },

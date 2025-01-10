@@ -1,0 +1,33 @@
+@keyframes loading {
+  0%,
+  100% {
+    background-color: #d37676;
+  }
+  50% {
+    background-color: #e6b0b0;
+  }
+}
+
+.animate-loading {
+  animation: loading 1.5s infinite;
+}
+
+.delay-0 {
+  animation-delay: 0.2s;
+}
+
+.delay-200 {
+  animation-delay: 0.6s;
+}
+
+.delay-400 {
+  animation-delay: 1s;
+}
+
+.delay-600 {
+  animation-delay: 1.4s;
+}
+
+.delay-800 {
+  animation-delay: 1.8s;
+}

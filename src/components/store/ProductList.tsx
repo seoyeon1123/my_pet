@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { useSetRecoilState } from 'recoil';
 import { storeState } from '@/state/storeState';
 import Loading from '../Loading';
+import LoadingSpinner from '../LoadingSpinner';
 
 export interface IPetStore {
   link: string;
@@ -153,7 +154,7 @@ const ProductList = () => {
 
       {loading && hasMore && (
         <div className="flex justify-center items-center h-[60px]">
-          <Loading />
+          <LoadingSpinner />
         </div>
       )}
 
