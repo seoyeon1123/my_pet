@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
+import Loading from '../Loading';
 
 const MyPageContent = () => {
   const { data } = useSession();
@@ -18,19 +19,19 @@ const MyPageContent = () => {
     '전체',
   );
 
-  const { data: pets } = useQuery<Pet[]>(['pets', userId], () => MyPet(userId!), {
+  const { data: pets, isLoading: petsLoading } = useQuery<Pet[]>(['pets', userId], () => MyPet(userId!), {
     enabled: !!userId,
   });
 
-  const { data: posts } = useQuery<Post[]>(['posts', userId], () => MyCommunity(userId!), {
+  const { data: posts, isLoading: postsLoading } = useQuery<Post[]>(['posts', userId], () => MyCommunity(userId!), {
     enabled: !!userId,
   });
 
-  const { data: places } = useQuery<Place[]>(['places', userId], () => MyPlace(userId!), {
+  const { data: places, isLoading: placesLoading } = useQuery<Place[]>(['places', userId], () => MyPlace(userId!), {
     enabled: !!userId,
   });
 
-  const { data: groupPurchases } = useQuery<GroupPurchase[]>(
+  const { data: groupPurchases, isLoading: groupPurchasesLoading } = useQuery<GroupPurchase[]>(
     ['groupPurchases', userId],
     () => MyGroupPurchase(userId!),
     {
@@ -38,7 +39,7 @@ const MyPageContent = () => {
     },
   );
 
-  const { data: joinedGroupPurchases } = useQuery<GroupPurchase[]>(
+  const { isLoading: joinedGroupPurchasesLoading } = useQuery<GroupPurchase[]>(
     ['joinedGroupPurchases', userId],
     () => MyJoinGroupPurchase(userId!),
     {
@@ -46,10 +47,22 @@ const MyPageContent = () => {
     },
   );
 
+  // 모든 데이터가 로드되었는지 확인
+  const isLoading =
+    petsLoading || postsLoading || placesLoading || groupPurchasesLoading || joinedGroupPurchasesLoading;
+
   // Filtered data based on selected filters
   const filteredPosts = postFilter === '전체' ? posts : posts?.filter((post) => post.isFor === postFilter);
   const filteredPlaces =
     placeFilter === '전체' ? places : places?.filter((place) => place.category.endsWith(placeFilter));
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center ">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 p-4 max-w-7xl mx-auto justify-center items-center py-10">
@@ -167,55 +180,17 @@ const MyPageContent = () => {
 
       <section className="bg-gray-100 p-4 rounded-lg flex flex-col w-full h-[500px]">
         <h2 className="text-lg font-bold ">내 공동 구매</h2>
-        <div className="flex flex-row xs:flex-col sm:flex-col gap-4">
-          {/* 내가 만든 공동구매 */}
-          <div className="w-full md:w-1/2 p-4 border-r ">
-            <h2 className="text-lg font-semibold mb-4 bg-darkPink rounded-2xl text-white inline-block px-2 py-1">
-              내가 만든 공동구매
-            </h2>
-            {groupPurchases && groupPurchases?.length > 0 ? (
-              groupPurchases.map((purchase) => (
-                <div key={purchase.id} className="mb-4 overflow-y-auto">
-                  <img src={purchase.image} alt={purchase.title} className="w-full h-32 object-cover rounded-lg" />
-                  <h3 className="mt-2">{purchase.title}</h3>
-                </div>
-              ))
-            ) : (
-              <p>등록된 공동 구매가 없습니다.</p>
-            )}
-          </div>
-
-          {/* 내가 참여한 공동구매 */}
-          <div className="w-full md:w-1/2 p-4 ">
-            <h2 className="text-lg font-semibold mb-4 bg-darkPink rounded-2xl text-white inline-block px-2 py-1">
-              내가 참여한 공동구매
-            </h2>
-            {joinedGroupPurchases && joinedGroupPurchases?.length > 0 ? (
-              joinedGroupPurchases.map((purchase) => (
-                <div key={purchase.id} className="mb-4 flex flex-row gap-4 overflow-y-auto">
-                  <Image
-                    src={purchase.image}
-                    alt={purchase.title}
-                    width={80}
-                    height={80}
-                    className="aspect-square rounded-2xl"
-                  />
-                  <div>
-                    <h3 className="mb-2">{purchase.title}</h3>
-                    {purchase.status === 'RECRUITING' ? (
-                      <p className="bg-red-600 text-white text-sm px-2 py-1 rounded-full inline-block">진행중</p>
-                    ) : purchase.status === 'CLOSED' ? (
-                      <p className="bg-gray-500 text-white text-sm px-2 py-1 rounded-full inline-block">종료</p>
-                    ) : (
-                      <p className="bg-green-500 text-white text-sm px-2 py-1 rounded-full inline-block">완료</p>
-                    )}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>참여한 공동 구매가 없습니다.</p>
-            )}
-          </div>
+        <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full">
+          {groupPurchases && groupPurchases?.length > 0 ? (
+            groupPurchases.map((groupPurchase) => (
+              <div key={groupPurchase.id} className="flex flex-col">
+                <h3 className="text-base font-semibold">{groupPurchase.title}</h3>
+                <p className="text-sm text-gray-500">{groupPurchase.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500">참여한 공동 구매가 없습니다.</p>
+          )}
         </div>
       </section>
     </div>

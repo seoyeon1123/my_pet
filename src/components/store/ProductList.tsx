@@ -115,44 +115,42 @@ const ProductList = () => {
       <ProductSearchForm setProducts={setProducts} setQuery={setQuery} />
 
       {loading && page === 1 ? (
-        <div className="flex justify-center items-center h-[calc(100vh-100px)]">
+        <div className="flex justify-center items-center">
           <Loading />
         </div>
-      ) : product && product.length > 0 ? (
-        <ul className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-6">
-          {product.map((pet, index) => (
-            <li key={index} className="p-4">
-              <div
-                onClick={() => handleProductClick(pet.productId)}
-                className="cursor-pointer flex flex-col justify-center items-center text-center">
-                <Image
-                  src={pet.image}
-                  alt={pet.title}
-                  width={250}
-                  height={250}
-                  className="mb-4 rounded-xl aspect-square"
-                />
-                <div className="w-full flex flex-row gap-2 justify-start items-center mb-2 self-start xs:flex-col sm:flex-col">
-                  <span className="text-xs text-white bg-darkPink rounded-xl px-1 py-0.5">{pet.category4}</span>
-                  <span className="text-xs text-gray-500 xs:hidden sm:hidden"> | </span>
-                  <span className="text-xs text-gray-500">판매처: {pet.mallName}</span>
-                </div>
-
-                <h3 className="text-lg xs:text-base sm:text-base font-semibold text-gray-800 mb-2">
-                  {stripTags(pet.title)}
-                </h3>
-                <p className="text-base text-red-500 mb-2"> {formatToWon(pet.lprice)} </p>
-              </div>
-            </li>
-          ))}
-        </ul>
       ) : (
-        <div className="flex justify-center items-center h-[calc(100vh-100px)]">
-          <p className="text-xl text-gray-600">상품이 존재하지 않습니다.</p>
-        </div>
+        product.length > 0 && (
+          <ul className="grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-6">
+            {product.map((pet, index) => (
+              <li key={index} className="p-4">
+                <div
+                  onClick={() => handleProductClick(pet.productId)}
+                  className="cursor-pointer flex flex-col justify-center items-center text-center">
+                  <Image
+                    src={pet.image}
+                    alt={pet.title}
+                    width={250}
+                    height={250}
+                    className="mb-4 rounded-xl aspect-square"
+                  />
+                  <div className="w-full flex flex-row gap-2 justify-start items-center mb-2 self-start xs:flex-col sm:flex-col">
+                    <span className="text-xs text-white bg-darkPink rounded-xl px-1 py-0.5">{pet.category4}</span>
+                    <span className="text-xs text-gray-500 xs:hidden sm:hidden"> | </span>
+                    <span className="text-xs text-gray-500">판매처: {pet.mallName}</span>
+                  </div>
+
+                  <h3 className="text-lg xs:text-base sm:text-base font-semibold text-gray-800 mb-2">
+                    {stripTags(pet.title)}
+                  </h3>
+                  <p className="text-base text-red-500 mb-2"> {formatToWon(pet.lprice)} </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )
       )}
 
-      {loading && hasMore && (
+      {loading && hasMore && page !== 1 && (
         <div className="flex justify-center items-center h-[60px]">
           <LoadingSpinner />
         </div>
