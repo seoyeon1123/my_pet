@@ -22,10 +22,6 @@ const ChatRoomList = () => {
     enabled: !!userId, // userId가 있을 때만 쿼리 실행
   });
 
-  if (!userId) {
-    return <div>로그인 정보가 없습니다.</div>;
-  }
-
   if (isError) {
     return <div>채팅 목록을 불러오는 데 오류가 발생했습니다.</div>;
   }
@@ -36,7 +32,7 @@ const ChatRoomList = () => {
       <div className="max-w-4xl mx-auto p-4 min-h-screen">
         <h1 className="text-2xl font-semibold mb-4">채팅</h1>
         {isLoading ? (
-          <div className="flex justify-center items-center h-[400px]">
+          <div className="flex justify-center items-center ">
             <Loading />
           </div>
         ) : (

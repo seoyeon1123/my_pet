@@ -26,8 +26,8 @@ const PetFriendlyPlace = () => {
   const [onClick, setOnClick] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
-  const [editReviewId, setEditReviewId] = useState<number | null>(null); // 수정 중인 리뷰의 ID 저장
-  const [isEditing, setIsEditing] = useState<boolean>(false); // 수정 상태를 추적하는 변수
+  const [editReviewId, setEditReviewId] = useState<number | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const place = useRecoilValue(placeState);
   const { data: userData } = useSession();
   const queryClient = useQueryClient();
@@ -47,9 +47,9 @@ const PetFriendlyPlace = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['placeReviews', place.id]);
         setRating(0);
-        setComment('');
         setOnClick(false);
         alert('리뷰가 성공적으로 추가되었습니다.');
+        setComment('');
       },
       onError: () => {
         alert('리뷰 추가에 실패했습니다.');
@@ -136,12 +136,13 @@ const PetFriendlyPlace = () => {
 
   return (
     <>
-      <div className="w-full max-w-[1000px] flex flex-col p-5">
-        <hr className="border border-b border-neutral-300 my-4" />
+      <div className="w-full max-w-[1000px] flex flex-col p-5 mb-20">
+        <hr className="border border-b border-neutral-200 my-4" />
         <div className="flex flex-col w-full bp-6 mt-4 ">
           <div className="flex flex-row justify-between">
             <h2 className="text-3xl xs:text-base sm:text-base font-semibold text-gray-800">
-              &quot;{place.name}&quot;에 대한 리뷰
+              [ {place.name} ] 에 대한 리뷰{' '}
+              <strong className="text-base font-medium text-neutral-400">({reviews.length}개)</strong>
             </h2>
             <button
               className="px-3 xs:text-sm sm:text-sm bg-[rgba(78,140,133,0.7)] text-white py-3 rounded-md hover:bg-[rgba(94,148,142,0.7)] transition duration-200"
@@ -182,7 +183,7 @@ const PetFriendlyPlace = () => {
           {Array.isArray(reviews) && reviews.length > 0 ? (
             reviews.map((review: placeReview, index) => (
               <div key={index} className="space-y-6 my-2">
-                <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2">
+                <div className="flex flex-col xs:flex-col sm:flex-col justify-between gap-2">
                   <div>
                     <div className="flex items-center space-x-2">
                       <span className="text-yellow-400">
@@ -205,8 +206,7 @@ const PetFriendlyPlace = () => {
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                           className="px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-1
-        focus:ring-darkPink focus:border-darkPink transition duration-300 ease-in-out 
-                          w-[500px]"
+                         focus:ring-darkPink focus:border-darkPink transition duration-300 ease-in-out inline-block w-auto min-w-[300px] md:w-[500px] lg:w-[600px] xl:w-[600px]"
                         />
                       ) : (
                         review.comment
@@ -214,27 +214,30 @@ const PetFriendlyPlace = () => {
                     </p>
                   </div>
 
-                  <div className="flex flex-col justify-between text-end">
-                    <p> {formatDateWeek(review.createdAt)}</p>
+                  <div className="flex flex-row justify-between *:text-end">
+                    <p className="text-sm text-neutral-400"> {formatDateWeek(review.createdAt)}</p>
                     {Number(userData?.user.id) === review.user.id && (
                       <div className="flex flex-row gap-3 text-sm text-neutral-400">
                         {isEditing && editReviewId === review.id ? (
-                          <span className="cursor-pointer" onClick={handleCancelEdit}>
+                          <span className="cursor-pointer hover:text-neutral-600" onClick={handleCancelEdit}>
                             취소하기
                           </span>
                         ) : (
-                          <span className="cursor-pointer" onClick={() => handleEditClick(review)}>
+                          <span
+                            className="cursor-pointer hover:text-neutral-600"
+                            onClick={() => handleEditClick(review)}>
                             수정하기
                           </span>
                         )}
                         {isEditing && editReviewId === review.id && (
-                          <span className="cursor-pointer" onClick={handleSaveEdit}>
+                          <span className="cursor-pointer hover:text-neutral-600" onClick={handleSaveEdit}>
                             저장하기
                           </span>
                         )}
-                        {/* 수정 중일 때만 삭제 버튼 숨기기 */}
                         {!isEditing && editReviewId !== review.id && (
-                          <span className="cursor-pointer" onClick={() => handleDeleteReview(review.id)}>
+                          <span
+                            className="cursor-pointer hover:text-neutral-600"
+                            onClick={() => handleDeleteReview(review.id)}>
                             삭제하기
                           </span>
                         )}
@@ -248,9 +251,10 @@ const PetFriendlyPlace = () => {
           ) : (
             <>
               {!onClick && (
-                <p className="text-2xl text-darkPink my-5 text-center">
-                  리뷰가 없습니다! <br />
-                  리뷰를 작성해주세요!
+                <p className="text-xl text-darkPink my-10 text-center">
+                  해당하는 장소에 리뷰가 없습니다.
+                  <br />
+                  방문하셨다면 리뷰를 작성해주세요 !
                 </p>
               )}
             </>

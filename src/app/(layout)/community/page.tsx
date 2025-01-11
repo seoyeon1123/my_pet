@@ -14,7 +14,7 @@ const Community = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-start items-center min-h-screen">
         <CommunityBanner />
         <div className="flex flex-col m-5 w-full max-w-[1200px] p-3">
           <div className="flex flex-col w-full ">

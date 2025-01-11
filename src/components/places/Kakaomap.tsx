@@ -180,7 +180,7 @@ const Kakao = () => {
   }; // <-- Added the missing closing bracket here
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center ">
       <div className="flex flex-col justify-center items-start gap-6">
         <div
           className="flex flex-row gap-2 mt-4

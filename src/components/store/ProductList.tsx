@@ -111,7 +111,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className="mx-auto p-4 max-w-7xl">
+    <div className="mx-auto p-4 max-w-7xl min-h-screen">
       <ProductSearchForm setProducts={setProducts} setQuery={setQuery} />
 
       {loading && page === 1 ? (

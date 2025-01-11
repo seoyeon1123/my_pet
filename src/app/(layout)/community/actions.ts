@@ -5,7 +5,7 @@ const CommunityActions = async (isFor: string, type?: string) => {
   const getCommunity = await db.post.findMany({
     where: {
       isFor,
-      ...(type && { pet: { type } }), // pet.type을 기준으로 필터링
+      ...(type && { pet: { type } }),
     },
     select: {
       id: true,
@@ -17,7 +17,7 @@ const CommunityActions = async (isFor: string, type?: string) => {
       updatedAt: true,
       pet: {
         select: {
-          type: true, // pet의 type 필드를 포함시켜 가져오기
+          type: true,
         },
       },
       user: {
@@ -30,4 +30,13 @@ const CommunityActions = async (isFor: string, type?: string) => {
   return getCommunity;
 };
 
+export const CommentCount = async (postId: number) => {
+  const getCommentCount = await db.comment.count({
+    where: {
+      postId,
+    },
+  });
+
+  return { postId, count: getCommentCount }; // postId와 count를 반환
+};
 export default CommunityActions;

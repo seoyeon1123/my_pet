@@ -9,7 +9,7 @@ const CommunityBanner = () => {
       <div className="flex flex-col gap-3 justify-end items-center *:text-white bg-[rgba(231,178,125,0.7)] h-52 w-full">
         <div className="flex flex-row justify-center items-center pl-3 gap-6">
           <div className="flex flex-col  justify-start items-center text-center gap-3">
-            <h1 className="text-4xl xs:text-lg sm:text-lg ">
+            <h1 className="text-4xl xs:text-2xl sm:text-2xl ">
               고민을
               <br className="lg:hidden xl:hidden md:hidden" />
               같이 <br /> 이야기해요!

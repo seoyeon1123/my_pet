@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CommunityActions from '@/app/(layout)/community/actions';
+import CommunityActions, { CommentCount } from '@/app/(layout)/community/actions';
 import Image from 'next/image';
 import PostUpdatedAt from '../shared/GetRelativeTime';
 import Link from 'next/link';
@@ -31,7 +31,6 @@ const PostList = ({ isFor, type }: PostListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
 
-  // 'enabled' 옵션을 사용하여 isFor와 type이 존재할 때만 쿼리 실행
   const {
     data: community = [],
     isLoading,
@@ -40,6 +39,17 @@ const PostList = ({ isFor, type }: PostListProps) => {
     enabled: !!isFor,
     select: (data) => data.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()),
   });
+
+  const postIds = community.map((v) => v.id);
+
+  // Fetch the comment count for all posts
+  const { data: commentCounts = [] } = useQuery(
+    ['commentCounts', postIds],
+    () => Promise.all(postIds.map((postId) => CommentCount(postId))),
+    {
+      enabled: postIds.length > 0,
+    },
+  );
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -70,36 +80,42 @@ const PostList = ({ isFor, type }: PostListProps) => {
       ) : (
         <div>
           <ul className="space-y-6">
-            {currentPosts.map((post, index) => (
-              <Link href={`/community/${post.id}`} key={index} className="flex items-start gap-4 border-b pb-6">
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
-                    <span className="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-md">
-                      {post.pet?.type || '견주'}의 고민입니다!
-                    </span>
-                  </h4>
-                  <h3 className="mt-1 text-lg font-semibold text-gray-900">{post.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 line-clamp-2">{post.content}</p>
-                  <div className="flex items-center text-xs text-gray-500 gap-2 mt-2">
-                    <span>{post.user.username}</span>
+            {currentPosts.map((post, index) => {
+              const commentCount = commentCounts.find((count) => count.postId === post.id)?.count || 0;
 
-                    <span>
-                      <PostUpdatedAt updatedAt={post.updatedAt} />
-                    </span>
+              return (
+                <Link href={`/community/${post.id}`} key={index} className="flex items-start gap-4 border-b pb-6">
+                  <div className="flex-1">
+                    <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                      <span className="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-md">
+                        {post.pet?.type || '견주'}의 고민입니다!
+                      </span>
+                    </h4>
+                    <h3 className="mt-1 text-lg font-semibold text-gray-900">{post.title}</h3>
+                    <p className="mt-2 text-sm text-gray-600 line-clamp-2">{post.content}</p>
+                    <div className="flex items-center text-xs text-gray-500 gap-2 mt-2">
+                      <span>{post.user.username}</span>
+
+                      <span className="flex flex-row gap-2 justify-center items-center">
+                        <PostUpdatedAt updatedAt={post.updatedAt} />
+                        <p>・</p>
+                        <p>{commentCount}개의 댓글</p>
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                {post.imageUrl && (
-                  <Image
-                    src={post.imageUrl}
-                    alt="게시글 이미지"
-                    width={100}
-                    height={100}
-                    className="aspect-square rounded-md shadow-sm"
-                  />
-                )}
-              </Link>
-            ))}
+                  {post.imageUrl && (
+                    <Image
+                      src={post.imageUrl}
+                      alt="게시글 이미지"
+                      width={100}
+                      height={100}
+                      className="aspect-square rounded-md shadow-sm"
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </ul>
 
           <div className="text-center mt-6">

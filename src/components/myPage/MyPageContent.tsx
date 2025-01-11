@@ -58,14 +58,14 @@ const MyPageContent = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center ">
+      <div className="flex justify-center items-start h-screen">
         <Loading />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-8 p-4 max-w-7xl mx-auto justify-center items-center py-10">
+    <div className="flex flex-col gap-8 p-4 max-w-7xl mx-auto justify-center items-center py-10 min-h-screen">
       <section className="p-4 flex flex-col justify-between">
         {pets && pets?.length > 0 ? (
           pets.map((pet) => (
@@ -89,9 +89,9 @@ const MyPageContent = () => {
       </section>
 
       <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full">
-        <section className="bg-gray-100 p-4 rounded-lg flex flex-col h-[500px] w-full overflow-hidden">
+        <section className="bg-lightPink p-4 rounded-lg flex flex-col h-[500px] w-full overflow-hidden">
           <h2 className="text-lg font-bold ">댕냥 광장 속 내 광장</h2>
-          <div className="flex gap-4 mb-2 sticky top-0 bg-gray-100 z-10 p-4">
+          <div className="flex gap-4 mb-2 sticky top-0  z-10 p-4">
             <button
               onClick={() => setPostFilter('전체')}
               className={`px-4 py-2 rounded-lg ${postFilter === '전체' ? 'bg-darkPink text-white' : 'bg-gray-200'}`}>
@@ -125,9 +125,9 @@ const MyPageContent = () => {
           </div>
         </section>
 
-        <section className="bg-gray-100 p-6 rounded-lg flex flex-col justify-start w-full h-[500px] overflow-hidden">
+        <section className="bg-lightPink p-6 rounded-lg flex flex-col justify-start w-full h-[500px] overflow-hidden">
           <h2 className="text-lg font-bold ">댕냥터</h2>
-          <div className="grid-cols-5 xs:grid-cols-3 space-x-2 space-y-2 gap-4 mb-2 sticky top-0 bg-gray-100 z-10 p-4">
+          <div className="grid-cols-5 xs:grid-cols-3 space-x-2 space-y-2 gap-4 mb-2 sticky top-0  z-10 p-4">
             <button
               onClick={() => setPlaceFilter('전체')}
               className={`px-4 py-2 rounded-lg ${placeFilter === '전체' ? 'bg-darkPink text-white' : 'bg-gray-200'}`}>
@@ -178,9 +178,9 @@ const MyPageContent = () => {
         </section>
       </div>
 
-      <section className="bg-gray-100 p-4 rounded-lg flex flex-col w-full h-[500px]">
+      <section className="bg-lightPink p-4 rounded-lg flex flex-col w-full h-[500px]">
         <h2 className="text-lg font-bold ">내 공동 구매</h2>
-        <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full">
+        <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full ">
           {groupPurchases && groupPurchases?.length > 0 ? (
             groupPurchases.map((groupPurchase) => (
               <div key={groupPurchase.id} className="flex flex-col">
@@ -189,7 +189,9 @@ const MyPageContent = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">참여한 공동 구매가 없습니다.</p>
+            <div className="flex justify-center items-center">
+              <p className="text-center text-gray-500">참여한 공동 구매가 없습니다.</p>
+            </div>
           )}
         </div>
       </section>

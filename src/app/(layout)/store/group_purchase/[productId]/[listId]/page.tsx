@@ -50,7 +50,12 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
     return data.participants.length >= data.maxParticipants;
   }, [data]);
 
-  if (isLoading || isUserLoading) return <Loading />;
+  if (isLoading || isUserLoading)
+    return (
+      <div className="flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   if (!data) return <p>공동 구매 정보를 찾을 수 없습니다.</p>;
 
   return (

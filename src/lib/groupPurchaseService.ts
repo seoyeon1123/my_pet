@@ -1,19 +1,16 @@
-import { GroupPurchaseStatus } from '@prisma/client'; // Prisma에서 정의된 GroupPurchaseStatus enum
 import db from './db';
 import { sendFailGroupPurchase } from '@/utils/emailSender';
 
 const groupPurchaseStatusCheck = async () => {
   const currentDate = new Date();
-  currentDate.setMinutes(currentDate.getMinutes() + 5); // 현재 시간에 5분을 더함
-  const currentDateISOString = currentDate.toISOString(); // UTC 기준으로 변환
+  currentDate.setMinutes(currentDate.getMinutes() + 5);
+  const currentDateISOString = currentDate.toISOString();
 
   try {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
-        deadline: {
-          lt: currentDateISOString,
-        },
-        status: GroupPurchaseStatus.RECRUITING,
+        deadline: { lte: currentDateISOString },
+        status: 'RECRUITING',
       },
       include: {
         participants: {
@@ -37,12 +34,10 @@ const groupPurchaseStatusCheck = async () => {
     const failedGroupPurchaseIds = expiredGroupPurchases.map((gp) => gp.id);
     await db.groupPurchase.updateMany({
       where: {
-        id: {
-          in: failedGroupPurchaseIds,
-        },
+        id: { in: failedGroupPurchaseIds },
       },
       data: {
-        status: GroupPurchaseStatus.FAILED,
+        status: 'FAILED',
       },
     });
 

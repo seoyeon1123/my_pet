@@ -15,7 +15,11 @@ const GroupPurchaseList = ({ productId }: { productId: string }) => {
   );
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loading />
+      </div>
+    );
   }
 
   if (isError) {

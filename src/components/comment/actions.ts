@@ -4,8 +4,8 @@ import db from '@/lib/db';
 
 interface ICommentProps {
   content: string;
-  postId: number; // postId는 Int 타입이므로, number로 설정
-  userId: number; // userId도 Int 타입
+  postId: number;
+  userId: number;
 }
 
 const createComment = async (data: ICommentProps) => {

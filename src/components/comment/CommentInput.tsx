@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import createComment from './actions';
 import CommentList from './CommentList';
+import { useSession } from 'next-auth/react';
 
-const CommentInput = ({ userId, postId }: { userId: number; postId: number }) => {
+const CommentInput = ({ postId }: { postId: number }) => {
   const [content, setContent] = useState('');
   const [shouldRefresh, setShouldRefresh] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
+
+  const { data } = useSession();
+  const userId = Number(data!.user.id);
 
   const handleSubmit = async () => {
     if (!content) {

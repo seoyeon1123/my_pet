@@ -22,18 +22,18 @@ const GoToTopButton = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', toggleVisibility); // 스크롤 이벤트 리스너 추가
+    window.addEventListener('scroll', toggleVisibility);
 
     return () => {
-      window.removeEventListener('scroll', toggleVisibility); // 컴포넌트가 unmount될 때 이벤트 제거
+      window.removeEventListener('scroll', toggleVisibility);
     };
   }, []);
 
   return (
     <>
       {isVisible && (
-        <button onClick={scrollToTop} className="fixed bottom-6 right-6  p-3 transition duration-300 ease-in-out">
-          <ArrowUpCircleIcon className="text-darkPink size-14" />
+        <button onClick={scrollToTop} className="fixed bottom-6 right-4 p-3 transition duration-300 ease-in-out z-50">
+          <ArrowUpCircleIcon className="text-darkPink size-14 xs:size-11 sm:size-11" />
         </button>
       )}
     </>

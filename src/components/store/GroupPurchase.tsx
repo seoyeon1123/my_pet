@@ -10,14 +10,14 @@ const GroupPurchase = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-start h-screen">
         <Loading />
       </div>
     );
   if (isError) return <div className="text-center text-red-500">Error...</div>;
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-start items-center min-h-screen">
       {data?.map((v, index) => (
         <Link
           href={`/store/group_purchase/${v.productId}/${v.id}`}

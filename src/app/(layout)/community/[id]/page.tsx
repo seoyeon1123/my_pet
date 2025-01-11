@@ -42,7 +42,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
 
   if (!post) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-start h-screen">
         <Loading />
       </div>
     );
@@ -55,7 +55,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 min-h-screen">
       <div className="flex flex-col gap-2">
         <div className="flex-1 min-h-[500px]">
           <span className="px-2 py-1 text-xs bg-yellow-200 text-yellow-800 rounded-md">
@@ -83,7 +83,6 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
 
-        {/* username과 createdAt을 아래에 배치 */}
         <div className="flex justify-between items-center text-xs text-gray-500 gap-6 mt-6">
           <div className="flex flex-row gap-2">
             <span>{post.user.username}</span>
@@ -93,7 +92,7 @@ const PostDetail = ({ params }: { params: { id: string } }) => {
         </div>
 
         <hr className="border-spacing-0.5 border-neutral-300 my-5" />
-        <CommentInput userId={post.user.id} postId={post.id} />
+        <CommentInput postId={post.id} />
       </div>
     </div>
   );

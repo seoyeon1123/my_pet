@@ -22,7 +22,7 @@ const Friends = () => {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center text-center gap-2 ">
+    <div className="flex flex-col justify-start items-center text-center gap-2 min-h-screen ">
       <Banner />
       {isLoading ? (
         <div className="flex justify-center items-center ">
