@@ -5,7 +5,7 @@ import db from '@/lib/db';
 export async function GET(req: Request) {
   // 인증 확인
   const authHeader = req.headers.get('Authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (authHeader !== `Bearer dfjlsdfualgkudsgalguldsaugalksdguldgs`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
