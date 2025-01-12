@@ -77,7 +77,11 @@ const GroupPurcase = () => {
   };
 
   if (loading || isLoading) {
-    return <Loading />;
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
   }
 
   if (!product || !product.title) {
@@ -85,7 +89,7 @@ const GroupPurcase = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6">
+    <div className="max-w-2xl mx-auto mt-10 p-6 min-h-screen">
       <h1 className="text-xl font-bold mb-6 text-center">공동구매 생성</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col justify-center gap-2 items-center p-3 border-2 rounded-2xl">

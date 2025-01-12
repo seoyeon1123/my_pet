@@ -36,6 +36,7 @@ const GroupPurchase = () => {
                 <div className="flex items-center ml-auto text-sm">
                   {v.status === 'RECRUITING' && <p className="bg-red-500 text-white px-2 py-1 rounded-full">진행중</p>}
                   {v.status === 'CLOSED' && <p className="bg-gray-500 text-white px-2 py-1 rounded-full">마감</p>}
+                  {v.status === 'FAILED' && <p className="bg-gray-300 text-white px-2 py-1 rounded-full">실패</p>}
                 </div>
               </div>
               <p className="text-sm text-gray-500 pb-2">{v.title}</p>

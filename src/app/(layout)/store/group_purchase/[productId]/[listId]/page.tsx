@@ -52,16 +52,16 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
 
   if (isLoading || isUserLoading)
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-start min-h-screen">
         <Loading />
       </div>
     );
   if (!data) return <p>공동 구매 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div className="p-10 mx-auto max-w-4xl">
+    <div className=" mx-auto max-w-4xl min-h-screen">
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-darkPink mb-6 text-center xs:text-sm sm:text-sm md:text-lg">
+        <h1 className="text-2xl font-bold text-darkPink mb-6 text-center xs:text-lg sm:text-lg md:text-lg">
           {data.title}
         </h1>
 
@@ -89,16 +89,21 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
           <p className="text-gray-700 flex items-center gap-2">
             <CalendarIcon className="w-5 h-5 text-yellow-600" />
             <span className="font-semibold">마감일:</span>
-            <span className="text-gray-600">{new Date(data.deadline).toLocaleDateString()}일</span>
-            <span className="text-gray-500">
-              ({formatDistanceToNow(new Date(data.deadline), { addSuffix: true, locale: ko })})
-            </span>
+            {data.status === 'FAILED' ? (
+              <span className="text-gray-600">공구가 실패되었습니다. </span>
+            ) : (
+              <>
+                <span className="text-gray-600">{new Date(data.deadline).toLocaleDateString()}일</span>
+                <span className="text-gray-500">
+                  ({formatDistanceToNow(new Date(data.deadline), { addSuffix: true, locale: ko })})
+                </span>
+              </>
+            )}
           </p>
           <p className="text-gray-700 flex items-center gap-2">
             <BanknotesIcon className="w-5 h-5 text-green-600" />
             <span className="font-semibold">예상 가격:</span>
             <span className="text-gray-600">{formatToWon(data.expectedPrice)}</span>
-            <span>(조금은 변동이 있을 수도 있습니다 🙏🏼)</span>
           </p>
           <p className="text-gray-700 flex items-center gap-2">
             <TruckIcon className="w-5 h-5 text-blue-600" />
