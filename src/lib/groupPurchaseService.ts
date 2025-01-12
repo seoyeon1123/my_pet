@@ -26,6 +26,8 @@ const groupPurchaseStatusCheck = async () => {
       },
     });
 
+    console.log('Expired Group Purchases:', expiredGroupPurchases);
+
     if (expiredGroupPurchases.length === 0) {
       console.log('No expired group purchases to process.');
       return;
