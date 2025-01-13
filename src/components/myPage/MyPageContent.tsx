@@ -39,7 +39,7 @@ const MyPageContent = () => {
     },
   );
 
-  const { isLoading: joinedGroupPurchasesLoading } = useQuery<GroupPurchase[]>(
+  const { data: joinedGroupPurchases, isLoading: joinedGroupPurchasesLoading } = useQuery<GroupPurchase[]>(
     ['joinedGroupPurchases', userId],
     () => MyJoinGroupPurchase(userId!),
     {
@@ -55,6 +55,10 @@ const MyPageContent = () => {
   const filteredPosts = postFilter === '전체' ? posts : posts?.filter((post) => post.isFor === postFilter);
   const filteredPlaces =
     placeFilter === '전체' ? places : places?.filter((place) => place.category.endsWith(placeFilter));
+
+  const filteredJoinedGroupPurchases = joinedGroupPurchases?.filter(
+    (joined) => !groupPurchases!.some((created) => created.id === joined.id),
+  );
 
   if (isLoading) {
     return (
@@ -179,23 +183,49 @@ const MyPageContent = () => {
       </div>
 
       <section className="bg-lightPink p-4 rounded-lg flex flex-col w-full h-[500px]">
-        <h2 className="text-lg font-bold ">내 공동 구매</h2>
-        <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full ">
-          {groupPurchases && groupPurchases?.length > 0 ? (
-            groupPurchases.map((groupPurchase) => (
-              <Link
-                href={`/store/group_purchase/${groupPurchase.productId}/${groupPurchase.id}`}
-                key={groupPurchase.id}
-                className="flex flex-col">
-                <h3 className="text-base font-semibold">{groupPurchase.title}</h3>
-                <p className="text-sm text-gray-500">{groupPurchase.description}</p>
-              </Link>
-            ))
-          ) : (
-            <div className="flex justify-center items-center">
-              <p className="text-center text-gray-500">참여한 공동 구매가 없습니다.</p>
-            </div>
-          )}
+        <h2 className="text-lg font-bold pb-5 ">내 공동 구매</h2>
+
+        <div className="flex flex-col xl:flex-row xl:items-start xl:gap-8 w-full h-full ">
+          {/* 내가 생성한 공동 구매 */}
+          <div className="flex-1 overflow-y-auto">
+            {groupPurchases && groupPurchases.length > 0 ? (
+              groupPurchases.map((groupPurchase) => (
+                <Link
+                  href={`/store/group_purchase/${groupPurchase.productId}/${groupPurchase.id}`}
+                  key={groupPurchase.id}
+                  className="flex flex-col mb-4">
+                  <h3 className="text-base font-semibold">{groupPurchase.title}</h3>
+                  <p className="text-sm text-gray-500">{groupPurchase.description}</p>
+                </Link>
+              ))
+            ) : (
+              <div className="flex justify-center items-center">
+                <p className="text-center text-gray-500">생성한 공동 구매가 없습니다.</p>
+              </div>
+            )}
+          </div>
+
+          {/* 구분선 */}
+          <div className="hidden xl:block border-l border-neutral-300 h-full mx-4"></div>
+
+          {/* 내가 참여한 공동 구매 (내가 생성한 공동구매 제외) */}
+          <div className="flex-1 overflow-y-auto">
+            {filteredJoinedGroupPurchases && filteredJoinedGroupPurchases.length > 0 ? (
+              filteredJoinedGroupPurchases.map((groupPurchase) => (
+                <Link
+                  href={`/store/group_purchase/${groupPurchase.productId}/${groupPurchase.id}`}
+                  key={groupPurchase.id}
+                  className="flex flex-col mb-4">
+                  <h3 className="text-base font-semibold">{groupPurchase.title}</h3>
+                  <p className="text-sm text-gray-500">{groupPurchase.description}</p>
+                </Link>
+              ))
+            ) : (
+              <div className="flex justify-center items-center">
+                <p className="text-center text-gray-500">참여한 공동 구매가 없습니다.</p>
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>
