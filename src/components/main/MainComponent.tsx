@@ -31,7 +31,7 @@ const cardData = [
   {
     imageSrc: dog1,
     title: '댕냥창고',
-    description: '다양한 물품을 공동구매로 절약해보아요.',
+    description: '다양한 물품을 살펴보고, 공동구매로 절약해보아요.',
     altText: '스토어',
   },
   {
