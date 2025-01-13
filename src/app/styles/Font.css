@@ -4,8 +4,50 @@
 
 @font-face {
   font-family: 'HakgyoansimPuzzleTTF-Outline';
-  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimPuzzleTTF-Outline.woff2')
-    format('woff2');
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-5@1.0/HakgyoansimPuzzleTTF-Outline.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TTLaundryGothicB';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicB.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HSSaemaul-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/HSSaemaul-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LotteMartHappy';
+  font-style: normal;
+  font-weight: 400;
+  src:
+    url('//fastly.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartHappy/LotteMartHappyMedium.woff2')
+      format('woff2'),
+    url('//fastly.jsdelivr.net/korean-webfonts/1/corps/lottemart/LotteMartHappy/LotteMartHappyMedium.woff')
+      format('woff');
+}
+
+@font-face {
+  font-family: 'Interop';
+  src:
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2') format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'SDSamliphopangche_Basic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Basic.woff')
+    format('woff');
   font-weight: normal;
   font-style: normal;
 }

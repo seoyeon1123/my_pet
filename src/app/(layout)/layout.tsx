@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Header />
-        <div className="pt-20">{children}</div>
+        <div className="pt-20 font-Interop">{children}</div>
         <GoToTopButton />
         <Footer />
       </body>

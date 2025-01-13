@@ -183,10 +183,13 @@ const MyPageContent = () => {
         <div className="flex flex-row xs:flex-col sm:flex-col justify-between gap-2 w-full ">
           {groupPurchases && groupPurchases?.length > 0 ? (
             groupPurchases.map((groupPurchase) => (
-              <div key={groupPurchase.id} className="flex flex-col">
+              <Link
+                href={`/store/group_purchase/${groupPurchase.productId}/${groupPurchase.id}`}
+                key={groupPurchase.id}
+                className="flex flex-col">
                 <h3 className="text-base font-semibold">{groupPurchase.title}</h3>
                 <p className="text-sm text-gray-500">{groupPurchase.description}</p>
-              </div>
+              </Link>
             ))
           ) : (
             <div className="flex justify-center items-center">

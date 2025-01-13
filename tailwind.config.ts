@@ -52,6 +52,12 @@ const config: Config = {
       },
       fontFamily: {
         hakgyo: ["'HakgyoansimPuzzleTTF-Outline'", 'sans-serif'],
+        TTLaundryGothicB: ['TTLaundryGothicB', 'sans-serif'],
+        omyu_pretty: ['omyu_pretty', 'sans-serif'],
+        HSSaemaul_Regular: ['HSSaemaul-Regular', 'sans-serif'],
+        LotteMartHappy: ['LotteMartHappy', 'sans-serif'],
+        Interop: ['Interop', 'sans-serif'],
+        SDSamliphopangche_Basic: ['SDSamliphopangche_Basic'],
       },
       screens: {
         xs: { max: '479px' }, // 모바일 세로 (최대 479px)

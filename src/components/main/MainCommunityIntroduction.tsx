@@ -9,8 +9,8 @@ const introduction = [
     bg: '#fce19c',
   },
   {
-    title: '애완견을 키울 예정이라면?',
-    description: '애완견을 키울 예정이라면 미래댕맘으로 활동하실 수 있어요! (단, 이용에 제한이 있을 수 있어요!)',
+    title: '애완견을 위한 다양한 기능 제공',
+    description: '애완견과 함께하는 즐거운 시간을 위해, 물품 공동구매, 소통, 애완견과 갈 수 있는 장소를 안내합니다.',
     icon: faHourglassStart,
     bg: '#ffc0a8',
   },

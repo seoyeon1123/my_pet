@@ -39,8 +39,8 @@ const ChatRoomList = () => {
           <ul className="list-none p-0 m-0">
             {chatRooms?.length > 0 ? (
               chatRooms.map((chatRoom) => (
-                <li key={chatRoom.id} className="border-b border-gray-200 last:border-none">
-                  <Link href={`/chatRoom/${chatRoom.id}`} className="flex flex-row justify-between items-center">
+                <li key={chatRoom.id} className="border-b border-gray-200 last:border-none py-4">
+                  <Link href={`/chatRoom/${chatRoom.id}`} className="flex flex-row justify-between items-center ">
                     <div>
                       <div className="text-lg xs:text-base sm:text-base font-semibold text-gray-800">
                         {chatRoom.groupPurchase?.title}

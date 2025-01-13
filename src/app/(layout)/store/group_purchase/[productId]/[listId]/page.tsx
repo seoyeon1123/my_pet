@@ -59,7 +59,7 @@ const GroupPurchaseListDetail = ({ params }: { params: { productId: string; list
   if (!data) return <p>공동 구매 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div className=" mx-auto max-w-4xl min-h-screen">
+    <div className=" mx-auto max-w-4xl min-h-screen mt-10">
       <div className="p-6">
         <h1 className="text-2xl font-bold text-darkPink mb-6 text-center xs:text-lg sm:text-lg md:text-lg">
           {data.title}

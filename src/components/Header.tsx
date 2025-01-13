@@ -16,8 +16,10 @@ const Header = () => {
         댕냥살롱
       </Link>
 
-      <div className="sm:hidden xs:hidden md:hidden flex flex-row gap-6 text-lg">
-        <Link href="/friends" className={`hover:text-darkPink ${path === '/friends' ? 'text-darkPink' : 'text-black'}`}>
+      <div className="sm:hidden xs:hidden md:hidden flex flex-row gap-6 text-xl *:font-SDSamliphopangche_Basic">
+        <Link
+          href="/friends"
+          className={`hover:text-darkPink ${path === '/friends' ? 'text-darkPink' : 'text-black'} `}>
           댕냥친구소
         </Link>
         <Link
@@ -25,10 +27,10 @@ const Header = () => {
           className={`hover:text-darkPink ${path === '/community' ? 'text-darkPink' : 'text-black'}`}>
           댕냥광장
         </Link>
-        <Link href="/places" className={`hover:text-darkPink ${path === '/places' ? 'text-darkPink' : 'text-black'}`}>
+        <Link href="/places" className={`hover:text-darkPink ${path === '/places' ? 'text-darkPink' : 'text-black'} `}>
           댕냥터
         </Link>
-        <Link href="/store" className={`hover:text-darkPink ${path === '/store' ? 'text-darkPink' : 'text-black'}`}>
+        <Link href="/store" className={`hover:text-darkPink ${path === '/store' ? 'text-darkPink' : 'text-black'} `}>
           댕냥창고
         </Link>
         <Link
@@ -54,7 +56,7 @@ const Header = () => {
       </div>
 
       {click && (
-        <div className="absolute top-16 right-0 w-full bg-white shadow-md rounded-lg flex flex-col gap-2 p-4 z-50">
+        <div className="absolute top-16 right-0 w-full bg-white shadow-md rounded-lg flex flex-col gap-2 p-4 z-50 *:font-TTLaundryGothicB">
           <Link href="/friends" onClick={() => setClick(false)}>
             댕냥친구소
           </Link>

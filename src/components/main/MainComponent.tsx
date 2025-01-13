@@ -26,19 +26,19 @@ const cardData = [
     imageSrc: cat3,
     title: '댕냥터',
     description: '내 근처에 있는 [ 댕냥이들을 위한 ] 카페, 병원, 호텔 등을 찾아보아요.',
-    altText: '이벤트',
+    altText: '지도',
   },
   {
     imageSrc: dog1,
     title: '댕냥창고',
-    description: '다양한 댕냥이들의 용품을 찾아보아요.',
-    altText: '이벤트',
+    description: '다양한 물품을 공동구매로 절약해보아요.',
+    altText: '스토어',
   },
   {
     imageSrc: dog2,
-    title: '댕냥맘',
-    description: '급하게 우리의 댕냥이를 맡겨야 한다면, 댕냥맘 & 댕냥대디에게 맡겨주세요.',
-    altText: '이벤트',
+    title: '댕냥챗',
+    description: '공동구매가 성공적으로 진행되면, 참여자들과 실시간 채팅을 통해 소통할 수 있어요.',
+    altText: '채팅',
   },
 ];
 

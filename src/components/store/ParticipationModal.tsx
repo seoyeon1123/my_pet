@@ -51,9 +51,10 @@ const ParticipationModal = ({ closeModal, groupPurchaseId, userId, productName, 
           <h2 className="text-xl font-bold mb-4 text-center">공동구매를 신청합니다!</h2>
           <p className="text-gray-700 mb-6">
             <span className="block mb-2 font-semibold">⭐️ 유의사항을 꼭 확인해주세요 ⭐️</span>
-            <span className="block mb-2">1. 공동구매에 참여 완료 후, 최대 3번까지 취소가 가능합니다.</span>
-            <span className="block mb-2">2. 3번 이상 취소를 하게 되면, 계정이 정지될 수 있습니다.</span>
-            <span className="block mb-2">3. 공동구매 인원이 충분하지 않으면, 취소될 수 있습니다.</span>
+            <span className="block mb-2">1. 공동구매에 참여 완료 후, 취소가 불가능합니다.</span>
+            <span className="block mb-2">2. 공동구매 인원이 충분하지 않으면, 취소될 수 있습니다.</span>
+            <span className="block mb-2">3. 공동구매 인원 달성이 완료되면, 채팅방이 열립니다. 확인해주세요 🙂</span>
+
             <span className="block mb-2">
               4. 공동구매 진행 시, <strong className="font-bold text-red-600">이메일</strong>로 알림이 발송됩니다.
               메일을 꼭 확인해주세요 :)

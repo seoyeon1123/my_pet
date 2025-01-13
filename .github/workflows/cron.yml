@@ -3,7 +3,7 @@ name: Cron Job for Group Purchase
 on:
   schedule:
     # 매일 자정에 실행
-    - cron: '0 15 * * *' # UTC 기준으로 자정
+    - cron: '0 15 * * *'
 
 jobs:
   run-cron-job:

@@ -81,6 +81,7 @@ export const MyGroupPurchase = async (userId: number | null) => {
       reason: true,
       productCategory: true,
       status: true,
+      productId: true,
     },
   });
 
@@ -109,6 +110,7 @@ export const MyJoinGroupPurchase = async (userId: number | null) => {
       reason: true,
       productCategory: true,
       status: true,
+      productId: true,
     },
   });
 

@@ -43,8 +43,6 @@ const GroupPurcase = () => {
     }
   }, [product]);
 
-  const formattedDeadline = deadline ? new Date(deadline).toISOString() : '';
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -53,13 +51,27 @@ const GroupPurcase = () => {
       return;
     }
 
+    // deadline을 한국 시간(KST) 기준 자정으로 설정
+    if (!deadline) {
+      alert('마감일을 입력해주세요.');
+      return;
+    }
+
+    const kstDeadline = new Date(deadline); // 사용자가 입력한 날짜를 한국 시간 기준으로 처리
+
+    // 한국 시간(KST) 자정으로 설정 (시간을 00:00:00으로)
+    kstDeadline.setHours(0, 0, 0, 0);
+
+    // KST 시간을 UTC로 변환하지 않고 그대로 사용
+    const kstISOString = kstDeadline.toISOString(); // KST 기준 자정의 ISO 문자열로 변환
+
     const groupData = {
       image: product.image,
       title: stripTags(product.title),
       description,
       expectedPrice: Number(expectedPrice),
       maxParticipants,
-      deadline: formattedDeadline,
+      deadline: kstISOString, // 변환된 KST 기준 자정의 ISO 문자열을 저장
       reason: reason || reasonOption,
       deliveryMethod,
       shippingCost: deliveryMethod === '택배 배송' ? (shippingCost ? parseFloat(shippingCost) : null) : null,

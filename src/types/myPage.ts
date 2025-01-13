@@ -22,6 +22,7 @@ export interface Place {
 }
 
 export interface GroupPurchase {
+  productId: bigint;
   id: number;
   reason: string;
   title: string;
