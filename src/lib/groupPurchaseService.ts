@@ -2,10 +2,7 @@ import db from './db';
 import { sendFailGroupPurchase } from '@/utils/emailSender';
 
 const groupPurchaseStatusCheck = async () => {
-  // 현재 시간 기준 KST 자정을 설정
   const currentDate = new Date();
-  currentDate.setUTCHours(15, 0, 0, 0); // KST 자정은 UTC 15:00
-
   try {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
@@ -48,18 +45,33 @@ const groupPurchaseStatusCheck = async () => {
 
     // 참여자들에게 이메일 전송
     for (const gp of expiredGroupPurchases) {
-      const emails = gp.participants.map((p) => p.email);
+      // 이메일이 존재하는 참여자만 필터링
+      const emails = gp.participants
+        .map((p) => p.email)
+        .filter((email) => email && email.trim() !== '' && email !== null); // 이메일이 없거나 빈 문자열, null인 경우 제외
+
       const productTitle = gp.title;
+
+      if (emails.length === 0) {
+        console.log(`유효한 이메일 주소가 없는 그룹 구매: ${productTitle}`);
+        continue;
+      }
+
       for (const email of emails) {
-        try {
-          await sendFailGroupPurchase(email!, productTitle);
-        } catch (error) {
-          console.error(`Failed to send email to ${email} for product ${productTitle}`, error);
+        // 이메일이 유효한 경우에만 이메일 전송
+        if (email && email.trim() !== '') {
+          try {
+            await sendFailGroupPurchase(email, productTitle); // 이메일 전송
+          } catch (error) {
+            console.error(`이메일 전송 실패: ${email} (상품: ${productTitle})`, error);
+          }
+        } else {
+          console.log(`유효하지 않은 이메일 주소: ${email} (상품: ${productTitle})`);
         }
       }
     }
   } catch (error) {
-    console.error('Error processing group purchases:', error);
+    console.error('Error occurred during group purchase status check:', error);
   }
 };
 

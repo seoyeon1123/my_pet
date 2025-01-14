@@ -80,7 +80,11 @@ const ChatRoomMessageList = ({ chatRoomId }: { chatRoomId: number }) => {
   const invoiceTrackingNumber = data?.groupPurchase.participants.map((v) => v.invoiceTrackingNumber);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <div className="flex justify-center items-start min-h-screen ">
+        <Loading />
+      </div>
+    );
   }
 
   if (error) {

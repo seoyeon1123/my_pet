@@ -28,8 +28,20 @@ export async function getProduct({ query, offset = 0 }: GetProductParams) {
   return data.items;
 }
 
-export const getGroupPurchasesList = async () => {
+export const getGroupPurchasesList = async (page: number, pageSize: number) => {
+  const skip = (page - 1) * pageSize; // 페이지네이션을 위한 skip 계산
+  const take = pageSize; // 한 페이지에 가져올 데이터 개수
+
+  // 전체 그룹 구매 개수를 가져오기
+  const totalCount = await db.groupPurchase.count();
+
+  // 그룹 구매 리스트 가져오기
   const GroupPurchasesList = await db.groupPurchase.findMany({
+    skip,
+    take,
+    orderBy: {
+      createdAt: 'desc',
+    },
     select: {
       id: true,
       title: true,
@@ -50,5 +62,5 @@ export const getGroupPurchasesList = async () => {
     },
   });
 
-  return GroupPurchasesList;
+  return { items: GroupPurchasesList, totalCount }; // 데이터와 전체 개수를 반환
 };

@@ -56,7 +56,7 @@ const ParticipationModal = ({ closeModal, groupPurchaseId, userId, productName, 
             <span className="block mb-2">3. 공동구매 인원 달성이 완료되면, 채팅방이 열립니다. 확인해주세요 🙂</span>
 
             <span className="block mb-2">
-              4. 공동구매 진행 시, <strong className="font-bold text-red-600">이메일</strong>로 알림이 발송됩니다.
+              4. 공동구매 실패 시, <strong className="font-bold text-red-600">이메일</strong>로 알림이 발송됩니다.
               메일을 꼭 확인해주세요 :)
             </span>
             <span className="block mb-2">5. 이메일을 정확하게 입력해주세요 :)</span>
