@@ -1,4 +1,3 @@
-// RootLayout 컴포넌트 수정
 import '../styles/globals.css';
 import '../styles/Font.css';
 import GoToTopButton from '@/components/shared/BackToTopButton';

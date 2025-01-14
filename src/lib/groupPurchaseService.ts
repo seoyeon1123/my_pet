@@ -2,14 +2,17 @@ import db from './db';
 import { sendFailGroupPurchase } from '@/utils/emailSender';
 
 const groupPurchaseStatusCheck = async () => {
+  // 현재 시간 기준 KST 자정을 설정
   const currentDate = new Date();
-  currentDate.setMinutes(currentDate.getMinutes() + 5);
-  const currentDateISOString = currentDate.toISOString();
+  currentDate.setUTCHours(15, 0, 0, 0); // KST 자정은 UTC 15:00
+  const deadlineLimit = new Date(currentDate);
+  deadlineLimit.setMinutes(deadlineLimit.getMinutes() + 5); // +5분 범위
 
   try {
+    // KST 자정을 기준으로 RECRUITING 상태의 만료된 공구 찾기
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
-        deadline: { lte: currentDateISOString },
+        deadline: { lte: deadlineLimit.toISOString() },
         status: 'RECRUITING',
       },
       include: {
@@ -33,6 +36,7 @@ const groupPurchaseStatusCheck = async () => {
       return;
     }
 
+    // 상태를 FAILED로 업데이트
     const failedGroupPurchaseIds = expiredGroupPurchases.map((gp) => gp.id);
     await db.groupPurchase.updateMany({
       where: {
@@ -43,12 +47,17 @@ const groupPurchaseStatusCheck = async () => {
       },
     });
 
+    // 참여자들에게 이메일 전송
     for (const gp of expiredGroupPurchases) {
       const emails = gp.participants.map((p) => p.email);
       const productTitle = gp.title;
 
       for (const email of emails) {
-        await sendFailGroupPurchase(email!, productTitle);
+        try {
+          await sendFailGroupPurchase(email!, productTitle);
+        } catch (error) {
+          console.error(`Failed to send email to ${email} for product ${productTitle}`, error);
+        }
       }
     }
   } catch (error) {
