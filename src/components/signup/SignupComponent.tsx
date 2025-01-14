@@ -48,7 +48,7 @@ const SignupComponent = ({ name, phone, email }: SignupComponentProps) => {
       setUsers((prev) => [...prev, newUser]);
 
       alert('회원가입에 성공하셨습니다.');
-      router.push('/home');
+      router.push('/friends');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || '회원가입에 실패했습니다.');

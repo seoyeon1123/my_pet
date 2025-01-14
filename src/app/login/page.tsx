@@ -27,7 +27,7 @@ const Login = () => {
         setError('로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
       } else {
         alert('로그인에 성공하셨습니다.');
-        router.push('/home');
+        router.push('/friends');
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : '알 수 없는 오류가 발생했습니다.';
@@ -75,7 +75,7 @@ const Login = () => {
         <hr className="border-t border-neutral-300 my-6" />
 
         <button
-          onClick={() => signIn('kakao', { redirect: true, callbackUrl: '/home' })}
+          onClick={() => signIn('kakao', { redirect: true, callbackUrl: '/friends' })}
           className="xs:w-80 sm:w-80 md:w-96 lg:w-[450px] xl:w-[450px] bg-[#FEE500] text-[#000000 85%] py-3 rounded-2xl hover:bg-lightGreen/90 transition duration-300 ease-in-out">
           카카오로 로그인하기
         </button>
