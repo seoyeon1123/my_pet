@@ -6,14 +6,13 @@ const groupPurchaseStatusCheck = async () => {
   const currentDate = new Date();
   currentDate.setUTCHours(15, 0, 0, 0); // KST 자정은 UTC 15:00
   const deadlineLimit = new Date(currentDate);
-  deadlineLimit.setMinutes(deadlineLimit.getMinutes() + 5); // +5분 범위
+  deadlineLimit.setMinutes(deadlineLimit.getMinutes() + 5);
 
   try {
-    // KST 자정을 기준으로 RECRUITING 상태의 만료된 공구 찾기
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
         deadline: {
-          lte: deadlineLimit.toISOString(), // UTC로 변환된 기한
+          lte: deadlineLimit.toISOString(),
         },
         status: 'RECRUITING',
       },
