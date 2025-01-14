@@ -5,14 +5,12 @@ const groupPurchaseStatusCheck = async () => {
   // 현재 시간 기준 KST 자정을 설정
   const currentDate = new Date();
   currentDate.setUTCHours(15, 0, 0, 0); // KST 자정은 UTC 15:00
-  const deadlineLimit = new Date(currentDate);
-  deadlineLimit.setMinutes(deadlineLimit.getMinutes() + 5);
 
   try {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
         deadline: {
-          lte: deadlineLimit.toISOString(),
+          lte: currentDate.toISOString(),
         },
         status: 'RECRUITING',
       },
