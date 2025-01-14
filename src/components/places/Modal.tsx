@@ -88,13 +88,14 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
                   {place.category_name && <p className="text-xs text-gray-400">{place.category_name}</p>}
                 </div>
                 <div className="flex flex-row gap-2">
-                  <button
+                  <ShareIcon
+                    className="size-5 sm:size-3 xs:size-3 text-black mt-2"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleShare(place);
-                    }}>
-                    <ShareIcon className="size-5 sm:size-3 xs:size-3 text-black mt-2" />
-                  </button>
+                    }}
+                  />
+
                   <BookmarkIcon
                     onClick={(e) => {
                       e.stopPropagation();
