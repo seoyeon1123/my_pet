@@ -3,7 +3,7 @@
 import { MyCommunity, MyGroupPurchase, MyJoinGroupPurchase, MyPet, MyPlace } from '@/app/(layout)/myPage/actions';
 import { formatToYearMonthDay } from '@/lib/utils';
 import { GroupPurchase, Pet, Place, Post } from '@/types/myPage';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react'; // signOut 추가
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -206,9 +206,9 @@ const MyPageContent = () => {
           </div>
 
           {/* 구분선 */}
-          <div className="hidden xl:block border-l border-neutral-300 h-full mx-4"></div>
+          <div className="hidden xl:block border-l-2 border-gray-300 h-full mx-4" />
 
-          {/* 내가 참여한 공동 구매 (내가 생성한 공동구매 제외) */}
+          {/* 내가 참여한 공동 구매 */}
           <div className="flex-1 overflow-y-auto">
             {filteredJoinedGroupPurchases && filteredJoinedGroupPurchases.length > 0 ? (
               filteredJoinedGroupPurchases.map((groupPurchase) => (
@@ -228,6 +228,11 @@ const MyPageContent = () => {
           </div>
         </div>
       </section>
+
+      {/* 로그아웃 버튼 */}
+      <button onClick={() => signOut()} className="mt-6 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+        로그아웃
+      </button>
     </div>
   );
 };
