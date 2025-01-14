@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
         <SessionProvider>
           <RecoilRoot>
             <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

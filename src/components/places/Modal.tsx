@@ -29,24 +29,24 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
         content: {
           title: place.name,
           description: place.address,
-          imageUrl: place.place_url
-            ? `https://api.map.kakao.com/v2/maps/apis/places/${place.place_url}/image`
-            : defaultImageUrl,
+          imageUrl: defaultImageUrl, // 기본 이미지 사용
           link: {
-            mobileWebUrl: 'https://mypat.vercel.app',
-            webUrl: 'https://mypat.vercel.app',
+            mobileWebUrl: place.place_url || 'https://map.kakao.com',
+            webUrl: place.place_url || 'https://map.kakao.com',
           },
         },
         buttons: [
           {
             title: '자세히 보기',
             link: {
-              mobileWebUrl: place.place_url,
-              webUrl: place.place_url,
+              mobileWebUrl: place.place_url || 'https://map.kakao.com',
+              webUrl: place.place_url || 'https://map.kakao.com',
             },
           },
         ],
       });
+    } else {
+      alert('카카오톡 공유를 사용할 수 없습니다. SDK 초기화를 확인하세요.');
     }
   };
 
