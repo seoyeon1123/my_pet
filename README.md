@@ -90,27 +90,22 @@
   
 
 ---
-
-
 ## 🔨 사용 기술
 
-프론트엔드
-> - "next": "14.2.18"
-> - "react": "18"
-> - "typeScript": "5"
-> - "tailwindcss": "3.4.1"
-> - "recoil": "0.7.7"
+### 프론트엔드
+> - "next": "14.2.18"  
+> - "react": "18"  
+> - "typeScript": "5"  
+> - "tailwindcss": "3.4.1"  
+> - "recoil": "0.7.7"  
 
-
-백엔드
-- Supabase: 프로젝트와 방명록 관리를 위해 사용한 데이터베이스
-
+### 백엔드
+> - Supabase: 프로젝트와 방명록 관리를 위해 사용한 데이터베이스
 
 ---
 
+## 📚 사용 기술 스택
 
-
-## 📚 사용 기술 스텍 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
   <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=Next.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black"/>
@@ -127,35 +122,34 @@
   <img src="https://img.shields.io/badge/Zod-2F2F2F?style=flat-square&logo=Zod&logoColor=white"/>
 </div>
 
+---
 
+## ☄️ 트러블 슈팅
 
+- [Supabase 트러블슈팅](https://velog.io/@leeeee/%EB%8C%95%EB%83%A5%EC%82%B4%EB%A1%B1-supabase-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85)
+- [Recoil Persist 트러블슈팅](https://velog.io/@leeeee/%EB%8C%95%EB%83%A5%EC%82%B4%EB%A1%B1-recoil-persist-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8B%88-%EC%98%A4%EB%A5%98%EA%B0%80)
 
 ---
 
+## ☄️ 개발 VELOG
 
-### ☄️ 트러블 슈팅
-
-[Supabase 트러블슈팅](https://velog.io/@leeeee/%EB%8C%95%EB%83%A5%EC%82%B4%EB%A1%B1-supabase-%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85)
-
-[Recoil Persist 트러블슈팅](https://velog.io/@leeeee/%EB%8C%95%EB%83%A5%EC%82%B4%EB%A1%B1-recoil-persist-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8B%88-%EC%98%A4%EB%A5%98%EA%B0%80)
-
-
+- [댕냥살롱 시리즈](https://velog.io/@leeeee/series/%EB%8C%95%EB%83%A5%EC%82%B4%EB%A1%B1)
+  - 들어가시면 트러블 슈팅 뿐만 아니라, GitHub Cron 적용, 카카오 맵 적용 등 구현한 다양한 기술들을 확인할 수 있습니다.
 
 ---
 
+## 🚀 프로젝트
 
-
-## 🚀 프로젝트 
-
-👉 [댕냥살롱 바로가기](https://mypat.vercel.app/)  
+👉 [댕냥살롱 바로가기](https://mypat.vercel.app/)
 
 ---
 
-## 📌 기여하기  
+## 📌 기여하기
+
 댕냥살롱에 관심이 있다면 함께 만들어 가요!  
-GitHub를 통해 여러분의 의견과 기여를 기다립니다. 😊  
+GitHub를 통해 여러분의 의견과 기여를 기다립니다. 😊
 
 ---
 
 **댕냥살롱 – 혼자 키우는 반려동물, 더 이상 혼자가 아닙니다.**  
-**🐾 함께, 더 행복한 삶을 위한 공간!**  
+**🐾 함께, 더 행복한 삶을 위한 공간!**
