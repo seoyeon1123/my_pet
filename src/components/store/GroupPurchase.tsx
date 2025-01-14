@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { getGroupPurchasesList } from '@/app/(layout)/store/actions';
 import { useQuery } from 'react-query';
 import Loading from '../Loading';
