@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Place } from '@/types/kakaomap.types';
 import addPlace from '@/app/(layout)/places/actions';
 import { ShareIcon, BookmarkIcon } from '@heroicons/react/24/solid';
@@ -19,6 +19,24 @@ export interface ModalProps {
 const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocation }: ModalProps) => {
   const { data } = useSession();
   const userId = Number(data?.user?.id);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (!window.Kakao?.isInitialized()) {
+        window.Kakao.init('acf4479a39c6800a7a112e1e85028978');
+        console.log('Kakao SDK initialized:', window.Kakao.isInitialized());
+      }
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script); // Clean up script when component unmounts
+    };
+  }, []);
+
   const handleShare = (place: Place) => {
     const defaultImageUrl =
       'https://velog.velcdn.com/images/leeeee/post/ab76b009-c886-4305-8adb-09abd4bd675a/image.png';
@@ -29,24 +47,24 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, moveLatLng, currentLocat
         content: {
           title: place.name,
           description: place.address,
-          imageUrl: defaultImageUrl, // 기본 이미지 사용
+          imageUrl: place.place_url
+            ? `https://api.map.kakao.com/v2/maps/apis/places/${place.place_url}/image`
+            : defaultImageUrl,
           link: {
-            mobileWebUrl: place.place_url || 'https://map.kakao.com',
-            webUrl: place.place_url || 'https://map.kakao.com',
+            mobileWebUrl: 'https://mypat.vercel.app',
+            webUrl: 'https://mypat.vercel.app',
           },
         },
         buttons: [
           {
             title: '자세히 보기',
             link: {
-              mobileWebUrl: place.place_url || 'https://map.kakao.com',
-              webUrl: place.place_url || 'https://map.kakao.com',
+              mobileWebUrl: place.place_url,
+              webUrl: place.place_url,
             },
           },
         ],
       });
-    } else {
-      alert('카카오톡 공유를 사용할 수 없습니다. SDK 초기화를 확인하세요.');
     }
   };
 

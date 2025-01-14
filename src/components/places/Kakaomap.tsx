@@ -269,17 +269,15 @@ const Kakao = () => {
           </div>
 
           {isModalOpen && search.length > 0 && (
-            <div className="absolute top-0 left-0 shadow-md z-20 transition-transform transform translate-x-0">
-              <Modal
-                search={search}
-                openMarkerId={openMarkerId}
-                setOpenMarkerId={setOpenMarkerId}
-                moveLatLng={moveLatLng}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                currentLocation={state.center}
-              />
-            </div>
+            <Modal
+              search={search}
+              openMarkerId={openMarkerId}
+              setOpenMarkerId={setOpenMarkerId}
+              moveLatLng={moveLatLng}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              currentLocation={state.center}
+            />
           )}
         </div>
       </div>
