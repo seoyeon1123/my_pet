@@ -12,7 +12,9 @@ const groupPurchaseStatusCheck = async () => {
     // KST 자정을 기준으로 RECRUITING 상태의 만료된 공구 찾기
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {
-        deadline: { lte: deadlineLimit.toISOString() },
+        deadline: {
+          lte: deadlineLimit.toISOString(), // UTC로 변환된 기한
+        },
         status: 'RECRUITING',
       },
       include: {
@@ -51,7 +53,6 @@ const groupPurchaseStatusCheck = async () => {
     for (const gp of expiredGroupPurchases) {
       const emails = gp.participants.map((p) => p.email);
       const productTitle = gp.title;
-
       for (const email of emails) {
         try {
           await sendFailGroupPurchase(email!, productTitle);
