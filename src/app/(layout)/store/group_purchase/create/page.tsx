@@ -56,10 +56,7 @@ const GroupPurcase = () => {
       return;
     }
 
-    const kstDeadline = new Date(deadline);
-    kstDeadline.setHours(23, 59, 0, 0);
-
-    const utcDeadline = new Date(kstDeadline.getTime() - 9 * 60 * 60 * 1000); // UTC로 변환
+    const kstDeadline = new Date(deadline + 'T23:59:00+09:00');
 
     const groupData = {
       image: product.image,
@@ -67,7 +64,7 @@ const GroupPurcase = () => {
       description,
       expectedPrice: Number(expectedPrice),
       maxParticipants,
-      deadline: utcDeadline.toISOString(), // 변환된 UTC 기준 마감일의 ISO 문자열을 저장
+      deadline: kstDeadline.toISOString(),
       reason: reason || reasonOption,
       deliveryMethod,
       shippingCost: deliveryMethod === '택배 배송' ? (shippingCost ? parseFloat(shippingCost) : null) : null,
