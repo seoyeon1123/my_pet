@@ -65,22 +65,43 @@ const PostCreate = () => {
 
         <div className="flex flex-row justify-center items-center gap-4">
           <label className="flex items-center">
-            <input type="radio" name="isFor" value="견주" className="mr-2" onChange={handleRadioChange} />
+            <input
+              type="radio"
+              name="isFor"
+              value="견주"
+              className="mr-2"
+              onChange={handleRadioChange}
+              data-cy="isForPerson"
+            />
             견주
           </label>
           <label className="flex items-center">
-            <input type="radio" name="isFor" value="애완견" className="mr-2" onChange={handleRadioChange} />
+            <input
+              type="radio"
+              name="isFor"
+              value="애완견"
+              className="mr-2"
+              onChange={handleRadioChange}
+              data-cy="isForPet"
+            />
             애완견
           </label>
         </div>
 
         {isFor === '애완견' && <ChoosePet />}
         <PostImageUpload />
-        <Input type="text" name="title" onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해주세요" />
+        <Input
+          type="text"
+          name="title"
+          onChange={(e) => setTitle(e.target.value)}
+          dataCy="title"
+          placeholder="제목을 입력해주세요"
+        />
 
         <textarea
           onChange={(e) => setContent(e.target.value)}
           name="content"
+          data-cy="content"
           placeholder="고민을 적어주세요"
           className="p-5 border border-gray-300 rounded-2xl focus:outline-none focus:ring-1 focus:ring-darkPink focus:border-darkPink transition duration-300 ease-in-out w-full"
           rows={5}></textarea>

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["kakao.maps.d.ts"],
+    "types": ["kakao.maps.d.ts", "cypress", "cypress-file-upload"],
     "jsx": "preserve",
     "esModuleInterop": true,
     "moduleResolution": "bundler",
@@ -22,6 +22,14 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "server.ts", "lib/**/*"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "server.ts",
+    "lib/**/*",
+    "cypress/**/*.ts"
+  ],
   "exclude": ["node_modules"]
 }

@@ -62,6 +62,7 @@ const PostImageUpload = () => {
           type="file"
           onChange={handleFileChange}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          data-cy="imageFile"
         />
 
         {!imagePreview ? (

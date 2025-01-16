@@ -52,6 +52,7 @@ const Login = () => {
             placeholder="아이디"
             onChange={(e) => setUsername(e.target.value)}
             error={[]}
+            dataCy="login-username"
           />
           <Input
             name="password"
@@ -59,10 +60,11 @@ const Login = () => {
             placeholder="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
             error={[]}
+            dataCy="login-password"
           />
         </div>
 
-        <Button type="submit" description="로그인" />
+        <Button dataCy="loginBtn" type="submit" description="로그인" />
       </form>
 
       {error && (
