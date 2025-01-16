@@ -3,6 +3,8 @@ import { sendFailGroupPurchase } from '@/utils/emailSender';
 
 const groupPurchaseStatusCheck = async () => {
   const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0);
+
   try {
     const expiredGroupPurchases = await db.groupPurchase.findMany({
       where: {

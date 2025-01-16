@@ -56,7 +56,11 @@ const GroupPurcase = () => {
       return;
     }
 
-    const kstDeadline = new Date(deadline + 'T23:59:00+09:00');
+    // deadline 값에서 시간 부분을 제거하고, 날짜만 사용
+    const kstDeadline = new Date(deadline); // '2025-01-15'와 같은 날짜를 Date 객체로 변환
+
+    // Prisma에서 요구하는 ISO-8601 형식으로 변환 (시간도 포함된 형태)
+    const isoDeadline = kstDeadline.toISOString();
 
     const groupData = {
       image: product.image,
@@ -64,7 +68,7 @@ const GroupPurcase = () => {
       description,
       expectedPrice: Number(expectedPrice),
       maxParticipants,
-      deadline: kstDeadline.toISOString(),
+      deadline: isoDeadline, // ISO-8601 형식으로 전달
       reason: reason || reasonOption,
       deliveryMethod,
       shippingCost: deliveryMethod === '택배 배송' ? (shippingCost ? parseFloat(shippingCost) : null) : null,

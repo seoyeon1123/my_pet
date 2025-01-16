@@ -20,6 +20,7 @@ const Friends = () => {
       setPetFriends(data);
     },
   });
+  console.log(`현재 브라우저 시간대: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`);
 
   return (
     <div className="flex flex-col justify-start items-center text-center gap-2 min-h-screen ">
