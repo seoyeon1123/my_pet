@@ -11,7 +11,8 @@ jobs:
       # 1. Vercel API 호출
       - name: Make HTTP request to Vercel API
         run: |
-          curl -v -X GET https://mypat.vercel.app/api/cron
+          curl -v -X GET https://mypat.vercel.app/api/cron \
+          -H "Authorization: Bearer ${{ secrets.MYPET }}"
 
       # 2. Vercel 배포
       - name: Deploy to Vercel
