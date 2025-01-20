@@ -20,6 +20,8 @@ jobs:
 
       # 2. Vercel 배포
       - name: Deploy to Vercel
-        run: npx vercel deploy --prod
+        run: |
+          npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} \
+          --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
