@@ -1,5 +1,9 @@
 name: Cron Job and Deploy to Vercel
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   schedule:
     - cron: '15 15 * * *' # KST 자정에 실행
