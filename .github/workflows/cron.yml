@@ -3,6 +3,7 @@ name: Cron Job and Deploy to Vercel
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
 on:
   schedule:
@@ -20,8 +21,7 @@ jobs:
 
       # 2. Vercel 배포
       - name: Deploy to Vercel
-        run: |
-          npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} \
+        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} \
           --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
