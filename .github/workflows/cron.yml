@@ -7,7 +7,7 @@ env:
 
 on:
   schedule:
-    - cron: '15 15 * * *' # KST 자정에 실행
+    - cron: '0 15 * * *' # KST 자정에 실행 (UTC 기준으로 15:00)
 
 jobs:
   run-cron-job:
@@ -23,5 +23,3 @@ jobs:
       - name: Deploy to Vercel
         run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} \
           --org ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID }}
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

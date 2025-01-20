@@ -1,4 +1,4 @@
-interface IButton {
+export interface IButton {
   type?: 'submit' | 'reset' | 'button';
   description?: string; // description은 선택적으로 유지
   onClick?: () => void;
