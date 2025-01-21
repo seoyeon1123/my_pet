@@ -1,23 +1,39 @@
 name: Cron Job and Deploy to Vercel
 
 env:
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
   schedule:
     - cron: '0 15 * * *' # KST 자정에 실행 (UTC 기준으로 15:00)
 
 jobs:
-  run-cron-job:
+  run-cron-job-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      # 1. Vercel API 호출
+      # 1. 리포지토리 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Vercel API 호출 (크론 작업 실행)
       - name: Make HTTP request to Vercel API
         run: |
           curl -v -X GET https://mypat.vercel.app/api/cron \
           -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}"
 
-      # 2. Vercel 배포
-      - name: Deploy to Vercel
-        run: |
-          npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }}
+      # 3. Vercel CLI 설치
+      - name: Install Vercel CLI
+        run: npm install --global vercel@canary
+
+      # 4. Vercel 환경 정보 가져오기
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 5. 프로젝트 빌드
+      - name: Build Project Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      # 6. Vercel에 배포
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
